@@ -11,4 +11,6 @@
 # install elastic search, and put the wrapper 
 # in the corresponding location.
 
-es/elasticsearch-1.1.1/bin/service/elasticsearch $1
+ES_HOME=es/elasticsearch-1.1.1/
+
+$ES_HOME/bin/service/elasticsearch $1
