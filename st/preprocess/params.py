@@ -1,6 +1,5 @@
-"""
-Set the paramters for indexing
-"""
+
+# ---------- Set the paramters for indexing -------------
 # URL of the elastic search service
 # Default: localhost:9200
 ES_URL = 'localhost:9200'
@@ -61,7 +60,13 @@ TITLE = {
 ENTITY = {
     'type': 'string',
     'index': 'not_analyzed',
-    'store': True
+    'store': True,
+    'type': 'nested',
+    'include_in_parents': True,
+    'properties':{
+        'concept': {'type': 'string'},
+        'score': {'type': 'float'},
+    }
 }
 
 # The document content
@@ -86,3 +91,73 @@ MAPPING = {
         }
     } 
 }
+
+#------ Setup index for google dictionary --------
+# Note: we assume the resource files are always
+# compressed using bzip2
+
+# Path to the Google dictionary
+PATH_GCLD = '../etc/dictionary.bz2'
+
+# Path to the Dutch language mapping
+PATH_LANG_MAP = '../etc/nl.map.bz2'
+
+# Index name of GCLD
+INDEX_GCLD = 'gcld'
+
+# doc type
+DOC_TYPE_GCLD = 'dictionary'
+
+# Mapping of GCLD entries
+# string
+STRING = {
+    'type': 'string',
+    'index': 'analyzed',
+    'analyzer': 'standard',
+}
+# Wikipedia concept
+CONCEPT = {
+    'type': 'string',
+    'index': 'not_analyzed',
+}
+
+SCORE = {
+    'type': 'float',
+    'index': 'not_analyzed',
+}
+# score p(concept|string)
+
+MAPPING_GCLD = {
+    'dictionary':{
+        'properties':{
+            'string': STRING,
+            'concept': CONCEPT,
+            'score': SCORE,
+        }
+    }
+}
+
+# Mapping from English WP concept to Dutch
+DOC_TYPE_LANG = 'map_en_nl'
+
+MAPPING_LANG = {
+    'map_en_nl': {
+        'properties':{
+            'from': CONCEPT,
+            'to': CONCEPT,
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+ 

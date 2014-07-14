@@ -83,13 +83,13 @@ def process_records(records):
             'loc': 'publishing location',
             'title': 'article title',
             'text': 'ocr content',
-            'entity': [],
+            'entity': None,
         }
 
     Parameters:
     * records: the element srw:records from the retrieved result set
     """
-    for record in records.findall('srw:record', namespaces=namespace_ddd):
+    for record in records: 
         rd = record.find('srw:recordData', namespaces=namespace_ddd)
         # If no record data, skip this record
         if rd == None:
@@ -122,12 +122,12 @@ def process_records(records):
         r = requests.get(identifier.text)
         text = re.sub(r'<.+?>', '', r.content)
         document = {
-            'docid': identifier.text.replace('ocr', '').split('urn=')[1],
+            'docid': identifier.text.replace(':ocr', '').split('urn=')[1],
             'text': text,
             'date': date_text, 
             'loc': location_text,
             'title': title_text,
-            'entity': [],
+            'entity': None,
         }
 
         # Add document to index
@@ -171,8 +171,9 @@ def index_documents(startdate, enddate):
 
     # Process downloaded records
     records = root.findall('srw:records', namespaces=namespace_ddd)
-    print 'processing', startRecord, '-', len(records)+startRecord-1, '/%s'%count
-    process_records(records[0])
+    all_records = records[0].findall('srw:record', namespaces=namespace_ddd)
+    print 'processing', startRecord, '-', len(all_records)+startRecord-1, '/%s'%count 
+    process_records(all_records)
    
     # Continue downloading if there are more results
     startRecord += 1000
@@ -182,8 +183,10 @@ def index_documents(startdate, enddate):
         root = et.fromstring(r.content)
         records = root.findall('srw:records', namespaces=namespace_ddd)
 
-        print 'processing', startRecord, '-', len(records)+startRecord-1, '/%s'%count
-        process_records(records[0])
+        all_records = records[0].findall('srw:record', namespaces=namespace_ddd)
+        print 'processing', startRecord, '-', len(all_records)+startRecord-1, '/%s'%count
+ 
+        process_records(all_records)
         startRecord += 1000
 
 

@@ -34,31 +34,6 @@ Run an ES server
     $ ./run_es.sh option
 
 
-Indexing documents
----------------------
-
-We index only news articles (excluding images, advertisements, etc.).
-Below, I list the settings I used in this project.
-
-=======    ========    ==================   ==================================
-Field      Type        Source               Note 
-=======    ========    ==================   ==================================
-docid      string      <ddd:metadataKey>    Not analyzed
-date       date        <dc:date>            Not analyzed
-title      string      <dc:title>           analyzed, dutch analyzer
-loc        string      <ddd: spatial>       Not analyzed
-entity     string      Linked entities      Not analyzed
-ocr        string      The OCR content      analyzed, dutch analyzer 
-=======    ========    ==================   ==================================
-
-Note - 1: In explanation, <.+?> means the content of the field is from
-the metadata of the news article, as retrieved by using the SRU service provided
-by KB.
-
-Note - 2: An example document identifier: ``ddd:010967735:mpeg21:a0024``.
-
-The settings for indexing is stored in ``$HOME_PROJ/preprocess/params.py``.
-
 
 
 
