@@ -7,6 +7,7 @@ from collections import deque
 from elasticsearch import Elasticsearch, RequestError, ConnectionError
 import params as p
 import urllib
+from string_util import string_to_unicode
 
 es = Elasticsearch()
 
@@ -45,17 +46,6 @@ def add_document(doc_id, doctype, document):
         * document: a json object
     """
     es.index(index=p.INDEX_GCLD, doc_type=doctype, body=document, id=str(doc_id))
-
-def string_to_unicode(string):
-    try:
-        return unicode(string)
-    except:
-        for e in ['utf-8', 'latin-1']:
-            try:
-                return unicode(string, e)
-            except:
-                pass  
-    return None
 
 
 def index_dictionary(inputfile):

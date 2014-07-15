@@ -10,7 +10,8 @@ import argparse
 import sys, re
 import datetime
 import xml.etree.ElementTree as et 
-
+from string_util import string_to_unicode
+import HTMLParser
 
 # Namespace of the downloaded records
 namespace_ddd = {
@@ -21,6 +22,7 @@ namespace_ddd = {
 
 
 es = Elasticsearch()
+par = HTMLParser.HTMLParser()
 
 def create_index():
     """
@@ -120,7 +122,12 @@ def process_records(records):
             continue
         # Download ocr
         r = requests.get(identifier.text)
+
+        # clean the text
         text = re.sub(r'<.+?>', '', r.content)
+        text = par.unescape(string_to_unicode(text))
+        #print text
+
         document = {
             'docid': identifier.text.replace(':ocr', '').split('urn=')[1],
             'text': text,
@@ -129,6 +136,8 @@ def process_records(records):
             'title': title_text,
             'entity': None,
         }
+        print document['docid']
+        print r.content
 
         # Add document to index
         add_document(document)
