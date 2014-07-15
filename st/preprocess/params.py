@@ -99,14 +99,15 @@ MAPPING = {
 # Path to the Google dictionary
 PATH_GCLD = '../etc/dictionary.bz2'
 
+# Path to the inverted dictionary
+PATH_INV_GCLD = '../etc/inv.dict.bz2'
+
 # Path to the Dutch language mapping
 PATH_LANG_MAP = '../etc/nl.map.bz2'
 
 # Index name of GCLD
 INDEX_GCLD = 'gcld'
 
-# doc type
-DOC_TYPE_GCLD = 'dictionary'
 
 # Mapping of GCLD entries
 # string
@@ -127,6 +128,9 @@ SCORE = {
 }
 # score p(concept|string)
 
+# doc type
+DOC_TYPE_GCLD = 'dictionary'
+
 MAPPING_GCLD = {
     'dictionary':{
         'properties':{
@@ -135,6 +139,21 @@ MAPPING_GCLD = {
             'score': SCORE,
         }
     }
+}
+
+
+# Inverted dictionary
+DOC_TYPE_INV_GCLD = 'inv_dictionary'
+
+MAPPING_INV_GCLD = {
+    'inv_dictionary':{
+        'properties':{
+            'string': STRING,
+            'concept': CONCEPT,
+            'score': SCORE,
+        }
+    }
+
 }
 
 # Mapping from English WP concept to Dutch
