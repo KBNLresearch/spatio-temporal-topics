@@ -7,6 +7,22 @@ ES_URL = 'localhost:9200'
 # Cluster name
 CLUSTER = 'kb_st'
 
+# LM as similarity
+SIM_SETTING = {
+    "settings":{
+        "index": {
+            "similarity":{
+                "LM":{
+                    "type": "LMDirichlet",
+                    "mu": 2000,
+                }
+            }
+        }
+    }
+}
+
+
+#--------- Setting for indexing KB news ----------
 # Name of the index
 # We only create one index to store everything
 INDEX = 'kb_krant'
@@ -14,7 +30,6 @@ INDEX = 'kb_krant'
 # We only index articles
 DOC_TYPE = 'article'
 
-#--------- The mapping of field types of documents ----------
 # Define settings of individual field
 # Note: I set all fields store=true, as I think I will
 # actually need to return the values of all these values. 
@@ -33,7 +48,7 @@ DATE = {
     'type': 'date', 
     'format': 'date', # (yyyy-MM-dd)
     'doc_values': True,
-    'store': True
+    'store': True,
 }
 
 # Location of where the newspaper is published
@@ -53,6 +68,8 @@ TITLE = {
     'analyzer': 'dutch',
     'store': True, 
     'index_options': 'offsets',
+    'similarity': "LM",
+    'term_vector': 'yes',
 }
 
 # The linked entities
@@ -76,6 +93,8 @@ OCR = {
     'analyzer': 'dutch',
     'store': True,
     'index_options': 'offsets',
+    'similarity': "LM",
+    'term_vector': 'yes',
 }
  
 # properties of a news article
@@ -87,7 +106,7 @@ MAPPING = {
             'title': TITLE,
             'loc': LOC,
             'entity': ENTITY,
-            'ocr': OCR,
+            'text': OCR,
         }
     } 
 }
@@ -115,6 +134,8 @@ STRING = {
     'type': 'string',
     'index': 'analyzed',
     'analyzer': 'standard',
+    'similarity': 'LM',
+    'term_vector': 'yes'
 }
 # Wikipedia concept
 CONCEPT = {

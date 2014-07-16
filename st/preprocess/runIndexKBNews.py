@@ -34,7 +34,7 @@ def create_index():
         print 'Index %s exists'%p.INDEX
     else:
         print 'Creat index %s'%p.INDEX
-        es.indices.create(index=p.INDEX)
+        es.indices.create(index=p.INDEX, body=p.SIM_SETTING)
 
     if es.indices.exists_type(index=p.INDEX, doc_type=p.DOC_TYPE):
         print 'Doc type exists: ', p.DOC_TYPE
@@ -136,8 +136,8 @@ def process_records(records):
             'title': title_text,
             'entity': None,
         }
-        print document['docid']
-        print r.content
+        #print document['docid']
+        #print r.content
 
         # Add document to index
         add_document(document)
