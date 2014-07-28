@@ -1,3 +1,9 @@
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
 span.highlight {
     background-color: yellow;
 }
@@ -13,4 +19,8 @@ div.metainfo{
 div.restitle{
     color: steelblue;
     font-size: 16px;
+}
+
+a.pager {
+    cursor: pointer;
 }
