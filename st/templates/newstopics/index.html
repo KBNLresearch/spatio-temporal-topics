@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+    {% load staticfiles %}
+   <link rel="stylesheet" href="{% static "css/newstopics.css" %}">
+   <script src="{% static "js/newstopics.js" %}"></script>
+
+    <script>
+        var url_process_query = "{% url "newstopics.views.process_query" %}";
+    </script>    
+{% endblock %}
+
+{% block A %}
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<a class="navbar-brand">KB News (1918-1940)</a> 
+
+    <div class="navbar-form navbar-left" >
+    <div class="input-group">
+        <input type="text" class="form-control" id="searchbox" placeholder="Search the news">
+        <span class="input-group-btn">
+            <button id="search_submit"  class="btn btn-success"> Go
+            <!--span class="glyphicon glyphicon-chevron-right"></span-->
+            </button>
+        </span>
+    </div>
+    </div>
+
+    </nav>
+{% endblock %}
+
+{% block B %}
+    <h1>visualisation</h1>
+{% endblock %}
+
+{% block C %}
+    <div id="resultlist" class="list-group">
+    </div>
+{% endblock %}

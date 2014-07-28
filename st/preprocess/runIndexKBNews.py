@@ -10,8 +10,7 @@ import argparse
 import sys, re
 import datetime
 import xml.etree.ElementTree as et 
-from string_util import string_to_unicode
-import HTMLParser
+from string_util import string_to_unicode, html_unescape
 
 # Namespace of the downloaded records
 namespace_ddd = {
@@ -22,7 +21,6 @@ namespace_ddd = {
 
 
 es = Elasticsearch()
-par = HTMLParser.HTMLParser()
 
 def create_index():
     """
@@ -125,7 +123,7 @@ def process_records(records):
 
         # clean the text
         text = re.sub(r'<.+?>', '', r.content)
-        text = par.unescape(string_to_unicode(text))
+        text = html_unescape(string_to_unicode(text))
         #print text
 
         document = {

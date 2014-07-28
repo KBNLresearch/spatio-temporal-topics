@@ -1,0 +1,16 @@
+span.highlight {
+    background-color: yellow;
+}
+
+div.info {
+    color: #C0C0C0;
+}
+
+div.metainfo{
+    font-weight: bold; 
+}
+
+div.restitle{
+    color: steelblue;
+    font-size: 16px;
+}

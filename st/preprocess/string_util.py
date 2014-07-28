@@ -1,3 +1,6 @@
+import HTMLParser
+
+par = HTMLParser.HTMLParser()
 
 
 def string_to_unicode(string):
@@ -11,4 +14,5 @@ def string_to_unicode(string):
                 pass  
     return None
 
-    
+def html_unescape(string):
+    return par.unescape(string)    

@@ -76,13 +76,17 @@ TITLE = {
 # Note: this can be an array when indexing
 ENTITY = {
     'type': 'string',
-    'index': 'not_analyzed',
+    'index': 'dutch',
     'store': True,
     'type': 'nested',
     'include_in_parents': True,
     'properties':{
         'concept': {'type': 'string'},
+        'doc_score': {'type': 'float'},
+        'col_score':{'type': 'float'},
         'score': {'type': 'float'},
+        # Method: the method used to create the concepts 
+        'method': {'type': 'string'},
     }
 }
 
@@ -111,93 +115,4 @@ MAPPING = {
     } 
 }
 
-#------ Setup index for google dictionary --------
-# Note: we assume the resource files are always
-# compressed using bzip2
 
-# Path to the Google dictionary
-PATH_GCLD = '../etc/dictionary.bz2'
-
-# Path to the inverted dictionary
-PATH_INV_GCLD = '../etc/inv.dict.bz2'
-
-# Path to the Dutch language mapping
-PATH_LANG_MAP = '../etc/nl.map.bz2'
-
-# Index name of GCLD
-INDEX_GCLD = 'gcld'
-
-
-# Mapping of GCLD entries
-# string
-STRING = {
-    'type': 'string',
-    'index': 'analyzed',
-    'analyzer': 'standard',
-    'similarity': 'LM',
-    'term_vector': 'yes'
-}
-# Wikipedia concept
-CONCEPT = {
-    'type': 'string',
-    'index': 'not_analyzed',
-}
-
-SCORE = {
-    'type': 'float',
-    'index': 'not_analyzed',
-}
-# score p(concept|string)
-
-# doc type
-DOC_TYPE_GCLD = 'dictionary'
-
-MAPPING_GCLD = {
-    'dictionary':{
-        'properties':{
-            'string': STRING,
-            'concept': CONCEPT,
-            'score': SCORE,
-        }
-    }
-}
-
-
-# Inverted dictionary
-DOC_TYPE_INV_GCLD = 'inv_dictionary'
-
-MAPPING_INV_GCLD = {
-    'inv_dictionary':{
-        'properties':{
-            'string': STRING,
-            'concept': CONCEPT,
-            'score': SCORE,
-        }
-    }
-
-}
-
-# Mapping from English WP concept to Dutch
-DOC_TYPE_LANG = 'map_en_nl'
-
-MAPPING_LANG = {
-    'map_en_nl': {
-        'properties':{
-            'from': CONCEPT,
-            'to': CONCEPT,
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
- 

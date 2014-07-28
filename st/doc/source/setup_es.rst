@@ -12,7 +12,7 @@ For our convinence, we assign names to locations
 
 Run an ES server
 ------------------
-1. Download and install elasticsearch as described `here`_. 
+1. Download and install elasticsearch as described `here`_. Note: we use language model, so we need a version later than 1.2.
 
 .. _`here`: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/_installation.html
 

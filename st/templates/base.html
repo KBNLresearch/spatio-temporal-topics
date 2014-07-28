@@ -1,0 +1,62 @@
+{% load i18n %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    {% load staticfiles %}
+
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static "css/base.css" %}">
+
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script  src="{% static "js/utils/json2.js" %}" /></script>
+        <script  src="{% static "js/utils/setup.js" %}"/></script>
+   
+    {% block extrahead %}
+    {% endblock %}
+
+    {% block globalvar %}
+    {% endblock %}
+
+    {% block head %}
+    <title>{% block title %}Spatiotemporal{% endblock %}</title>
+    {% endblock %}
+ 
+</head>
+
+<body>
+   {% block header %}
+   {% endblock %}
+
+    <div id="header" class="header" >
+        <div class="container">
+        <div class="row">
+        {% block A %}{% endblock %}
+        </div>
+        </div>
+    <div>
+    <div id="content" class="content">
+        <div class="container">
+        <div class="row">
+            <div class="col-md-7">
+            {% block B %}{% endblock %}
+            </div>
+
+            <div class="col-md-5">
+            {% block C %}{% endblock %}
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div id="footer" class="footer">
+    {% block footer %}
+    {% endblock %}
+    </div>
+
+</body>
+
+</html>
