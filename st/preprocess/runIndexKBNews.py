@@ -189,6 +189,9 @@ def index_documents(startdate, enddate):
         r = requests.get(url, params=encode_params(params))
         root = et.fromstring(r.content)
         records = root.findall('srw:records', namespaces=namespace_ddd)
+        if len(records) == 0:
+            print 'Error: No records retrieved'
+            break
 
         all_records = records[0].findall('srw:record', namespaces=namespace_ddd)
         print 'processing', startRecord, '-', len(all_records)+startRecord-1, '/%s'%count
