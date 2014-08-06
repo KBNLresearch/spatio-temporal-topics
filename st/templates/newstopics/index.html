@@ -5,9 +5,10 @@
     {% load staticfiles %}
    <link rel="stylesheet" href="{% static "css/newstopics.css" %}">
    <script src="{% static "js/newstopics.js" %}"></script>
-
-    <script>
+   <script src="{% static "js/vis.js" %}"></script>
+   <script>
         var url_process_query = "{% url "newstopics.views.process_query" %}";
+        var url_visualization = "{% url "newstopics.views.visualization" %}";
     </script>    
 {% endblock %}
 
@@ -30,7 +31,8 @@
 {% endblock %}
 
 {% block B %}
-    <h1>visualisation</h1>
+    <div id="legends" class="legends"></div>
+    <div id="visualization" class="visualization"></div>
 {% endblock %}
 
 {% block C %}

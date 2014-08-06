@@ -24,3 +24,17 @@ div.restitle{
 a.pager {
     cursor: pointer;
 }
+
+div.legends {
+    margin-bottom: 20px;
+}
+
+div.location {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+div.vis_location {
+    font-size: 15px;
+    font-weight: normal;
+}

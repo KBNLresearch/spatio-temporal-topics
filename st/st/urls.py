@@ -14,6 +14,9 @@ urlpatterns = patterns('',
     url(r'^$', 'newstopics.views.index'),
 
     url(r'^submit_query/$', 'newstopics.views.process_query'),
+
+    url(r'^visualization/$', 'newstopics.views.visualization'),
+
 )
 
 if settings.DEBUG:

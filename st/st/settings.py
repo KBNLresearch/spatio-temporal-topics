@@ -111,5 +111,19 @@ from elasticsearch import Elasticsearch
 
 ES = Elasticsearch()
 
+# Parameters for topic modeling
 
+# computing statistics from the top X retrieved documents
+SAMPLE_SIZE = 100
+
+# Number of top topics/entities to be visualised
+NUM_TOPICS = 10
+
+# Method for generating topics
+# ner: using entities extracted by KB NER service as topics
+CMETHOD = 'ner' 
+
+# Group type, options: year, month
+DATE_GROUP_TYPE = 'month'
+ 
 

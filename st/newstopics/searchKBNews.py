@@ -57,7 +57,7 @@ class KBNewsES(object):
         return res
 
 
-    def topConcepts(self, docs, topX, index, doc_type, cmethod="ner"):
+    def topConcepts(self, results, topX, cmethod="ner"):
         """
         Get top X concepts from a set of documents
         Scoring:        
@@ -65,12 +65,13 @@ class KBNewsES(object):
             where 
                 p(e|d) = \prod_{w \in e} p(w|d)
                 p(d) = score(d)/C,  C: a normalization constant
-            
+
+            log(p(e|D))/log(p(e|C)) as measuring of 
+            prominance of e in D
+
         @params:
-            docs: the set of retrieved docs
+            results: the set of retrieved docs
             topX: the number of top concepts to return
-            index: index used for computing statistics
-            doc_type: doc_type
             cmethod: filter on the method that generates 
                 the concepts, default: ner
 
@@ -78,7 +79,7 @@ class KBNewsES(object):
             concepts: the set of selected concepts  
         """        
         # Collect concepts
-        docs = docs['hits']['hits']
+        docs = results['hits']['hits']
         doc_rank = dict([(docs[i]['_id'], i) for i in range(len(docs))])
 
         concepts = [(doc, self.clean(concept['concept']), concept)
@@ -93,18 +94,22 @@ class KBNewsES(object):
         concepts.sort(key=lambda x: x[1])
         for k, g in it.groupby(concepts, lambda x:x[1]):
             g = list(g)
-            docs = [doc_rank[gg[0]['_id']] for gg in g]
+            if len(g) <= 5:
+                continue
+            docs = [(gg[0]['_source']['loc'], gg[0]['_source']['date']) for gg in g]
             # p(e|D) \propto \sum_{w \in e} exp(log p(e|d) + log(d))
             p_e_D = log(sum([exp(gg[2]['doc_score']+gg[0]['_score']) for gg in g]))
 
-            p_e_C = [gg[2]['col_score'] for gg in g]
-            print p_e_C
-            print p_e_C
-            concept_score.append((k, p_e_D, docs)) 
+            p_e_C = sum([gg[2]['col_score'] for gg in g])
+            
+            # score = log(p(e|D)) - log(p(e|C))
+            score = p_e_D - p_e_C 
+            concept_score.append((k, score, docs)) 
         concept_score.sort(key=(lambda x: x[1]), reverse=True)
-
+        
         return concept_score[0:topX]
 
+         
     def normalize(self, string, index, field):
         tokens = self.es.indices.analyze(index=index, field=field, text=string)
         return ' '.join(tokens) 
@@ -121,13 +126,13 @@ if __name__ == '__main__':
     query = 'Trotsky'
     fields = ['text', 'title']
     field = 'text'
-    res = searcher.keyword_search(index, doc_type, query, fields)
+    res = searcher.keyword_search(index, doc_type, query, fields, 1000, 0)
     for doc in res['hits']['hits']:
         print doc['highlight']
 
     #print len(res['hits']['hits'])
-#    C = searcher.topConcepts(res, 100, index, field)
-#    for c in C:
-#        print c[0], c[1], len(c[2])
+    C = searcher.topConcepts(res, 20)
+    for c in C:
+        print c[0], c[1], len(c[2])
 
 

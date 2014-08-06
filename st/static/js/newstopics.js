@@ -9,12 +9,14 @@ var current_query = ''
 
 $(document).ready(function(){
 
-//Sumit a query and get results    
+//Sumit a query and get results
+//then make visualisation
 $('#search_submit').click(function(){
     var query = $('#searchbox').val();
     current_page = 1;
     current_query = query;
     search_submit(query);
+    load_visualization(query);
 });
 
 //Click on pagination
@@ -33,9 +35,21 @@ $('#pagination').on('click', '#right_pager', function(){
 
 //Click on filtering
 
-//load visualisation
-
 });
+
+function load_visualization(query){
+	 $.ajax({
+           	type: "POST",
+            url: url_visualization,
+            data: {
+			    query: query,
+            }
+        }).done(function(response) {
+            color_code = make_legends(response['concepts']);
+            visualize(response['counts'], color_code);
+        });
+
+}
 
 function search_submit(query){
 	 $.ajax({
@@ -53,10 +67,10 @@ function search_submit(query){
             total_pages = Math.ceil(total_results/page_size);
             //pagination
             show_results();
-
             $(window).scrollTop($('#result_top').offset().top-100);
         });
 }
+
 
 function show_results(){
     //show the results of the current page
@@ -103,7 +117,7 @@ function show_results(){
 }
 
 function pagination(){
-    console.log(current_page); 
+    //console.log(current_page); 
     start_page = Math.max(1, current_page-3);
     end_page = Math.min(start_page+6, total_pages);
 
@@ -133,5 +147,69 @@ function pagination(){
     p.push('</ul>');
     return p.join(''); 
 }
+
+function make_legends(concepts){
+    legend = []
+    colors = {} 
+    for (var i in concepts){
+        var concept = concepts[i][0];
+        var score = Math.round(concepts[i][1]);
+        var id = 'id="concept_'+concept+'" ';
+        var fontsize = 'font-size:'+ score +'px';
+        var color = getRandomColor();
+        var style = 'style="color:'+ color +';'+fontsize+'" ';
+
+        colors[concept] = colors;
+
+        legend.push('<span ' + id + style + 'class="concept">');
+        legend.push(concept);
+        legend.push('</span>');
+    }
+    $('#legends').html(legend.join('\n'));
+    return colors;
+}
+
+//input: data in the format of {loc: {concept: [[date, count]...]}}
+//color_code: {concept: color}
+function visualize(data, color_code){
+    vis = []
+    var i = 0
+    for (loc in data){
+        vis.push('<div id="loc_'+loc+'" class="location">');
+        vis.push(loc);
+        vis.push('<div id="vis_'+i+'" class="vis_location">');
+
+        //add temporary content
+        tmp = []
+        for (concept in data[loc]){
+            tmp.push('<p>');
+            tmp.push(concept+': '+data[loc][concept]);
+            tmp.push('</p>'); 
+        }
+        vis.push(tmp.join(''));
+
+        vis.push('</div>')
+        vis.push('</div>');
+    }
+    $('#visualization').html(vis.join('\n'));
+
+    var id = 'vis_i' + i;
+    draw_timeline(id, data[loc], color_code);
+    i = i + 1;
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
+
+
+
 
 
