@@ -77,6 +77,7 @@ def visualization(request):
         json_data = js.dumps(data)		
         response = HttpResponse(json_data, content_type="application/json")
     else:
+        print 'ERROR: not an ajax call'
         return render_to_response('errors/403.html')
     return response
 
