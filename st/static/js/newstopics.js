@@ -58,8 +58,7 @@ function search_submit(query){
             data: {
 			    query: query,
                 page_size: page_size,
-                current_page: current_page
-                
+                current_page: current_page,
             }
         }).done(function(response) {
             results = response['results'];

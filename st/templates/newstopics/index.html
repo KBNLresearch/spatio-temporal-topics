@@ -18,6 +18,7 @@
 
     <div class="navbar-form navbar-left" >
     <div class="input-group">
+        {% csrf_token %}
         <input type="text" class="form-control" id="searchbox" placeholder="Search the news">
         <span class="input-group-btn">
             <button id="search_submit"  class="btn btn-success"> Go
