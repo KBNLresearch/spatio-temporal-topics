@@ -82,9 +82,11 @@ class KBNewsES(object):
         docs = results['hits']['hits']
         doc_rank = dict([(docs[i]['_id'], i) for i in range(len(docs))])
 
-        concepts = [(doc, self.clean(concept['concept']), concept)
+        concepts = [(doc, self.clean(concept.get('concept', '')), concept)
             for doc in docs 
             for concept in doc['_source'].get('entity', {})]
+        for doc in docs:
+            print doc
 
         # filter concepts based on method and score
         concepts = list(it.ifilter(lambda x: x[2].get('method', [])==cmethod, concepts))
