@@ -7,6 +7,8 @@ import itertools
 import datetime
 # Create your views here.
 
+
+
 searcher = KBNewsES(settings.ES)
 
 def index(request):
@@ -16,7 +18,8 @@ def index(request):
 
 
 def process_query(request):
-    print 'HERe'
+    # Force csrf token to be set
+
     if request.is_ajax:
         data = {}
 
