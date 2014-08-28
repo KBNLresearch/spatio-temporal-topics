@@ -115,8 +115,8 @@ cluster:
 # Note, that for development on a local machine, with small indices, it usually
 # makes sense to "disable" the distributed features:
 #
-index.number_of_shards: 1
-index.number_of_replicas: 0
+#index.number_of_shards: 1
+#index.number_of_replicas: 0
 
 # These settings directly affect the performance of index and search operations
 # in your cluster. Assuming you have enough machines to hold shards and
@@ -183,7 +183,7 @@ index.number_of_replicas: 0
 #
 # Set this property to true to lock the memory:
 #
-# bootstrap.mlockall: true
+bootstrap.mlockall: true
 
 # Make sure that the ES_MIN_MEM and ES_MAX_MEM environment variables are set
 # to the same value, and that the machine has enough memory to allocate
@@ -191,8 +191,9 @@ index.number_of_replicas: 0
 #
 # You should also make sure that the Elasticsearch process is allowed to lock
 # the memory, eg. by using `ulimit -l unlimited`.
-
-
+ES_MIN_MEM: 2g
+ES_MAX_MEM: 2g
+ 
 ############################## Network And HTTP ###############################
 
 # Elasticsearch, by default, binds itself to the 0.0.0.0 address, and listens

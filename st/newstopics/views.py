@@ -16,6 +16,7 @@ def index(request):
 
 
 def process_query(request):
+    print 'HERe'
     if request.is_ajax:
         data = {}
 

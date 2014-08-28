@@ -16,6 +16,12 @@ do
     then
          echo $line >> $err_log
     fi     
+    fail=`grep 'timeout' tmp`
+    if [ "$fail" != '' ]
+    then
+        echo $line >> $err_log
+    fi
+
 done
 
 cp $err_log $to_index
