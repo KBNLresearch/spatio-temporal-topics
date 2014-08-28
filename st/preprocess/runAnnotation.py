@@ -13,30 +13,18 @@ from Annotator import Annotator
 es = Elasticsearch()
 stat_field = 'text'
 
-def annotate_documents(startdate, enddate, method):
-    """
-    Annoate the documents within a given date range
-    using a specified method.
-    Methods include:
-    - ner: using KB ner service + estimate importance of NERs
-    """
-    an = Annotator(method, field=stat_field)
-    # Retrieve documents to be processed
-    docs = retrieve_docs(startdate, enddate)
-    i = 0
-    for d in docs:
-        an.annotate(d) 
-        if i%1000 == 0:
-            print 'process:%s/%s'%(i, len(docs)) 
-        i += 1
-
-def retrieve_docs(startdate, enddate):
+def process_docs(startdate, enddate, method):
     """
     Retrive documents within the date range
     @ Params
     startedate: starting date, inclusive
     enddate: ending date, inclusive
+    method: annotate the documents with a specific method
+
+    Methods include:
+        - ner: using KB ner service + estimated importance of NERs
     """
+    an = Annotator(method, field=stat_field)
     # Get the documents in this period
     qry = {
         'range': {
@@ -67,8 +55,12 @@ def retrieve_docs(startdate, enddate):
             size=size,
             from_=start,
             )
-        records += [d['_id'] for d in res['hits']['hits']]
- 
+        #records = [d['_id'] for d in res['hits']['hits']]
+
+        # Annoate the retrieved documents
+        print "Annotating: %s - %s/%s"%(start, start+size, total)
+        for d in res['hits']['hits']: 
+            an.annotate(d['_id'])
         start += size     
     return records
 
@@ -102,7 +94,7 @@ if __name__ == '__main__':
     startdate = validate_date(args.startdate)
     enddate = validate_date(args.enddate)
 
-    annotate_documents(startdate, enddate, args.method)
+    process_docs(startdate, enddate, args.method)
   
 
 
