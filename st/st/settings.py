@@ -20,7 +20,7 @@ SECRET_KEY = 'y12(ej8^%3s(rwp8qxc-!)g8c!f7=0ercoant+^8*y042dxq(e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
