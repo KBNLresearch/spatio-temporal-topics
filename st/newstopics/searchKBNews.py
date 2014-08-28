@@ -26,7 +26,7 @@ class KBNewsES(object):
             size: number of results
             start: start position of the results
         @ return
-            docids: in ranked order        
+            res: retrieved results in ranked order        
         """    
         qry = {
             'query': {
@@ -84,10 +84,10 @@ class KBNewsES(object):
 
         concepts = [(doc, self.clean(concept['concept']), concept)
             for doc in docs 
-            for concept in doc['_source']['entity']]
+            for concept in doc['_source'].get('entity', {})]
 
         # filter concepts based on method and score
-        concepts = list(it.ifilter(lambda x: x[2]['method']==cmethod, concepts))
+        concepts = list(it.ifilter(lambda x: x[2].get('method', [])==cmethod, concepts))
 
         # for each concept, compute the score
         concept_score = []
