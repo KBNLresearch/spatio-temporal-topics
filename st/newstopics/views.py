@@ -19,7 +19,6 @@ def index(request):
 
 def process_query(request):
     # Force csrf token to be set
-
     if request.is_ajax:
         data = {}
 

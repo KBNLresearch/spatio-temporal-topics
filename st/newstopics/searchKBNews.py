@@ -82,21 +82,25 @@ class KBNewsES(object):
         docs = results['hits']['hits']
         doc_rank = dict([(docs[i]['_id'], i) for i in range(len(docs))])
 
-        concepts = [(doc, self.clean(concept.get('concept', '')), concept)
-            for doc in docs 
-            for concept in doc['_source'].get('entity', {})]
+        concepts = []
         for doc in docs:
-            print doc
+            entities = doc['_source'].get('entity')
+            if not entities == None:
+                # filter concepts based on method and score
+                entities = list(it.ifilter(lambda x: x.get('method', [])==cmethod, entities))
+                concepts += [(doc, self.clean(e.get('concept', '')), e) 
+                    for e in entities]
 
-        # filter concepts based on method and score
-        concepts = list(it.ifilter(lambda x: x[2].get('method', [])==cmethod, concepts))
+        #concepts = [(doc, self.clean(concept.get('concept', '')), concept)
+        #    for doc in docs 
+        #    for concept in doc.get('_source', {}).get('entity', {})]
 
         # for each concept, compute the score
         concept_score = []
         concepts.sort(key=lambda x: x[1])
         for k, g in it.groupby(concepts, lambda x:x[1]):
             g = list(g)
-            if len(g) <= 5:
+            if len(g) <= 2:
                 continue
             docs = [(gg[0]['_source']['loc'], gg[0]['_source']['date']) for gg in g]
             # p(e|D) \propto \sum_{w \in e} exp(log p(e|d) + log(d))
