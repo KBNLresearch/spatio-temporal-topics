@@ -12,6 +12,7 @@ import datetime
 import xml.etree.ElementTree as et 
 from string_util import string_to_unicode, html_unescape
 import itertools
+import 
 
 # Namespace of the downloaded records
 namespace_ddd = {
@@ -157,10 +158,10 @@ def process_records(records):
 
         # Add document to index
         add_document(document)
-    skip.sort()
-    for k, g in itertools.groupby(skip):
-        print 'Skipped %s news from %s'%(len(list(g)), k)
-
+    #skip.sort()
+    #for k, g in itertools.groupby(skip):
+    #    print 'Skipped %s news from %s'%(len(list(g)), k)
+    print 'Skipped news from other locations: %s'%len(skip) 
 
 def index_documents(startdate, enddate):
     """
