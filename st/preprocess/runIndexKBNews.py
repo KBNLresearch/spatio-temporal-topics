@@ -12,7 +12,6 @@ import datetime
 import xml.etree.ElementTree as et 
 from string_util import string_to_unicode, html_unescape
 import itertools
-import 
 
 # Namespace of the downloaded records
 namespace_ddd = {
