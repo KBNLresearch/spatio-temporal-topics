@@ -19,7 +19,7 @@
     <div class="navbar-form navbar-left" >
     <div class="input-group">
         {% csrf_token %}
-        <input type="text" class="form-control" id="searchbox" placeholder="Search the news">
+        <input type="text" class="form-control" id="searchbox" placeholder="Search the news" />
         <span class="input-group-btn">
             <button id="search_submit"  class="btn btn-success"> Go
             <!--span class="glyphicon glyphicon-chevron-right"></span-->
@@ -32,8 +32,14 @@
 {% endblock %}
 
 {% block B %}
-    <div id="legends" class="legends"></div>
-    <div id="visualization" class="visualization"></div>
+    <!--Summarize comparison of concept statistics between locations-->
+    <div id="vis_loc_summary" class="visualization">
+    {% for loc in newsloc %}
+    <div id="{{loc|safe}}">
+    <div id="vis_composition_{{loc}}"></div>
+    </div>
+    {% endfor %}
+    </div>
 {% endblock %}
 
 {% block C %}

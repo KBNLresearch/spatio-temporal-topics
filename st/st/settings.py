@@ -126,4 +126,13 @@ CMETHOD = 'ner'
 # Group type, options: year, month
 DATE_GROUP_TYPE = 'month'
  
+# Type/locations of news
+NEWS_LOC = [
+    u'Landelijk', 
+    u'Regionaal/lokaal', 
+#    u'Nederlandse Antillen', 
+#    u'Nederlands-Indi\u00EB / Indonesi\u00EB',
+#    u'Suriname'
+    ]
+
 

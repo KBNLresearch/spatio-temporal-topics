@@ -13,6 +13,9 @@ searcher = KBNewsES(settings.ES)
 
 def index(request):
     c = csrf(request)
+    # Pass the news locations as parameter
+    c.update({'newsloc': settings.NEWS_LOC})
+
     template = 'newstopics/index.html'
     return render_to_response(template, c)
 

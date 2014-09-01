@@ -23,6 +23,10 @@ SIM_SETTING = {
 
 
 #--------- Setting for indexing KB news ----------
+# Index constraints
+NEWS_LOC = ['Landelijk', 'Regionaal/lokaal']
+ 
+
 # Name of the index
 # We only create one index to store everything
 INDEX = 'kb_krant'
@@ -72,6 +76,13 @@ TITLE = {
     'term_vector': 'yes',
 }
 
+KRANT_TITLE = {
+    'type': 'string',
+    'index': 'not_analyzed',
+    'doc_values': True,
+    'store': True,
+}
+
 # The linked entities
 # Note: this can be an array when indexing
 ENTITY = {
@@ -85,8 +96,8 @@ ENTITY = {
         'doc_score': {'type': 'float'},
         'col_score':{'type': 'float'},
         'score': {'type': 'float'},
-        # Method: the method used to create the concepts 
-        'method': {'type': 'string'},
+        # Type of concept (person, location, organization, term)
+        # 'type': {'type': 'string'},
     }
 }
 
@@ -109,7 +120,10 @@ MAPPING = {
             'date': DATE,
             'title': TITLE,
             'loc': LOC,
-            'entity': ENTITY,
+            'papertitle': KRANT_TITLE,
+            'entity_person': ENTITY,
+            'entity_organization': ENTITY,
+            'entity_location': ENTITY,
             'text': OCR,
         }
     } 

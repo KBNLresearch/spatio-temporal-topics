@@ -6,6 +6,7 @@ var total_pages = 0;
 var start_page = 1;
 var end_page = 1;
 var current_query = ''
+var colormap = {};
 
 $(document).ready(function(){
 
@@ -16,7 +17,9 @@ $('#search_submit').click(function(){
     current_page = 1;
     current_query = query;
     search_submit(query);
-    load_visualization(query);
+
+    // Do visualization    
+    visualize(query);
 });
 
 //Click on pagination
@@ -37,6 +40,7 @@ $('#pagination').on('click', '#right_pager', function(){
 
 });
 
+/*
 function load_visualization(query){
 	 $.ajax({
            	type: "POST",
@@ -50,7 +54,7 @@ function load_visualization(query){
         });
 
 }
-
+*/
 function search_submit(query){
 	 $.ajax({
            	type: "POST",
@@ -147,6 +151,29 @@ function pagination(){
     return p.join(''); 
 }
 
+function visualize(query){
+    // Get the locations to be visualized
+    $('#vis_loc_summary').children().each(function(){
+        loc = $(this).attr('id');
+        //process this location
+        vis_location_summary(query, loc);
+    });
+}
+
+function vis_location_summary(query, loc){
+	 $.ajax({
+           	type: "POST",
+            url: url_visualization,
+            data: {
+			    query: query,
+                loc: loc,
+            }
+        }).done(function(response) {
+        });
+
+}
+
+/*
 function make_legends(concepts){
     legend = []
     colors = {} 
@@ -196,7 +223,7 @@ function visualize(data, color_code){
     draw_timeline(id, data[loc], color_code);
     i = i + 1;
 }
-
+*/
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';

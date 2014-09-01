@@ -11,6 +11,7 @@ import sys, re
 import datetime
 import xml.etree.ElementTree as et 
 from string_util import string_to_unicode, html_unescape
+import itertools
 
 # Namespace of the downloaded records
 namespace_ddd = {
@@ -83,17 +84,30 @@ def process_records(records):
             'loc': 'publishing location',
             'title': 'article title',
             'text': 'ocr content',
-            'entity': None,
+            'entity_person': None,
+            'entity_orgnization': None,
+            'entity_location': None,
         }
 
     Parameters:
     * records: the element srw:records from the retrieved result set
     """
+    skip = []
     for record in records: 
         rd = record.find('srw:recordData', namespaces=namespace_ddd)
         # If no record data, skip this record
         if rd == None:
             continue
+
+        # Location
+        location_text = ''
+        location = rd.find('ddd:spatial', namespaces=namespace_ddd)
+        if not location == None:
+            location_text = location.text 
+        if not location_text in p.NEWS_LOC:
+            skip.append(location_text)
+            continue
+
         # Get title
         title = rd.find('dc:title', namespaces=namespace_ddd)
         title_text = ''
@@ -105,11 +119,12 @@ def process_records(records):
         if not date == None:
             date_object = datetime.datetime.strptime(date.text, '%Y/%m/%d %H:%M:%S')
             date_text = '%s-%s-%s'%(date_object.year, date_object.month, date_object.day)
-        # Location
-        location_text = ''
-        location = rd.find('ddd:spatial', namespaces=namespace_ddd)
-        if not location == None:
-            location_text = location.text 
+
+        # Newspaper title
+        paper_title = ''
+        papertitle = rd.find('ddd:papertitle', namespaces=namespace_ddd)
+        if not papertitle == None:
+            paper_title = papertitle.text
 
         # Get the OCR url
         identifier = rd.find('dc:identifier', namespaces=namespace_ddd)
@@ -132,13 +147,20 @@ def process_records(records):
             'date': date_text, 
             'loc': location_text,
             'title': title_text,
-            'entity': None,
+            'paper_title': paper_title,
+            'entity_person': None,
+            'entity_orgnization': None,
+            'entity_location': None,
         }
         #print document['docid']
         #print r.content
 
         # Add document to index
         add_document(document)
+    skip.sort()
+    for k, g in itertools.groupby(skip):
+        print 'Skipped %s news from %s'%(len(list(g)), k)
+
 
 def index_documents(startdate, enddate):
     """
@@ -165,6 +187,7 @@ def index_documents(startdate, enddate):
         'query': qry,
         }
     # Get the metadata of the result set
+    # print encode_params(params)
     r = requests.get(url, params=encode_params(params))
     root = et.fromstring(r.content)
     count = 0
