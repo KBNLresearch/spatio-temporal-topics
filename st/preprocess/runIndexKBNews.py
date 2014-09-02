@@ -88,7 +88,7 @@ def process_records(records):
             'text': 'ocr content',
             'papertitle': 'title of the newspaper'
             'entity_person': None,
-            'entity_orgnization': None,
+            'entity_organization': None,
             'entity_location': None,
             'entity_other': None,
         }
@@ -153,7 +153,7 @@ def process_records(records):
             'title': title_text,
             'papertitle': paper_title,
             'entity_person': None,
-            'entity_orgnization': None,
+            'entity_organization': None,
             'entity_location': None,
             'entity_other': None,
         }
