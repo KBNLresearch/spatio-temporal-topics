@@ -88,6 +88,8 @@ function show_results(){
         //Make the meta information
         meta = [
             '<div class="metainfo">',
+            results[i]['papertitle'],
+            ';  ',
             results[i]['date'],
             ';  ',
             results[i]['loc'], 

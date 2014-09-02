@@ -36,7 +36,9 @@ def create_index():
         es.indices.create(index=p.INDEX, body=p.SIM_SETTING)
 
     if es.indices.exists_type(index=p.INDEX, doc_type=p.DOC_TYPE):
-        print 'Doc type exists: ', p.DOC_TYPE
+        print 'Doc type %s exists'%p.DOC_TYPE
+        #es.indices.put_mapping(index=p.INDEX, doc_type=p.DOC_TYPE, body=p.MAPPING)
+       
     else:
         print 'Create mapping for doc_type %s'%p.DOC_TYPE
         es.indices.put_mapping(index=p.INDEX, doc_type=p.DOC_TYPE, body=p.MAPPING)
@@ -84,6 +86,7 @@ def process_records(records):
             'loc': 'publishing location',
             'title': 'article title',
             'text': 'ocr content',
+            'papertitle': 'title of the newspaper'
             'entity_person': None,
             'entity_orgnization': None,
             'entity_location': None,
@@ -147,7 +150,7 @@ def process_records(records):
             'date': date_text, 
             'loc': location_text,
             'title': title_text,
-            'paper_title': paper_title,
+            'papertitle': paper_title,
             'entity_person': None,
             'entity_orgnization': None,
             'entity_location': None,

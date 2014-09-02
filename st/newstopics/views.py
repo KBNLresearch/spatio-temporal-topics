@@ -37,6 +37,7 @@ def process_query(request):
         query = request.POST['query']
         res = searcher.keyword_search(index, doc_type, query, fields, size, start)
         if res['hits']['total'] > 0:
+            print res['hits']['hits'][0]['_source'].keys()
             results = [{'docid': doc['_id'],
                     'url': 'http://resolver.kb.nl/resolve?urn=%s'%doc['_id'],
                     'title': '...'.join(doc['highlight']['title']),
@@ -44,6 +45,7 @@ def process_query(request):
                     'date': doc['_source']['date'],
                      # Get the summary of the results
                     'summary': '...'.join(doc['highlight']['text']),
+                    'papertitle': doc['_source']['papertitle']
 
                 } for doc in res['hits']['hits']] 
 
