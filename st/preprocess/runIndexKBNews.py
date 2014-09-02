@@ -90,6 +90,7 @@ def process_records(records):
             'entity_person': None,
             'entity_orgnization': None,
             'entity_location': None,
+            'entity_other': None,
         }
 
     Parameters:
@@ -154,6 +155,7 @@ def process_records(records):
             'entity_person': None,
             'entity_orgnization': None,
             'entity_location': None,
+            'entity_other': None,
         }
         #print document['docid']
         #print r.content

@@ -37,7 +37,7 @@ class Annotator(object):
                 'entity': annotations
             }
         }
-        self.es.update(index=p.INDEX, doc_type=p.DOC_TYPE, id=docid, body=doc)
+       # self.es.update(index=p.INDEX, doc_type=p.DOC_TYPE, id=docid, body=doc)
         #doc = self.es.get(index=p.INDEX, doc_type=p.DOC_TYPE, id=docid )
 
     def get_NERs(self, docid):
@@ -51,6 +51,7 @@ class Annotator(object):
         ner = root.find('entities')
         concepts = [] 
         if not ner == None:
+            print [entity.tag for entity in ner]
             ner = list(set([entity.text for entity in ner]))
             for entity in ner:
                 concept = html_unescape(string_to_unicode(entity))

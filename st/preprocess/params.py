@@ -124,6 +124,7 @@ MAPPING = {
             'entity_person': ENTITY,
             'entity_organization': ENTITY,
             'entity_location': ENTITY,
+            'entity_other': ENTITY,
             'text': OCR,
         }
     } 
