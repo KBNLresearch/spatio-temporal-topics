@@ -27,14 +27,11 @@ class KBNewsES(object):
             start: start position of the results
         @ return
             res: retrieved results in ranked order        
-        """    
+        """   
+        query = self.construct_query(query, fields)
         qry = {
-            'query': {
-                'multi_match': {
-                    "query": query,
-                    "fields": fields
-                    }
-                },
+           'query': query,
+
             'highlight': {
                 'order': 'score',
                 'pre_tags': ['<span class="highlight">'],
@@ -54,8 +51,29 @@ class KBNewsES(object):
         # Default only consider the top 1000 results
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
                 size=size, from_=start)
+        #i = 0
+        #for r in  res['hits']['hits']:
+        #    print i, r['_score'], r['_source']['title']
+        #    i += 1
         return res
 
+    
+    def construct_query(self, query, fields):
+        """
+        Construct query language based on the input keyword query
+        """
+        # Check if there phrases
+        query_terms = query.split('"')
+         
+ 
+        query = {
+            'multi_match': {
+                    "query": query,
+                    "fields": fields
+            }
+        }
+
+        return query
 
     def topConcepts(self, results, topX, cmethod="ner"):
         """

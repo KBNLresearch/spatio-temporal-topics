@@ -13,6 +13,9 @@ urlpatterns = patterns('',
 
     url(r'^$', 'newstopics.views.index'),
 
+    url(r'^simple_search', 'newstopics.views.simple_search'),
+    url(r'^advanced_search', 'newstopics.views.advanced_search'),    
+
     url(r'^submit_query/$', 'newstopics.views.process_query'),
 
     url(r'^visualization/$', 'newstopics.views.visualization'),

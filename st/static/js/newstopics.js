@@ -9,9 +9,27 @@ var current_query = ''
 var colormap = {};
 
 $(document).ready(function(){
+//open advanced search
+$('#advanced_option').click(function(){
+    $('#advance_search').toggleClass('hidden');       
+});
 
-//Sumit a query and get results
-//then make visualisation
+//Learn more about writing queries
+$('#advanced_searchbox_learn').click(function(){
+    $('#advanced_searchbox_info').toggleClass('hidden');
+});
+//dismiss the query instruction
+$('#advanced_searchbox_hideinfo').click(function(){
+    $('#advanced_searchbox_info').toggleClass('hidden');
+});
+
+/*
+$('#search_submit').click(function(){
+    $('#simple_search').submit() 
+});
+*/
+/*
+//Sumit a query and get result then make visualisation
 $('#search_submit').click(function(){
     var query = $('#searchbox').val();
     current_page = 1;
@@ -21,7 +39,7 @@ $('#search_submit').click(function(){
     // Do visualization    
     visualize(query);
 });
-
+*/
 //Click on pagination
 
 //Click on shifting paginaiton

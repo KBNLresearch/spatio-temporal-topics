@@ -14,24 +14,89 @@
 
 {% block A %}
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<a class="navbar-brand">KB News (1918-1940)</a> 
+	<a class="navbar-brand">KB News (1914-1940)</a> 
 
+    {% csrf_token %}
+    <form action="/simple_search/" method="GET" id="simple_search">
     <div class="navbar-form navbar-left" >
     <div class="input-group">
-        {% csrf_token %}
-        <input type="text" class="form-control" id="searchbox" placeholder="Search the news" />
+        <!--Get the search query, and re-fill the inputbox after query being processed -->
+        <input type="text" name="q" class="form-control" id="searchbox" placeholder="Search the news" value="{{ simple_search_form.q }}" />
         <span class="input-group-btn">
-            <button id="search_submit"  class="btn btn-success"> Go
+            <button id="search_submit"  class="btn btn-success" type="submit"> Go
             <!--span class="glyphicon glyphicon-chevron-right"></span-->
             </button>
         </span>
+        <span class="advanced_searchbox_info pull-right" id="advanced_option">Advanced search &raquo;</span>
     </div>
     </div>
+    </form>
 
     </nav>
 {% endblock %}
 
 {% block B %}
+    <!-- advanced search options -->
+    <div id="advance_search" class="advanced_searchbox {{advanced_search_status}}">
+        <div class="advanced_searchbox_title">
+            The articles returned as search results ...
+            <span class="advanced_searchbox_info pull-right" id="advanced_searchbox_learn">Learn more &raquo;</span>
+        </div>
+
+        <div class="alert alert-info hidden" role="alert" id="advanced_searchbox_info">
+            <button type="button" class="close" id="advanced_searchbox_hideinfo">
+            <span aria-hidden="true">&times;</span>
+            </button>
+            <p><strong>How to write complex queries</strong></p> 
+            <p>
+            <ol>
+                <li><p><strong>Exact phrase</strong>: quote the phrase. E.g., "first world war".</p></li>
+                <li><p><strong>Wildcard queries</strong>: use * to match any character sequences including the empty one, and ? to match any single character. <br/>E.g., duits*land would match both Duitschland and Duitsland.</p></li>
+                <li><p><strong>Term proximity</strong>: use #X(terms) to indicate that a set of query terms should occur within a span of X terms. <br/> E.g., #5(first world war) indicates terms "first", "world", "war" should span at most a length of 5 words.</p></li>
+                <li><p><strong>Orderd term proximity</strong>: use #oX(terms) to indicate that query terms should occur within a span of X terms in its exact order. <br/> E.g., #o3(great war) indicates terms "great" and "war" should span at most a length of 3 words, where "great" precedes "war". </p></li>
+                
+            </ol>
+            </p>
+        </div>
+
+        <form class="form-horizontal" role="form" action="/advanced_search/" method="GET">
+            <div class="form-group">
+            <label for="must" class="col-sm-3 control-label">must contain: </label>
+            <div class="col-sm-9">
+            <input type="text" class="form-control" 
+                    id="must" name="must" 
+                    value="{{advanced_search_form.must}}"
+                    placeholder="Terms that must occur in the article">
+            </div>
+            </div>
+
+            <div class="form-group">
+            <label for="mustnot" class="col-sm-3 control-label">must not contain: </label>
+            <div class="col-sm-9">
+            <input type="text" class="form-control" 
+                    id="mustnot" name="mustnot" 
+                    value="{{advanced_search_form.mustnot}}"
+                    placeholder="Terms that must not occur in the article">
+            </div>
+            </div>
+
+            <div class="form-group">
+            <label for="should" class="col-sm-3 control-label">should contain: </label>
+            <div class="col-sm-9">
+            <input type="text" class="form-control" 
+                    id="should" name="should" 
+                    value="{{advanced_search_form.should}}" 
+                    placeholder="Terms that should but not necessarily occur in the article">
+            </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-success">Search</button>
+                </div>
+            </div>
+        </form> 
+    </div>
     <!--Summarize comparison of concept statistics between locations-->
     <div id="vis_loc_summary" class="visualization">
     {% for loc in newsloc %}

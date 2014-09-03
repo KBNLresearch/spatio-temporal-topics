@@ -38,3 +38,24 @@ div.vis_location {
     font-size: 15px;
     font-weight: normal;
 }
+
+div.advanced_searchbox {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #C0C0C0;
+    padding: 20px;
+}
+
+div.advanced_searchbox_title {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+span.advanced_searchbox_info {
+    font-size: 15px;
+    color: steelblue;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+
