@@ -53,7 +53,7 @@
                 <li><p><strong>Exact phrase</strong>: quote the phrase. E.g., "first world war".</p></li>
                 <li><p><strong>Wildcard queries</strong>: use * to match any character sequences including the empty one, and ? to match any single character. <br/>E.g., duits*land would match both Duitschland and Duitsland.</p></li>
                 <li><p><strong>Term proximity</strong>: use #X(terms) to indicate that a set of query terms should occur within a span of X terms. <br/> E.g., #5(first world war) indicates terms "first", "world", "war" should span at most a length of 5 words.</p></li>
-                <li><p><strong>Orderd term proximity</strong>: use #oX(terms) to indicate that query terms should occur within a span of X terms in its exact order. <br/> E.g., #o3(great war) indicates terms "great" and "war" should span at most a length of 3 words, where "great" precedes "war". </p></li>
+                <li><p><strong>Ordered term proximity</strong>: use #oX(terms) to indicate that query terms should occur within a span of X terms in its exact order. <br/> E.g., #o3(great war) indicates terms "great" and "war" should span at most a length of 3 words, where "great" precedes "war". </p></li>
                 
             </ol>
             </p>
@@ -79,7 +79,7 @@
                     placeholder="Terms that must not occur in the article">
             </div>
             </div>
-
+            
             <div class="form-group">
             <label for="should" class="col-sm-3 control-label">should contain: </label>
             <div class="col-sm-9">
@@ -90,11 +90,61 @@
             </div>
             </div>
 
+            <!-- specify the time periods-->
             <div class="form-group">
-                <div class="col-sm-offset-3 col-sm-9">
+            <label for="periods" class="col-sm-3 control-label">in these periods: </label>
+            <div class="col-sm-4">
+                <input type="text" size="4" maxlength="4" class="space3"
+                        id="period_start"
+                        value = "{{advanced_search_form.period_start}}"
+                        placeholder="1914"> to
+                <input type="text" size="4" maxlength="4" class="space3" 
+                        id="period_end"
+                        value = "{{advanced_search_form.period_end}}"
+                        placeholder="1940">
+            </div>
+            <!--adding a specified period-->
+            <div class="col-sm-5">
+                <a   
+                    class="btn btn-sm btn-primary"
+                    id="btn_add_period"
+                    >Add this period</a>
+            </div>
+            </div>
+
+            <!-- error message for improper input-->
+            <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9 err-msg" id="period_err">
+            </div>
+            </div>
+
+            <!--field to catch the specified periods-->
+            <div class="form-group">
+            <label for="selected_periods" class="col-sm-3 control-label"></label>
+            <div class="col-sm-9" id="div_selected_periods">
+            </div>
+            <input type="hidden" name="periods" id="input_selected_periods"
+                    value="{{advanced_searc_form.selected_periods}}"
+                    > 
+            </div>
+            
+            <!-- Select newspaepers to be searched-->
+            <div class="form-group">
+            <label for="newspapers" class="col-sm-3 control-label">in these newspapers: </label>
+            <div class="col-sm-9">
+                To be implemented
+            </div>
+            </div>
+
+            <!-- Submit the form -->
+            <div class="form-group">
+                <div class="col-sm-offset-7 col-sm-5">
                 <button type="submit" class="btn btn-success">Search</button>
+                <button type="button" class="btn btn-warning">Clear</button>
                 </div>
             </div>
+
+
         </form> 
     </div>
     <!--Summarize comparison of concept statistics between locations-->

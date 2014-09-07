@@ -58,4 +58,24 @@ span.advanced_searchbox_info {
     margin-left: 10px;
 }
 
+.err-msg {
+    color: red; 
+}
+
+span.period_label {
+    background-color: #C0C0C0;
+    color: #fff;
+    font-size: 14px;
+    padding: 5px;
+    margin-right: 2px;
+}
+
+span.remove_period{
+    background-color: #C0C0C0;
+    color: #fff;
+    font-size: 17px;
+    margin-left: 3px;
+    cursor: pointer;
+}
+
 

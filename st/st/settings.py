@@ -110,6 +110,10 @@ TEMPLATE_DIRS = (
 from elasticsearch import Elasticsearch
 
 ES = Elasticsearch()
+INDEX = 'kb_krant'
+DOC_TYPE = 'article'
+SEARCH_FIELDS = ['text', 'title']
+PAGE_SIZE = 10
 
 # Parameters for topic modeling
 

@@ -15,27 +15,37 @@ def index(request):
     c = csrf(request)
     template = 'newstopics/index.html'
     c['advanced_search_status'] = 'hidden'
-
     return render_to_response(template, c)
 
 
 # URL version
 def simple_search(request):
-    c = {'advanced_search_status': 'hidden'}
+    c = {}
+    c.update(csrf(request))
+    c['advanced_search_status'] = 'hidden'
     query = request.GET.get('q', '')
-    
+
     # Set default values for the form
     if not query == '':
         simple_search_form = {'q': query}
         c['simple_search_form'] = simple_search_form
 
+    raw_query = {'should': query}
+    res = searcher.search_news(settings.INDEX,
+            settings.DOC_TYPE,
+            raw_query,
+            settings.SEARCH_FIELDS,
+            settings.PAGE_SIZE,
+            request.GET.get('start', 0)) 
+            
     template = 'newstopics/index.html'
     return render_to_response(template, c)
 
 def advanced_search(request):
-    print request.POST
-    print request.GET
-    c = {'advanced_search_status': ''}
+    c = {}
+    c.update(csrf(request))
+
+    c ['advanced_search_status'] = ''
     must = request.GET.get('must', '')
     mustnot = request.GET.get('mustnot', '')
     should = request.GET.get('should', '')
@@ -50,6 +60,13 @@ def advanced_search(request):
         advanced_search_form['should'] = should 
     c['advanced_search_form'] = advanced_search_form
 
+    raw_query = {'should': should, 'must': must, 'mustnot': mustnot}
+    res = searcher.search_news(settings.INDEX,
+            settings.DOC_TYPE,
+            raw_query,
+            settings.SEARCH_FIELDS,
+            settings.PAGE_SIZE,
+            request.GET.get('start', 0)) 
     template = 'newstopics/index.html'
     return render_to_response(template, c)
 
