@@ -78,4 +78,6 @@ span.remove_period{
     cursor: pointer;
 }
 
-
+button.select_period {
+    margin-top: 5px;
+}
