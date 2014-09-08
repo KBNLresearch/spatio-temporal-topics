@@ -9,11 +9,6 @@ var current_query = ''
 var colormap = [];
 
 //store selected time periods
-//using start as key
-var current_periods_start = {};
-//using end as key
-var current_periods_end = {};
-
 var current_periods = []; 
 
 $(document).ready(function(){
@@ -40,58 +35,26 @@ $('#advanced_searchbox_hideinfo').click(function(){
 //Advanced_search: add time period
 $('#btn_add_period').click(function(){
     //Get the filled in years
-    var start = $('#period_start').val();
-    var end = $('#period_end').val();
-
+    var str_start = $('#period_start').val();
+    var str_end = $('#period_end').val();
+    if (str_start == '')
+        start = 0;
+    else
+        start = parseInt(str_start);
+        
+    if (str_end == '')
+        end = 0
+    else
+        end = parseInt(str_end);
+ 
     if (check_year(start, end)){
-        //check its relation to existing periods
-        var exists = current_periods.filter(function(d){
-            return d[0] == start && d[1] == end;
-        });
-        //If already exists, do nothing
-        if (exists.length == 0){
-            //Check if it's covered by an existing period
-            var covered = current_periods.filter(function(d){
-                return d[0] <= start && d[1] >= end;
-            });
-            //Check if it covers an existing period
-            var cover = current_periods.filter(function(d){
-                return d[0] >= start && d[1] <= end; 
-            });
-            
-            //If it doesn't covered or is covered by existing periods
-            if (covered.length == 0 && cover.length == 0){
-                //Add the period to existing periods
-                var id = current_periods.length;
-                current_periods.push([start, end, id]);
-                //Show selected period
-                show_selected_period(start, end);
-            }
-            else if (covered.length > 0){
-                warn_coverage([start, end], covered[0], 'covered');
-            }
-            else if (cover.length > 0){
-                warn_coverage([start, end], cover[0], 'cover');
-            }
-            //Set the hidden input values
-            set_selected_values();
-        }
+        // Try to add the new period
+        add_period(start, end);          
+        //Set the hidden input values
+        set_selected_values();
     }
 });
 
-
-/*
-//Sumit a query and get result then make visualisation
-$('#search_submit').click(function(){
-    var query = $('#searchbox').val();
-    current_page = 1;
-    current_query = query;
-    search_submit(query);
-
-    // Do visualization    
-    visualize(query);
-});
-*/
 //Click on pagination
 
 //Click on shifting paginaiton
@@ -110,7 +73,7 @@ $('#pagination').on('click', '#right_pager', function(){
 
 });
 
-/*========== Functions =================*/
+//========== Functions =================
 
 
 // ======= Query operations ===============
@@ -118,15 +81,9 @@ $('#pagination').on('click', '#right_pager', function(){
 // ========================================
 
 //Check the input time period
-function check_year(start, end) {
-    if (start == '' || end == '')
-        return false //do nothing
-
+function check_year(syear, eyear) {
     err1 = 'Error: Input should be a 4-digit number between 1914 and 1940, inclusive.'
     err2 = 'Error: The starting year should not be later than the ending year.'
-
-    var syear = parseInt(start);
-    var eyear = parseInt(end);
 
     valid = true 
     if (syear < 1914 || syear > 1940){
@@ -156,7 +113,7 @@ function check_year(start, end) {
 function show_selected_period(start, end){
     var added = []
     for (var i = 0; i<current_periods.length; i++){
-        if (current_periods[i] == '')
+        if (current_periods[i] == 0)
             continue
         var ele = [ 
             '<span class="period_label" id="period_'+i+'">',
@@ -172,49 +129,147 @@ function show_selected_period(start, end){
     //bind listener to the newly added periods
     $('#div_selected_periods').on('click', '.remove_period', function(){
     // Remove the selected element
-    var id = $(this).attr('id').replace('remove_', '');
-    $('#'+id).remove();
-    // Set the element in the array empty  
-    var idx = id.replace('period_', '');
-        current_periods[idx] = '';
+    var period_id = $(this).attr('id').replace('remove_', '');
+    remove_selected_period(period_id);
     }); //End binding 
 }
 
-function warn_coverage(newperiod, exist_period, type){
+function remove_selected_period(period_id){
+    $('#' + period_id).remove();
+    // Set the element in the array empty  
+    var idx = period_id.replace('period_', '');
+        current_periods[idx] = 0;
+}
+
+function add_period(start, end){
+    //check its relation to existing periods
+    var exists = current_periods.filter(function(d){
+        return d[0] == start && d[1] == end;
+    });
+    //If already exists, do nothing
+    if (exists.length == 0){
+        //Check if it's covered by an existing period
+        var relation = '';
+        var conflict_period = [];
+        // Check overlap
+        var overlap = current_periods.filter(function(d){
+            return d[0]> 0 && d[1] > 0 && 
+                    ((d[0] >= start && d[0] <= end) ||
+                    (d[1]>= start && d[1] <= end));
+        }); 
+        if (overlap.length > 0){
+            relation = 'overlap';
+            conflict_period = overlap;
+            // If overlapped, further check covering
+            // Check if it's covered by an existing period
+            var covered = current_periods.filter(function(d){
+                return d[0] > 0 && d[0] <= start && d[1] >= end;
+            });
+            if (covered.length > 0) {
+                relation = 'covered';
+                conflict_period = covered;
+            }
+            else {
+                //Check if it covers an existing period
+                var cover = current_periods.filter(function(d){
+                    return d[1] > 0 && d[0] >= start && d[1] <= end; 
+                });
+                if (cover.length > 0) {
+                    relation = 'cover';
+                    conflict_period = cover;
+                }
+            }
+        }
+                    
+        //No overlap with existing periods 
+        if (relation == ''){
+            //Add the period to existing periods
+            var id = current_periods.length;
+            current_periods.push([start, end, 'period_'+id]);
+            //Show selected period
+            show_selected_period(start, end);
+        }
+        else {
+            warn_coverage([start, end], conflict_period, relation);
+        }
+    }
+ 
+}
+
+function warn_coverage(new_period, exist_periods, type){
     //Show warning a new period covers or is covered
     // by an existing period
     var content = ['<div class="alert alert-warning" role="alert">'];
     if (type == 'covered')
-        content.push(['This period is covered by period ', 
-             exist_period[0]+'-'+exist_period[1] + '.',
-             'Please select the period you want to keep:<br/>',
-            ].join(' '));
+        content.push('The input period is covered by existing period(s).');
     else if (type == 'cover')
-        content.push(['This period covers period',
-             exist_period[0] +'-'+ exist_period[1]+'.',
-             'Please select the period you want to keep:<br/>',
-            ].join(' '));
-    
-    content.push('<button type="button" class="btn btn-default" id="new_period">'
-        +newperiod[0]+'-'+newperiod[1]+'</button>');
-    content.push('<button type="button" class="btn btn-default" id="old_period">'
-        +exist_period[0]+'-'+exist_period[1]+'</button>');
+        content.push('The input period covers existing period(s). ');
+    else if (type == 'overlap')
+        content.push('The input period overlaps with existing period(s).');
+    content.push('Please select the period you want to keep:<br/>');
+
+    //Add selection buttons
+    //New period
+    content.push(
+        '<button type="button" class="btn btn-default select_period" id="new_period">'
+        + new_period[0] + '-' + new_period[1] + '</button>');
+    //Existing periods
+    for (var i = 0; i < exist_periods.length; i++){
+        content.push([
+            '<button type="button" class="btn btn-warning select_period old_period"', 
+            'id="old_period_'+exist_periods[i][2]+'">',
+            exist_periods[i][0] + '-' + exist_periods[i][1],
+            '</button>'].join(' '));
+    }
+    //Merged overlaping period
+    if (type == 'overlap'){
+        var starts = []
+        var ends = []
+        exist_periods.forEach(function(d){
+            starts.push(d[0]);
+            ends.push(d[1]);
+        })
+        var min_start = Math.min(new_period[0], Math.min.apply(Math, starts));
+        var max_end = Math.max(new_period[1], Math.max.apply(Math, ends));
+        content.push(
+            '<button type="button" class="btn btn-info select_period" id="merged_period">'
+            + min_start + '-' + max_end + '</button>');
+    }
     content.push('</div>');
-    //Show a alert for warning
+
+    //Show an alert for warning
     $('#period_err').html(content.join(' '));
     //Bind listener to the button in the error msg 
     $('#period_err').on('click', '#new_period', function(){
-        console.log('new');
+        // Remove existing periods
+        for (var j = 0; j<exist_periods.length; j++){
+            remove_selected_period(exist_periods[j][2]);
+        }
+        // Dismiss warning
+        $('#period_err').html('');
+        // Try to add new period
+        add_period(new_period[0], new_period[1])
     });
-    $('#period_err').on('click', '#old_period', function(){
-        console.log(exist_period[2]);
+    $('#period_err').on('click', '.old_period', function(){
+        // do nothing, dismiss warning
+        $('#period_err').html('');
     })
+    $('#period_err').on('click', '#merged_period', function(){
+        var merged_period = $(this).text().split('-');
+        // Remove conflicting periods
+        for (var j = 0; j<exist_periods.length; j++){
+            remove_selected_period(exist_periods[j][2]);
+        }
+        // Dismiss warning
+        $('#period_err').html('');
+        // Try to add this new period
+        add_period(merged_period[0], merged_period[1]);
+    });
 }
 
 
 function set_selected_values(){
 }
-
 
 
 
@@ -331,7 +386,7 @@ function pagination(){
     p.push('</ul>');
     return p.join(''); 
 }
-
+/*
 function visualize(query){
     // Get the locations to be visualized
     $('#vis_loc_summary').children().each(function(){
@@ -354,7 +409,7 @@ function vis_location_summary(query, loc){
 
 }
 
-/*
+
 function make_legends(concepts){
     legend = []
     colors = {} 
@@ -404,7 +459,7 @@ function visualize(data, color_code){
     draw_timeline(id, data[loc], color_code);
     i = i + 1;
 }
-*/
+
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -414,7 +469,7 @@ function getRandomColor() {
     return color;
 }
 
-
+*/
 
 
 
