@@ -6,12 +6,82 @@ var total_pages = 0;
 var start_page = 1;
 var end_page = 1;
 var current_query = ''
-var colormap = {};
+var colormap = [];
+
+//store selected time periods
+//using start as key
+var current_periods_start = {};
+//using end as key
+var current_periods_end = {};
+
+var current_periods = []; 
 
 $(document).ready(function(){
 
-//Sumit a query and get results
-//then make visualisation
+//=========== Query operations ==================
+// Operations related to submit and specify
+// search request. 
+//================================================
+
+//Advanced_search: turn on/off the option
+$('#advanced_option').click(function(){
+    $('#advance_search').toggleClass('hidden');       
+});
+
+//Advanced search: Open/close query language instruction
+$('#advanced_searchbox_learn').click(function(){
+    $('#advanced_searchbox_info').toggleClass('hidden');
+});
+//Advanced search: Dismiss the query language instruction
+$('#advanced_searchbox_hideinfo').click(function(){
+    $('#advanced_searchbox_info').toggleClass('hidden');
+});
+
+//Advanced_search: add time period
+$('#btn_add_period').click(function(){
+    //Get the filled in years
+    var start = $('#period_start').val();
+    var end = $('#period_end').val();
+
+    if (check_year(start, end)){
+        //check its relation to existing periods
+        var exists = current_periods.filter(function(d){
+            return d[0] == start && d[1] == end;
+        });
+        //If already exists, do nothing
+        if (exists.length == 0){
+            //Check if it's covered by an existing period
+            var covered = current_periods.filter(function(d){
+                return d[0] <= start && d[1] >= end;
+            });
+            //Check if it covers an existing period
+            var cover = current_periods.filter(function(d){
+                return d[0] >= start && d[1] <= end; 
+            });
+            
+            //If it doesn't covered or is covered by existing periods
+            if (covered.length == 0 && cover.length == 0){
+                //Add the period to existing periods
+                var id = current_periods.length;
+                current_periods.push([start, end, id]);
+                //Show selected period
+                show_selected_period(start, end);
+            }
+            else if (covered.length > 0){
+                warn_coverage([start, end], covered[0], 'covered');
+            }
+            else if (cover.length > 0){
+                warn_coverage([start, end], cover[0], 'cover');
+            }
+            //Set the hidden input values
+            set_selected_values();
+        }
+    }
+});
+
+
+/*
+//Sumit a query and get result then make visualisation
 $('#search_submit').click(function(){
     var query = $('#searchbox').val();
     current_page = 1;
@@ -21,7 +91,7 @@ $('#search_submit').click(function(){
     // Do visualization    
     visualize(query);
 });
-
+*/
 //Click on pagination
 
 //Click on shifting paginaiton
@@ -39,6 +109,115 @@ $('#pagination').on('click', '#right_pager', function(){
 //Click on filtering
 
 });
+
+/*========== Functions =================*/
+
+
+// ======= Query operations ===============
+//  Functions related to query operations
+// ========================================
+
+//Check the input time period
+function check_year(start, end) {
+    if (start == '' || end == '')
+        return false //do nothing
+
+    err1 = 'Error: Input should be a 4-digit number between 1914 and 1940, inclusive.'
+    err2 = 'Error: The starting year should not be later than the ending year.'
+
+    var syear = parseInt(start);
+    var eyear = parseInt(end);
+
+    valid = true 
+    if (syear < 1914 || syear > 1940){
+        valid = false
+        //set element focus    
+        $('#period_start').focus();
+        //set error msg
+        $('#period_err').text(err1);
+    }
+    else if (eyear < 1914 || eyear > 1940){
+        valid = false
+        //set element focus    
+        $('#period_end').focus();
+        //set error msg
+        $('#period_err').text(err1);
+    }
+    else if (syear > eyear){
+        valid = false
+        $('#period_end').focus();
+        $('#period_err').text(err2)
+    }
+    if (valid)    
+        $('#period_err').text('');
+    return valid;
+}
+
+function show_selected_period(start, end){
+    var added = []
+    for (var i = 0; i<current_periods.length; i++){
+        if (current_periods[i] == '')
+            continue
+        var ele = [ 
+            '<span class="period_label" id="period_'+i+'">',
+            current_periods[i][0] + '-' + current_periods[i][1],
+            '<span class="remove_period" id="remove_period_'+i+'"><sup>&times;</sup>',
+            '</span>',
+            '</span>'];
+        added.push(ele.join('\n'));
+    } //End showing element
+
+    $('#div_selected_periods').html(added.join('\n'));
+            
+    //bind listener to the newly added periods
+    $('#div_selected_periods').on('click', '.remove_period', function(){
+    // Remove the selected element
+    var id = $(this).attr('id').replace('remove_', '');
+    $('#'+id).remove();
+    // Set the element in the array empty  
+    var idx = id.replace('period_', '');
+        current_periods[idx] = '';
+    }); //End binding 
+}
+
+function warn_coverage(newperiod, exist_period, type){
+    //Show warning a new period covers or is covered
+    // by an existing period
+    var content = ['<div class="alert alert-warning" role="alert">'];
+    if (type == 'covered')
+        content.push(['This period is covered by period ', 
+             exist_period[0]+'-'+exist_period[1] + '.',
+             'Please select the period you want to keep:<br/>',
+            ].join(' '));
+    else if (type == 'cover')
+        content.push(['This period covers period',
+             exist_period[0] +'-'+ exist_period[1]+'.',
+             'Please select the period you want to keep:<br/>',
+            ].join(' '));
+    
+    content.push('<button type="button" class="btn btn-default" id="new_period">'
+        +newperiod[0]+'-'+newperiod[1]+'</button>');
+    content.push('<button type="button" class="btn btn-default" id="old_period">'
+        +exist_period[0]+'-'+exist_period[1]+'</button>');
+    content.push('</div>');
+    //Show a alert for warning
+    $('#period_err').html(content.join(' '));
+    //Bind listener to the button in the error msg 
+    $('#period_err').on('click', '#new_period', function(){
+        console.log('new');
+    });
+    $('#period_err').on('click', '#old_period', function(){
+        console.log(exist_period[2]);
+    })
+}
+
+
+function set_selected_values(){
+}
+
+
+
+
 
 /*
 function load_visualization(query){

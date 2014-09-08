@@ -15,26 +15,25 @@ class KBNewsES(object):
         """
         self.es = es
 
-    def keyword_search(self, index, doc_type, query, fields, size, start):
+
+    def search_news(self, index, doc_type, query, fields, size, start):
         """
-        Run a keyword search and return a set of documents
+        Search KB news and return a set of documents
         @params:
             index: index name
             doc_type: doc_type
-            query: keyword query
+            query: raw query, a dictionary
             field: array of the fields to be searched
             size: number of results
             start: start position of the results
         @ return
             res: retrieved results in ranked order        
-        """    
+        """   
+        res = []
+        processed_query = self.construct_query(query, fields)
         qry = {
-            'query': {
-                'multi_match': {
-                    "query": query,
-                    "fields": fields
-                    }
-                },
+            'query': processed_query,
+
             'highlight': {
                 'order': 'score',
                 'pre_tags': ['<span class="highlight">'],
@@ -52,10 +51,50 @@ class KBNewsES(object):
             }
             }
         # Default only consider the top 1000 results
-        res = self.es.search(index=index, doc_type=doc_type, body=qry,
-                size=size, from_=start)
+        #res = self.es.search(index=index, doc_type=doc_type, body=qry,
+                #size=size, from_=start)
+        #i = 0
+        #for r in  res['hits']['hits']:
+        #    print i, r['_score'], r['_source']['title']
+        #    i += 1
         return res
 
+   
+    def parse_query(self, string):
+        """
+        Parse query to get:
+         - wildcard queries
+         - proxmity queries
+         - exact phrases
+         - ordered proximity queries 
+        """ 
+        # check for proximity
+               
+ 
+
+    def construct_query(self, raw_query, fields):
+        """
+        Construct query language based on the input keyword query
+        @Params
+        query: a dictionary, possible keys are: must, mustnot, should 
+        fields: fields to search for
+        """
+        # Check if there phrases
+        #query_terms = query.split('"')
+        should = self.parse_query(raw_query.get('should', ''))
+        must = self.parse_query(raw_query.get('must', ''))
+        mustnot = self.parse_query(raw_query.get('mustnot', '')) 
+        if should == '' and must == '' and mustnot == '':
+            return ''
+ 
+        query = {
+            'multi_match': {
+                    "query": raw_query,
+                    "fields": fields
+            }
+        }
+
+        return query
 
     def topConcepts(self, results, topX, cmethod="ner"):
         """

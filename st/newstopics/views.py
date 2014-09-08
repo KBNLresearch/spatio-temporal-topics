@@ -13,13 +13,67 @@ searcher = KBNewsES(settings.ES)
 
 def index(request):
     c = csrf(request)
-    # Pass the news locations as parameter
-    c.update({'newsloc': settings.NEWS_LOC})
-
     template = 'newstopics/index.html'
+    c['advanced_search_status'] = 'hidden'
     return render_to_response(template, c)
 
 
+# URL version
+def simple_search(request):
+    c = {}
+    c.update(csrf(request))
+    c['advanced_search_status'] = 'hidden'
+    query = request.GET.get('q', '')
+
+    # Set default values for the form
+    if not query == '':
+        simple_search_form = {'q': query}
+        c['simple_search_form'] = simple_search_form
+
+    raw_query = {'should': query}
+    res = searcher.search_news(settings.INDEX,
+            settings.DOC_TYPE,
+            raw_query,
+            settings.SEARCH_FIELDS,
+            settings.PAGE_SIZE,
+            request.GET.get('start', 0)) 
+            
+    template = 'newstopics/index.html'
+    return render_to_response(template, c)
+
+def advanced_search(request):
+    c = {}
+    c.update(csrf(request))
+
+    c ['advanced_search_status'] = ''
+    must = request.GET.get('must', '')
+    mustnot = request.GET.get('mustnot', '')
+    should = request.GET.get('should', '')
+
+    # Set default values for the form
+    advanced_search_form = {}
+    if not must == '':
+        advanced_search_form['must'] = must
+    if not mustnot == '':
+        advanced_search_form['mustnot'] = mustnot
+    if not should == '':
+        advanced_search_form['should'] = should 
+    c['advanced_search_form'] = advanced_search_form
+
+    raw_query = {'should': should, 'must': must, 'mustnot': mustnot}
+    res = searcher.search_news(settings.INDEX,
+            settings.DOC_TYPE,
+            raw_query,
+            settings.SEARCH_FIELDS,
+            settings.PAGE_SIZE,
+            request.GET.get('start', 0)) 
+    template = 'newstopics/index.html'
+    return render_to_response(template, c)
+
+   
+
+
+# Ajax version
 def process_query(request):
     # Force csrf token to be set
     if request.is_ajax:
