@@ -9,10 +9,8 @@ err_log="err_log"
 
 cat $to_index | while read line
 do
-  for month in 1 2 3 4 5 6 7 8 9 10 11 12
-  do
     echo $line
-    python runIndexKBNews.py 01-$line 31-$line > tmp
+    python runIndexKBNews.py 01-01-$line 31-12-$line > tmp
     error=`grep 'Error' tmp`
     if [ "$error" != '' ]
     then
@@ -23,7 +21,6 @@ do
     then
         echo $line >> $err_log
     fi
-  done
 done
 
 cp $err_log $to_index
