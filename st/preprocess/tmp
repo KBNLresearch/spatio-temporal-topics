@@ -1,241 +1,631 @@
 Index kb_krant exists
-Doc type exists:  article
-Starting date: 01-01-1916 Ending date: 31-12-1916
-Total records: 619100
-processing 1 - 1000 /619100
-processing 1001 - 2000 /619100
-processing 2001 - 3000 /619100
-processing 3001 - 4000 /619100
-processing 4001 - 5000 /619100
-processing 5001 - 6000 /619100
-processing 6001 - 7000 /619100
-processing 7001 - 8000 /619100
-processing 8001 - 9000 /619100
-processing 9001 - 10000 /619100
-processing 10001 - 11000 /619100
-processing 11001 - 12000 /619100
-processing 12001 - 13000 /619100
-processing 13001 - 14000 /619100
-processing 14001 - 15000 /619100
-processing 15001 - 16000 /619100
-processing 16001 - 17000 /619100
-processing 17001 - 18000 /619100
-processing 18001 - 19000 /619100
-processing 19001 - 20000 /619100
-processing 20001 - 21000 /619100
-processing 21001 - 22000 /619100
-processing 22001 - 23000 /619100
-processing 23001 - 24000 /619100
-processing 24001 - 25000 /619100
-processing 25001 - 26000 /619100
-processing 26001 - 27000 /619100
-processing 27001 - 28000 /619100
-processing 28001 - 29000 /619100
-processing 29001 - 30000 /619100
-processing 30001 - 31000 /619100
-processing 31001 - 32000 /619100
-processing 32001 - 33000 /619100
-processing 33001 - 34000 /619100
-processing 34001 - 35000 /619100
-processing 35001 - 36000 /619100
-processing 36001 - 37000 /619100
-processing 37001 - 38000 /619100
-processing 38001 - 39000 /619100
-processing 39001 - 40000 /619100
-processing 40001 - 41000 /619100
-processing 41001 - 42000 /619100
-processing 42001 - 43000 /619100
-processing 43001 - 44000 /619100
-processing 44001 - 45000 /619100
-processing 45001 - 46000 /619100
-processing 46001 - 47000 /619100
-processing 47001 - 48000 /619100
-processing 48001 - 49000 /619100
-processing 49001 - 50000 /619100
-processing 50001 - 51000 /619100
-processing 51001 - 52000 /619100
-processing 52001 - 53000 /619100
-processing 53001 - 54000 /619100
-processing 54001 - 55000 /619100
-processing 55001 - 56000 /619100
-processing 56001 - 57000 /619100
-processing 57001 - 58000 /619100
-processing 58001 - 59000 /619100
-processing 59001 - 60000 /619100
-processing 60001 - 61000 /619100
-processing 61001 - 62000 /619100
-processing 62001 - 63000 /619100
-processing 63001 - 64000 /619100
-processing 64001 - 65000 /619100
-processing 65001 - 66000 /619100
-processing 66001 - 67000 /619100
-processing 67001 - 68000 /619100
-processing 68001 - 69000 /619100
-processing 69001 - 70000 /619100
-processing 70001 - 71000 /619100
-processing 71001 - 72000 /619100
-processing 72001 - 73000 /619100
-processing 73001 - 74000 /619100
-processing 74001 - 75000 /619100
-processing 75001 - 76000 /619100
-processing 76001 - 77000 /619100
-processing 77001 - 78000 /619100
-processing 78001 - 79000 /619100
-processing 79001 - 80000 /619100
-processing 80001 - 81000 /619100
-processing 81001 - 82000 /619100
-processing 82001 - 83000 /619100
-processing 83001 - 84000 /619100
-processing 84001 - 85000 /619100
-processing 85001 - 86000 /619100
-processing 86001 - 87000 /619100
-processing 87001 - 88000 /619100
-processing 88001 - 89000 /619100
-processing 89001 - 90000 /619100
-processing 90001 - 91000 /619100
-processing 91001 - 92000 /619100
-processing 92001 - 93000 /619100
-processing 93001 - 94000 /619100
-processing 94001 - 95000 /619100
-processing 95001 - 96000 /619100
-processing 96001 - 97000 /619100
-processing 97001 - 98000 /619100
-processing 98001 - 99000 /619100
-processing 99001 - 100000 /619100
-processing 100001 - 101000 /619100
-processing 101001 - 102000 /619100
-processing 102001 - 103000 /619100
-processing 103001 - 104000 /619100
-processing 104001 - 105000 /619100
-processing 105001 - 106000 /619100
-processing 106001 - 107000 /619100
-processing 107001 - 108000 /619100
-processing 108001 - 109000 /619100
-processing 109001 - 110000 /619100
-processing 110001 - 111000 /619100
-processing 111001 - 112000 /619100
-processing 112001 - 113000 /619100
-processing 113001 - 114000 /619100
-processing 114001 - 115000 /619100
-processing 115001 - 116000 /619100
-processing 116001 - 117000 /619100
-processing 117001 - 118000 /619100
-processing 118001 - 119000 /619100
-processing 119001 - 120000 /619100
-processing 120001 - 121000 /619100
-processing 121001 - 122000 /619100
-processing 122001 - 123000 /619100
-processing 123001 - 124000 /619100
-processing 124001 - 125000 /619100
-processing 125001 - 126000 /619100
-processing 126001 - 127000 /619100
-processing 127001 - 128000 /619100
-processing 128001 - 129000 /619100
-processing 129001 - 130000 /619100
-processing 130001 - 131000 /619100
-processing 131001 - 132000 /619100
-processing 132001 - 133000 /619100
-processing 133001 - 134000 /619100
-processing 134001 - 135000 /619100
-processing 135001 - 136000 /619100
-processing 136001 - 137000 /619100
-processing 137001 - 138000 /619100
-processing 138001 - 139000 /619100
-processing 139001 - 140000 /619100
-processing 140001 - 141000 /619100
-processing 141001 - 142000 /619100
-processing 142001 - 143000 /619100
-processing 143001 - 144000 /619100
-processing 144001 - 145000 /619100
-processing 145001 - 146000 /619100
-processing 146001 - 147000 /619100
-processing 147001 - 148000 /619100
-processing 148001 - 149000 /619100
-processing 149001 - 150000 /619100
-processing 150001 - 151000 /619100
-processing 151001 - 152000 /619100
-processing 152001 - 153000 /619100
-processing 153001 - 154000 /619100
-processing 154001 - 155000 /619100
-processing 155001 - 156000 /619100
-processing 156001 - 157000 /619100
-processing 157001 - 158000 /619100
-processing 158001 - 159000 /619100
-processing 159001 - 160000 /619100
-processing 160001 - 161000 /619100
-processing 161001 - 162000 /619100
-processing 162001 - 163000 /619100
-processing 163001 - 164000 /619100
-processing 164001 - 165000 /619100
-processing 165001 - 166000 /619100
-processing 166001 - 167000 /619100
-processing 167001 - 168000 /619100
-processing 168001 - 169000 /619100
-processing 169001 - 170000 /619100
-processing 170001 - 171000 /619100
-processing 171001 - 172000 /619100
-processing 172001 - 173000 /619100
-processing 173001 - 174000 /619100
-processing 174001 - 175000 /619100
-processing 175001 - 176000 /619100
-processing 176001 - 177000 /619100
-processing 177001 - 178000 /619100
-processing 178001 - 179000 /619100
-processing 179001 - 180000 /619100
-processing 180001 - 181000 /619100
-processing 181001 - 182000 /619100
-processing 182001 - 183000 /619100
-processing 183001 - 184000 /619100
-processing 184001 - 185000 /619100
-processing 185001 - 186000 /619100
-processing 186001 - 187000 /619100
-processing 187001 - 188000 /619100
-processing 188001 - 189000 /619100
-processing 189001 - 190000 /619100
-processing 190001 - 191000 /619100
-processing 191001 - 192000 /619100
-processing 192001 - 193000 /619100
-processing 193001 - 194000 /619100
-processing 194001 - 195000 /619100
-processing 195001 - 196000 /619100
-processing 196001 - 197000 /619100
-processing 197001 - 198000 /619100
-processing 198001 - 199000 /619100
-processing 199001 - 200000 /619100
-processing 200001 - 201000 /619100
-processing 201001 - 202000 /619100
-processing 202001 - 203000 /619100
-processing 203001 - 204000 /619100
-processing 204001 - 205000 /619100
-processing 205001 - 206000 /619100
-processing 206001 - 207000 /619100
-processing 207001 - 208000 /619100
-processing 208001 - 209000 /619100
-processing 209001 - 210000 /619100
-processing 210001 - 211000 /619100
-processing 211001 - 212000 /619100
-processing 212001 - 213000 /619100
-processing 213001 - 214000 /619100
-processing 214001 - 215000 /619100
-processing 215001 - 216000 /619100
-processing 216001 - 217000 /619100
-processing 217001 - 218000 /619100
-processing 218001 - 219000 /619100
-processing 219001 - 220000 /619100
-processing 220001 - 221000 /619100
-processing 221001 - 222000 /619100
-processing 222001 - 223000 /619100
-processing 223001 - 224000 /619100
-processing 224001 - 225000 /619100
-processing 225001 - 226000 /619100
-processing 226001 - 227000 /619100
-processing 227001 - 228000 /619100
-processing 228001 - 229000 /619100
-processing 229001 - 230000 /619100
-processing 230001 - 231000 /619100
-processing 231001 - 232000 /619100
-processing 232001 - 233000 /619100
-processing 233001 - 234000 /619100
-processing 234001 - 235000 /619100
-processing 235001 - 236000 /619100
-processing 236001 - 237000 /61910
+Doc type article exists
+Starting date: 01-01-1940 Ending date: 31-12-1940
+Total records: 2041509
+processing 1 - 1000 /2041509
+Skipped news from other locations: 0
+processing 1001 - 2000 /2041509
+Skipped news from other locations: 0
+processing 2001 - 3000 /2041509
+Skipped news from other locations: 0
+processing 3001 - 4000 /2041509
+Skipped news from other locations: 0
+processing 4001 - 5000 /2041509
+Skipped news from other locations: 0
+processing 5001 - 6000 /2041509
+Skipped news from other locations: 0
+processing 6001 - 7000 /2041509
+Skipped news from other locations: 0
+processing 7001 - 8000 /2041509
+Skipped news from other locations: 0
+processing 8001 - 9000 /2041509
+Skipped news from other locations: 0
+processing 9001 - 10000 /2041509
+Skipped news from other locations: 0
+processing 10001 - 11000 /2041509
+Skipped news from other locations: 0
+processing 11001 - 12000 /2041509
+Skipped news from other locations: 0
+processing 12001 - 13000 /2041509
+Skipped news from other locations: 0
+processing 13001 - 14000 /2041509
+Skipped news from other locations: 0
+processing 14001 - 15000 /2041509
+Skipped news from other locations: 0
+processing 15001 - 16000 /2041509
+Skipped news from other locations: 0
+processing 16001 - 17000 /2041509
+Skipped news from other locations: 0
+processing 17001 - 18000 /2041509
+Skipped news from other locations: 0
+processing 18001 - 19000 /2041509
+Skipped news from other locations: 0
+processing 19001 - 20000 /2041509
+Skipped news from other locations: 0
+processing 20001 - 21000 /2041509
+Skipped news from other locations: 0
+processing 21001 - 22000 /2041509
+Skipped news from other locations: 0
+processing 22001 - 23000 /2041509
+Skipped news from other locations: 0
+processing 23001 - 24000 /2041509
+Skipped news from other locations: 0
+processing 24001 - 25000 /2041509
+Skipped news from other locations: 0
+processing 25001 - 26000 /2041509
+Skipped news from other locations: 0
+processing 26001 - 27000 /2041509
+Skipped news from other locations: 0
+processing 27001 - 28000 /2041509
+Skipped news from other locations: 0
+processing 28001 - 29000 /2041509
+Skipped news from other locations: 0
+processing 29001 - 30000 /2041509
+Skipped news from other locations: 0
+processing 30001 - 31000 /2041509
+Skipped news from other locations: 0
+processing 31001 - 32000 /2041509
+Skipped news from other locations: 0
+processing 32001 - 33000 /2041509
+Skipped news from other locations: 0
+processing 33001 - 34000 /2041509
+Skipped news from other locations: 0
+processing 34001 - 35000 /2041509
+Skipped news from other locations: 0
+processing 35001 - 36000 /2041509
+Skipped news from other locations: 0
+processing 36001 - 37000 /2041509
+Skipped news from other locations: 0
+processing 37001 - 38000 /2041509
+Skipped news from other locations: 0
+processing 38001 - 39000 /2041509
+Skipped news from other locations: 0
+processing 39001 - 40000 /2041509
+Skipped news from other locations: 0
+processing 40001 - 41000 /2041509
+Skipped news from other locations: 0
+processing 41001 - 42000 /2041509
+Skipped news from other locations: 0
+processing 42001 - 43000 /2041509
+Skipped news from other locations: 0
+processing 43001 - 44000 /2041509
+Skipped news from other locations: 0
+processing 44001 - 45000 /2041509
+Skipped news from other locations: 0
+processing 45001 - 46000 /2041509
+Skipped news from other locations: 0
+processing 46001 - 47000 /2041509
+Skipped news from other locations: 0
+processing 47001 - 48000 /2041509
+Skipped news from other locations: 0
+processing 48001 - 49000 /2041509
+Skipped news from other locations: 0
+processing 49001 - 50000 /2041509
+Skipped news from other locations: 0
+processing 50001 - 51000 /2041509
+Skipped news from other locations: 0
+processing 51001 - 52000 /2041509
+Skipped news from other locations: 0
+processing 52001 - 53000 /2041509
+Skipped news from other locations: 0
+processing 53001 - 54000 /2041509
+Skipped news from other locations: 0
+processing 54001 - 55000 /2041509
+Skipped news from other locations: 0
+processing 55001 - 56000 /2041509
+Skipped news from other locations: 0
+processing 56001 - 57000 /2041509
+Skipped news from other locations: 0
+processing 57001 - 58000 /2041509
+Skipped news from other locations: 0
+processing 58001 - 59000 /2041509
+Skipped news from other locations: 0
+processing 59001 - 60000 /2041509
+Skipped news from other locations: 0
+processing 60001 - 61000 /2041509
+Skipped news from other locations: 0
+processing 61001 - 62000 /2041509
+Skipped news from other locations: 0
+processing 62001 - 63000 /2041509
+Skipped news from other locations: 0
+processing 63001 - 64000 /2041509
+Skipped news from other locations: 0
+processing 64001 - 65000 /2041509
+Skipped news from other locations: 0
+processing 65001 - 66000 /2041509
+Skipped news from other locations: 0
+processing 66001 - 67000 /2041509
+Skipped news from other locations: 0
+processing 67001 - 68000 /2041509
+Skipped news from other locations: 0
+processing 68001 - 69000 /2041509
+Skipped news from other locations: 0
+processing 69001 - 70000 /2041509
+Skipped news from other locations: 0
+processing 70001 - 71000 /2041509
+Skipped news from other locations: 0
+processing 71001 - 72000 /2041509
+Skipped news from other locations: 0
+processing 72001 - 73000 /2041509
+Skipped news from other locations: 0
+processing 73001 - 74000 /2041509
+Skipped news from other locations: 0
+processing 74001 - 75000 /2041509
+Skipped news from other locations: 0
+processing 75001 - 76000 /2041509
+Skipped news from other locations: 0
+processing 76001 - 77000 /2041509
+Skipped news from other locations: 0
+processing 77001 - 78000 /2041509
+Skipped news from other locations: 0
+processing 78001 - 79000 /2041509
+Skipped news from other locations: 0
+processing 79001 - 80000 /2041509
+Skipped news from other locations: 0
+processing 80001 - 81000 /2041509
+Skipped news from other locations: 0
+processing 81001 - 82000 /2041509
+Skipped news from other locations: 0
+processing 82001 - 83000 /2041509
+Skipped news from other locations: 0
+processing 83001 - 84000 /2041509
+Skipped news from other locations: 0
+processing 84001 - 85000 /2041509
+Skipped news from other locations: 0
+processing 85001 - 86000 /2041509
+Skipped news from other locations: 0
+processing 86001 - 87000 /2041509
+Skipped news from other locations: 0
+processing 87001 - 88000 /2041509
+Skipped news from other locations: 0
+processing 88001 - 89000 /2041509
+Skipped news from other locations: 0
+processing 89001 - 90000 /2041509
+Skipped news from other locations: 0
+processing 90001 - 91000 /2041509
+Skipped news from other locations: 0
+processing 91001 - 92000 /2041509
+Skipped news from other locations: 0
+processing 92001 - 93000 /2041509
+Skipped news from other locations: 0
+processing 93001 - 94000 /2041509
+Skipped news from other locations: 0
+processing 94001 - 95000 /2041509
+Skipped news from other locations: 0
+processing 95001 - 96000 /2041509
+Skipped news from other locations: 0
+processing 96001 - 97000 /2041509
+Skipped news from other locations: 0
+processing 97001 - 98000 /2041509
+Skipped news from other locations: 0
+processing 98001 - 99000 /2041509
+Skipped news from other locations: 0
+processing 99001 - 100000 /2041509
+Skipped news from other locations: 0
+processing 100001 - 101000 /2041509
+Skipped news from other locations: 0
+processing 101001 - 102000 /2041509
+Skipped news from other locations: 0
+processing 102001 - 103000 /2041509
+Skipped news from other locations: 0
+processing 103001 - 104000 /2041509
+Skipped news from other locations: 0
+processing 104001 - 105000 /2041509
+Skipped news from other locations: 0
+processing 105001 - 106000 /2041509
+Skipped news from other locations: 0
+processing 106001 - 107000 /2041509
+Skipped news from other locations: 0
+processing 107001 - 108000 /2041509
+Skipped news from other locations: 0
+processing 108001 - 109000 /2041509
+Skipped news from other locations: 0
+processing 109001 - 110000 /2041509
+Skipped news from other locations: 0
+processing 110001 - 111000 /2041509
+Skipped news from other locations: 0
+processing 111001 - 112000 /2041509
+Skipped news from other locations: 0
+processing 112001 - 113000 /2041509
+Skipped news from other locations: 0
+processing 113001 - 114000 /2041509
+Skipped news from other locations: 0
+processing 114001 - 115000 /2041509
+Skipped news from other locations: 0
+processing 115001 - 116000 /2041509
+Skipped news from other locations: 0
+processing 116001 - 117000 /2041509
+Skipped news from other locations: 0
+processing 117001 - 118000 /2041509
+Skipped news from other locations: 0
+processing 118001 - 119000 /2041509
+Skipped news from other locations: 0
+processing 119001 - 120000 /2041509
+Skipped news from other locations: 0
+processing 120001 - 121000 /2041509
+Skipped news from other locations: 0
+processing 121001 - 122000 /2041509
+Skipped news from other locations: 0
+processing 122001 - 123000 /2041509
+Skipped news from other locations: 0
+processing 123001 - 124000 /2041509
+Skipped news from other locations: 0
+processing 124001 - 125000 /2041509
+Skipped news from other locations: 0
+processing 125001 - 126000 /2041509
+Skipped news from other locations: 0
+processing 126001 - 127000 /2041509
+Skipped news from other locations: 0
+processing 127001 - 128000 /2041509
+Skipped news from other locations: 0
+processing 128001 - 129000 /2041509
+Skipped news from other locations: 0
+processing 129001 - 130000 /2041509
+Skipped news from other locations: 0
+processing 130001 - 131000 /2041509
+Skipped news from other locations: 0
+processing 131001 - 132000 /2041509
+Skipped news from other locations: 0
+processing 132001 - 133000 /2041509
+Skipped news from other locations: 0
+processing 133001 - 134000 /2041509
+Skipped news from other locations: 0
+processing 134001 - 135000 /2041509
+Skipped news from other locations: 0
+processing 135001 - 136000 /2041509
+Skipped news from other locations: 0
+processing 136001 - 137000 /2041509
+Skipped news from other locations: 0
+processing 137001 - 138000 /2041509
+Skipped news from other locations: 0
+processing 138001 - 139000 /2041509
+Skipped news from other locations: 0
+processing 139001 - 140000 /2041509
+Skipped news from other locations: 0
+processing 140001 - 141000 /2041509
+Skipped news from other locations: 0
+processing 141001 - 142000 /2041509
+Skipped news from other locations: 0
+processing 142001 - 143000 /2041509
+Skipped news from other locations: 0
+processing 143001 - 144000 /2041509
+Skipped news from other locations: 0
+processing 144001 - 145000 /2041509
+Skipped news from other locations: 0
+processing 145001 - 146000 /2041509
+Skipped news from other locations: 0
+processing 146001 - 147000 /2041509
+Skipped news from other locations: 0
+processing 147001 - 148000 /2041509
+Skipped news from other locations: 0
+processing 148001 - 149000 /2041509
+Skipped news from other locations: 0
+processing 149001 - 150000 /2041509
+Skipped news from other locations: 0
+processing 150001 - 151000 /2041509
+Skipped news from other locations: 0
+processing 151001 - 152000 /2041509
+Skipped news from other locations: 0
+processing 152001 - 153000 /2041509
+Skipped news from other locations: 0
+processing 153001 - 154000 /2041509
+Skipped news from other locations: 0
+processing 154001 - 155000 /2041509
+Skipped news from other locations: 0
+processing 155001 - 156000 /2041509
+Skipped news from other locations: 0
+processing 156001 - 157000 /2041509
+Skipped news from other locations: 0
+processing 157001 - 158000 /2041509
+Skipped news from other locations: 0
+processing 158001 - 159000 /2041509
+Skipped news from other locations: 0
+processing 159001 - 160000 /2041509
+Skipped news from other locations: 0
+processing 160001 - 161000 /2041509
+Skipped news from other locations: 0
+processing 161001 - 162000 /2041509
+Skipped news from other locations: 0
+processing 162001 - 163000 /2041509
+Skipped news from other locations: 0
+processing 163001 - 164000 /2041509
+Skipped news from other locations: 0
+processing 164001 - 165000 /2041509
+Skipped news from other locations: 0
+processing 165001 - 166000 /2041509
+Skipped news from other locations: 0
+processing 166001 - 167000 /2041509
+Skipped news from other locations: 0
+processing 167001 - 168000 /2041509
+Skipped news from other locations: 0
+processing 168001 - 169000 /2041509
+Skipped news from other locations: 0
+processing 169001 - 170000 /2041509
+Skipped news from other locations: 0
+processing 170001 - 171000 /2041509
+Skipped news from other locations: 0
+processing 171001 - 172000 /2041509
+Skipped news from other locations: 0
+processing 172001 - 173000 /2041509
+Skipped news from other locations: 0
+processing 173001 - 174000 /2041509
+Skipped news from other locations: 0
+processing 174001 - 175000 /2041509
+Skipped news from other locations: 0
+processing 175001 - 176000 /2041509
+Skipped news from other locations: 0
+processing 176001 - 177000 /2041509
+Skipped news from other locations: 0
+processing 177001 - 178000 /2041509
+Skipped news from other locations: 0
+processing 178001 - 179000 /2041509
+Skipped news from other locations: 0
+processing 179001 - 180000 /2041509
+Skipped news from other locations: 0
+processing 180001 - 181000 /2041509
+Skipped news from other locations: 0
+processing 181001 - 182000 /2041509
+Skipped news from other locations: 0
+processing 182001 - 183000 /2041509
+Skipped news from other locations: 0
+processing 183001 - 184000 /2041509
+Skipped news from other locations: 0
+processing 184001 - 185000 /2041509
+Skipped news from other locations: 0
+processing 185001 - 186000 /2041509
+Skipped news from other locations: 0
+processing 186001 - 187000 /2041509
+Skipped news from other locations: 0
+processing 187001 - 188000 /2041509
+Skipped news from other locations: 0
+processing 188001 - 189000 /2041509
+Skipped news from other locations: 0
+processing 189001 - 190000 /2041509
+Skipped news from other locations: 0
+processing 190001 - 191000 /2041509
+Skipped news from other locations: 0
+processing 191001 - 192000 /2041509
+Skipped news from other locations: 0
+processing 192001 - 193000 /2041509
+Skipped news from other locations: 0
+processing 193001 - 194000 /2041509
+Skipped news from other locations: 0
+processing 194001 - 195000 /2041509
+Skipped news from other locations: 0
+processing 195001 - 196000 /2041509
+Skipped news from other locations: 0
+processing 196001 - 197000 /2041509
+Skipped news from other locations: 0
+processing 197001 - 198000 /2041509
+Skipped news from other locations: 0
+processing 198001 - 199000 /2041509
+Skipped news from other locations: 0
+processing 199001 - 200000 /2041509
+Skipped news from other locations: 0
+processing 200001 - 201000 /2041509
+Skipped news from other locations: 0
+processing 201001 - 202000 /2041509
+Skipped news from other locations: 0
+processing 202001 - 203000 /2041509
+Skipped news from other locations: 0
+processing 203001 - 204000 /2041509
+Skipped news from other locations: 0
+processing 204001 - 205000 /2041509
+Skipped news from other locations: 0
+processing 205001 - 206000 /2041509
+Skipped news from other locations: 0
+processing 206001 - 207000 /2041509
+Skipped news from other locations: 0
+processing 207001 - 208000 /2041509
+Skipped news from other locations: 0
+processing 208001 - 209000 /2041509
+Skipped news from other locations: 0
+processing 209001 - 210000 /2041509
+Skipped news from other locations: 0
+processing 210001 - 211000 /2041509
+Skipped news from other locations: 0
+processing 211001 - 212000 /2041509
+Skipped news from other locations: 0
+processing 212001 - 213000 /2041509
+Skipped news from other locations: 0
+processing 213001 - 214000 /2041509
+Skipped news from other locations: 0
+processing 214001 - 215000 /2041509
+Skipped news from other locations: 0
+processing 215001 - 216000 /2041509
+Skipped news from other locations: 0
+processing 216001 - 217000 /2041509
+Skipped news from other locations: 0
+processing 217001 - 218000 /2041509
+Skipped news from other locations: 0
+processing 218001 - 219000 /2041509
+Skipped news from other locations: 0
+processing 219001 - 220000 /2041509
+Skipped news from other locations: 0
+processing 220001 - 221000 /2041509
+Skipped news from other locations: 0
+processing 221001 - 222000 /2041509
+Skipped news from other locations: 0
+processing 222001 - 223000 /2041509
+Skipped news from other locations: 0
+processing 223001 - 224000 /2041509
+Skipped news from other locations: 0
+processing 224001 - 225000 /2041509
+Skipped news from other locations: 0
+processing 225001 - 226000 /2041509
+Skipped news from other locations: 0
+processing 226001 - 227000 /2041509
+Skipped news from other locations: 0
+processing 227001 - 228000 /2041509
+Skipped news from other locations: 0
+processing 228001 - 229000 /2041509
+Skipped news from other locations: 0
+processing 229001 - 230000 /2041509
+Skipped news from other locations: 0
+processing 230001 - 231000 /2041509
+Skipped news from other locations: 0
+processing 231001 - 232000 /2041509
+Skipped news from other locations: 0
+processing 232001 - 233000 /2041509
+Skipped news from other locations: 0
+processing 233001 - 234000 /2041509
+Skipped news from other locations: 0
+processing 234001 - 235000 /2041509
+Skipped news from other locations: 0
+processing 235001 - 236000 /2041509
+Skipped news from other locations: 0
+processing 236001 - 237000 /2041509
+Skipped news from other locations: 0
+processing 237001 - 238000 /2041509
+Skipped news from other locations: 0
+processing 238001 - 239000 /2041509
+Skipped news from other locations: 0
+processing 239001 - 240000 /2041509
+Skipped news from other locations: 0
+processing 240001 - 241000 /2041509
+Skipped news from other locations: 0
+processing 241001 - 242000 /2041509
+Skipped news from other locations: 0
+processing 242001 - 243000 /2041509
+Skipped news from other locations: 0
+processing 243001 - 244000 /2041509
+Skipped news from other locations: 0
+processing 244001 - 245000 /2041509
+Skipped news from other locations: 0
+processing 245001 - 246000 /2041509
+Skipped news from other locations: 0
+processing 246001 - 247000 /2041509
+Skipped news from other locations: 0
+processing 247001 - 248000 /2041509
+Skipped news from other locations: 0
+processing 248001 - 249000 /2041509
+Skipped news from other locations: 0
+processing 249001 - 250000 /2041509
+Skipped news from other locations: 0
+processing 250001 - 251000 /2041509
+Skipped news from other locations: 0
+processing 251001 - 252000 /2041509
+Skipped news from other locations: 0
+processing 252001 - 253000 /2041509
+Skipped news from other locations: 0
+processing 253001 - 254000 /2041509
+Skipped news from other locations: 0
+processing 254001 - 255000 /2041509
+Skipped news from other locations: 0
+processing 255001 - 256000 /2041509
+Skipped news from other locations: 0
+processing 256001 - 257000 /2041509
+Skipped news from other locations: 0
+processing 257001 - 258000 /2041509
+Skipped news from other locations: 0
+processing 258001 - 259000 /2041509
+Skipped news from other locations: 0
+processing 259001 - 260000 /2041509
+Skipped news from other locations: 0
+processing 260001 - 261000 /2041509
+Skipped news from other locations: 0
+processing 261001 - 262000 /2041509
+Skipped news from other locations: 0
+processing 262001 - 263000 /2041509
+Skipped news from other locations: 0
+processing 263001 - 264000 /2041509
+Skipped news from other locations: 0
+processing 264001 - 265000 /2041509
+Skipped news from other locations: 0
+processing 265001 - 266000 /2041509
+Skipped news from other locations: 0
+processing 266001 - 267000 /2041509
+Skipped news from other locations: 0
+processing 267001 - 268000 /2041509
+Skipped news from other locations: 0
+processing 268001 - 269000 /2041509
+Skipped news from other locations: 0
+processing 269001 - 270000 /2041509
+Skipped news from other locations: 0
+processing 270001 - 271000 /2041509
+Skipped news from other locations: 0
+processing 271001 - 272000 /2041509
+Skipped news from other locations: 0
+processing 272001 - 273000 /2041509
+Skipped news from other locations: 0
+processing 273001 - 274000 /2041509
+Skipped news from other locations: 0
+processing 274001 - 275000 /2041509
+Skipped news from other locations: 0
+processing 275001 - 276000 /2041509
+Skipped news from other locations: 0
+processing 276001 - 277000 /2041509
+Skipped news from other locations: 0
+processing 277001 - 278000 /2041509
+Skipped news from other locations: 0
+processing 278001 - 279000 /2041509
+Skipped news from other locations: 0
+processing 279001 - 280000 /2041509
+Skipped news from other locations: 0
+processing 280001 - 281000 /2041509
+Skipped news from other locations: 0
+processing 281001 - 282000 /2041509
+Skipped news from other locations: 0
+processing 282001 - 283000 /2041509
+Skipped news from other locations: 0
+processing 283001 - 284000 /2041509
+Skipped news from other locations: 0
+processing 284001 - 285000 /2041509
+Skipped news from other locations: 0
+processing 285001 - 286000 /2041509
+Skipped news from other locations: 0
+processing 286001 - 287000 /2041509
+Skipped news from other locations: 0
+processing 287001 - 288000 /2041509
+Skipped news from other locations: 0
+processing 288001 - 289000 /2041509
+Skipped news from other locations: 0
+processing 289001 - 290000 /2041509
+Skipped news from other locations: 0
+processing 290001 - 291000 /2041509
+Skipped news from other locations: 0
+processing 291001 - 292000 /2041509
+Skipped news from other locations: 0
+processing 292001 - 293000 /2041509
+Skipped news from other locations: 0
+processing 293001 - 294000 /2041509
+Skipped news from other locations: 0
+processing 294001 - 295000 /2041509
+Skipped news from other locations: 0
+processing 295001 - 296000 /2041509
+Skipped news from other locations: 0
+processing 296001 - 297000 /2041509
+Skipped news from other locations: 0
+processing 297001 - 298000 /2041509
+Skipped news from other locations: 0
+processing 298001 - 299000 /2041509
+Skipped news from other locations: 0
+processing 299001 - 300000 /2041509
+Skipped news from other locations: 0
+processing 300001 - 301000 /2041509
+Skipped news from other locations: 0
+processing 301001 - 302000 /2041509
+Skipped news from other locations: 0
+processing 302001 - 303000 /2041509
+Skipped news from other locations: 0
+processing 303001 - 304000 /2041509
+Skipped news from other locations: 0
+processing 304001 - 305000 /2041509
+Skipped news from other locations: 0
+processing 305001 - 306000 /2041509
+Skipped news from other locations: 0
+processing 306001 - 307000 /2041509
+Skipped news from other locations: 0
+processing 307001 - 308000 /2041509
+Skipped news from other locations: 0
+processing 308001 - 309000 /2041509
+Skipped news from other locations: 0
+processing 309001 - 310000 /2041509
+Skipped news from other locations: 0
+processing 310001 - 311000 /2041509
+Skipped news from other locations: 0
+processing 311001 - 312000 /2041509
+Skipped news from other locations: 0
+processing 312001 - 313000 /2041509
+Skipped news from other locations: 0
+processing 313001 - 314000 /2041509

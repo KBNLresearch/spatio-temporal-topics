@@ -1,6 +1,6 @@
 #!/bin/bash
 
-start=1915
+start=1914
 end=1940
 
 for (( i=$start; i<=$end; i++ ))
