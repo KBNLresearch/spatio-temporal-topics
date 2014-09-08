@@ -49,6 +49,7 @@ def advanced_search(request):
     must = request.GET.get('must', '')
     mustnot = request.GET.get('mustnot', '')
     should = request.GET.get('should', '')
+    periods = request.GET.get('periods', '')
 
     # Set default values for the form
     advanced_search_form = {}
@@ -58,9 +59,14 @@ def advanced_search(request):
         advanced_search_form['mustnot'] = mustnot
     if not should == '':
         advanced_search_form['should'] = should 
+    if not periods == '':
+        advanced_search_form['selected_periods'] = periods 
     c['advanced_search_form'] = advanced_search_form
 
-    raw_query = {'should': should, 'must': must, 'mustnot': mustnot}
+    raw_query = {'should': should, 'must': must, 'mustnot': mustnot,
+                'periods': periods,
+                }
+
     res = searcher.search_news(settings.INDEX,
             settings.DOC_TYPE,
             raw_query,
