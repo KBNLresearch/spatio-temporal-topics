@@ -37,7 +37,7 @@ def simple_search(request):
             settings.SEARCH_FIELDS,
             settings.PAGE_SIZE,
             request.GET.get('start', 0)) 
-            
+    # Return the results            
     template = 'newstopics/index.html'
     return render_to_response(template, c)
 
@@ -60,9 +60,12 @@ def advanced_search(request):
     if not should == '':
         advanced_search_form['should'] = should 
     if not periods == '':
-        advanced_search_form['selected_periods'] = periods 
+        advanced_search_form['selected_periods'] = periods
     c['advanced_search_form'] = advanced_search_form
 
+    # Perform search
+    if periods == '':
+        periods = settings.START_DATE + '-' + settings.END_DATE
     raw_query = {'should': should, 'must': must, 'mustnot': mustnot,
                 'periods': periods,
                 }
@@ -73,6 +76,8 @@ def advanced_search(request):
             settings.SEARCH_FIELDS,
             settings.PAGE_SIZE,
             request.GET.get('start', 0)) 
+    # Return the results
+
     template = 'newstopics/index.html'
     return render_to_response(template, c)
 

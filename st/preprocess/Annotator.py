@@ -59,7 +59,12 @@ class Annotator(object):
             }
         # Get the metadata of the result set
         r = requests.get(url, params=self.encode_params(params))
-        root = et.fromstring(r.content)
+        try:
+            root = et.fromstring(r.content)
+        except:
+            print 'ERROR: Can not parse xml: %s'%docid
+            return [], [], [], []
+ 
         ner = root.find('entities')
         persons, orgs, locs, others = [], [], [], [] 
         if not ner == None:
