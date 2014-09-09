@@ -47,29 +47,29 @@ class KBNewsES(object):
                         'fragment_size': 20,
                         'number_of_fragments': 1, 
                         },
-                }    
+                    }    
+                }
             }
-            }
-        # Default only consider the top 1000 results
         #res = self.es.search(index=index, doc_type=doc_type, body=qry,
-                #size=size, from_=start)
-        #i = 0
-        #for r in  res['hits']['hits']:
-        #    print i, r['_score'], r['_source']['title']
-        #    i += 1
+        #        size=size, from_=start)
         return res
 
-   
+  
+    # regular expression used:
+    reg_proximity = '".+?"~\d+?'
+    reg_exact = '".+?"'
     def parse_query(self, string):
         """
         Parse query to get:
-         - wildcard queries
          - proxmity queries
          - exact phrases
-         - ordered proximity queries 
+         - wildcard
         """ 
         # check for proximity
-               
+        
+        # check for exact phrases
+        # check for wildcard
+        # Other than that, clean the query                
  
 
     def construct_query(self, raw_query, fields):
@@ -83,9 +83,11 @@ class KBNewsES(object):
         #query_terms = query.split('"')
         should = self.parse_query(raw_query.get('should', ''))
         must = self.parse_query(raw_query.get('must', ''))
-        mustnot = self.parse_query(raw_query.get('mustnot', '')) 
+        mustnot = self.parse_query(raw_query.get('mustnot', ''))
+        
         if should == '' and must == '' and mustnot == '':
             return ''
+
  
         query = {
             'multi_match': {

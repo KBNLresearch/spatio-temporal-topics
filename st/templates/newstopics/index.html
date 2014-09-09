@@ -50,11 +50,9 @@
             <p><strong>How to write complex queries</strong></p> 
             <p>
             <ol>
-                <li><p><strong>Exact phrase</strong>: quote the phrase. E.g., "first world war".</p></li>
-                <li><p><strong>Wildcard queries</strong>: use * to match any character sequences including the empty one, and ? to match any single character. <br/>E.g., duits*land would match both Duitschland and Duitsland.</p></li>
-                <li><p><strong>Term proximity</strong>: use #X(terms) to indicate that a set of query terms should occur within a span of X terms. <br/> E.g., #5(first world war) indicates terms "first", "world", "war" should span at most a length of 5 words.</p></li>
-                <li><p><strong>Ordered term proximity</strong>: use #oX(terms) to indicate that query terms should occur within a span of X terms in its exact order. <br/> E.g., #o3(great war) indicates terms "great" and "war" should span at most a length of 3 words, where "great" precedes "war". </p></li>
-                
+                <li><p><strong>Wildcard queries</strong>: use * to match any character sequences including the empty one, and ? to match any single character. <br/>E.g., <em>duits*land</em> would match both Duitschland and Duitsland.</p></li>
+                <li><p><strong>Exact phrases</strong>: use double quotes. It searches the exact phrase in the documents. E.g., <em>"first world war"</em>. </p></li>
+                <li><p><strong>Proximity query</strong>: While a prhase query expects all query terms in exactly the same order, a proximity query allows the terms to be further apart or in a different order. A maximum edit distance of words in a phrase can be specified. E.g., <em>"First world war"~5</em>.
             </ol>
             </p>
         </div>

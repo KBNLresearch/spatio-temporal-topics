@@ -115,6 +115,9 @@ DOC_TYPE = 'article'
 SEARCH_FIELDS = ['text', 'title']
 PAGE_SIZE = 10
 
+START_DATE = '1914'
+END_DATE = '1940'
+
 # Parameters for topic modeling
 
 # computing statistics from the top X retrieved documents
