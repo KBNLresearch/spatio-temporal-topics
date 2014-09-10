@@ -47,7 +47,7 @@
             <button type="button" class="close" id="advanced_searchbox_hideinfo">
             <span aria-hidden="true">&times;</span>
             </button>
-            <p><strong>How to write complex queries</strong></p> 
+            <p><strong>How to write complex queries?</strong></p> 
             <p>
             <ol>
                 <li><p><strong>Wildcard queries</strong>: use * to match any character sequences including the empty one, and ? to match any single character. <br/>E.g., <em>duits*land</em> would match both Duitschland and Duitsland.</p></li>
@@ -55,6 +55,13 @@
                 <li><p><strong>Proximity query</strong>: While a prhase query expects all query terms in exactly the same order, a proximity query allows the terms to be further apart or in a different order. A maximum edit distance of words in a phrase can be specified. E.g., <em>"First world war"~5</em>.
             </ol>
             </p>
+            <p><strong>What are "must", "mustnot", and "should" queries?</strong></p>
+            <ul>
+                <li><p><strong>must:</strong> The query terms must appear in matching documents.</p></li>
+                <li><p><strong>should:</strong> The query terms should but not necessarily all appear in matching documents. If no <em>must</em> query is specified, then one or more <em>should</em> query terms must match a document.</p></li>
+                <li><p><strong>must not:</strong> The query terms must not appear in matching documents.</p></li>
+ 
+            </ul>
         </div>
 
         <form class="form-horizontal" role="form" action="/advanced_search/" method="GET">
@@ -156,7 +163,23 @@
 {% endblock %}
 
 {% block C %}
-    <div id="result_top"></div>
-    <div id="resultlist" class="list-group"></div>
+    <div id="result_top" class="info">{{total_results}}</div>
+    <div id="resultlist" class="list-group">
+        {% for r in resultlist %}
+        <!--Snippet-->
+        <a class="list-group-item" target="_blank" href="{{r.url}}">
+            <div class="restitle">
+                {% autoescape off %}{{r.title}}{% endautoescape %}
+            </div>
+            <!--Meta info-->
+            <div class="matainfo">
+            {{r.papertitle}}; {{r.date}}; {{r.loc}}
+            </div>
+            <div class="list-group-item-text">
+                {% autoescape off %}{{r.summary}}{% endautoescape %}</div>
+         </a>
+        {% endfor %}
+    </div>
     <div id="pagination" class="pull-right"></div>
+
 {% endblock %}

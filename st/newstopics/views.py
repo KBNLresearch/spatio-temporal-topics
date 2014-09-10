@@ -17,7 +17,6 @@ def index(request):
     c['advanced_search_status'] = 'hidden'
     return render_to_response(template, c)
 
-
 # URL version
 def simple_search(request):
     c = {}
@@ -31,13 +30,18 @@ def simple_search(request):
         c['simple_search_form'] = simple_search_form
 
     raw_query = {'should': query}
-    res = searcher.search_news(settings.INDEX,
+    c['resultlist'], count = searcher.search_news(
+            settings.INDEX,
             settings.DOC_TYPE,
             raw_query,
             settings.SEARCH_FIELDS,
             settings.PAGE_SIZE,
             request.GET.get('start', 0)) 
-    # Return the results            
+    if count == -1:
+        c['total_results'] = ''
+    else:
+        c['total_results'] = '#%s results found'%count
+    # Return the results
     template = 'newstopics/index.html'
     return render_to_response(template, c)
 
@@ -64,24 +68,25 @@ def advanced_search(request):
     c['advanced_search_form'] = advanced_search_form
 
     # Perform search
-    if periods == '':
-        periods = settings.START_DATE + '-' + settings.END_DATE
     raw_query = {'should': should, 'must': must, 'mustnot': mustnot,
                 'periods': periods,
                 }
 
-    res = searcher.search_news(settings.INDEX,
+    c['resultlist'], count = searcher.search_news(
+            settings.INDEX,
             settings.DOC_TYPE,
             raw_query,
             settings.SEARCH_FIELDS,
             settings.PAGE_SIZE,
             request.GET.get('start', 0)) 
-    # Return the results
+
+    if count == -1:
+        c['total_results'] = ''
+    else:
+        c['total_results'] = '#%s results found'%count
 
     template = 'newstopics/index.html'
     return render_to_response(template, c)
-
-   
 
 
 # Ajax version
@@ -102,7 +107,6 @@ def process_query(request):
         query = request.POST['query']
         res = searcher.keyword_search(index, doc_type, query, fields, size, start)
         if res['hits']['total'] > 0:
-            print res['hits']['hits'][0]['_source'].keys()
             results = [{'docid': doc['_id'],
                     'url': 'http://resolver.kb.nl/resolve?urn=%s'%doc['_id'],
                     'title': '...'.join(doc['highlight']['title']),
