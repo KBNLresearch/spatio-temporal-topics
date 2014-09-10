@@ -151,6 +151,8 @@ function remove_selected_period(period_id){
     // Set the element in the array empty  
     var idx = period_id.replace('period_', '');
         current_periods[idx] = 0;
+    // Also reset the hidden input
+    set_selected_values()
 }
 
 function add_period(start, end){
@@ -165,9 +167,10 @@ function add_period(start, end){
         var conflict_period = [];
         // Check overlap
         var overlap = current_periods.filter(function(d){
+            var dist = d[1]-d[0]
             return d != 0 && 
-                    ((d[0] >= start && d[0] <= end) ||
-                    (d[1]>= start && d[1] <= end));
+                (d[0] >= start-dist && d[0] <= end)||
+                    (d[1] >= end && d[1] <= end+dist)
         }); 
         if (overlap.length > 0){
             relation = 'overlap';
