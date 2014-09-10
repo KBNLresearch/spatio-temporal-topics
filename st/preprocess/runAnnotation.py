@@ -9,6 +9,7 @@ import params as p
 import argparse
 import datetime
 from Annotator import Annotator
+import sys
 
 es = Elasticsearch()
 stat_field = 'text'
