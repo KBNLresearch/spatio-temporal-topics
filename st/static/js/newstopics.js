@@ -66,6 +66,20 @@ $('#div_selected_periods').ready(function(){
     }
 });
 
+//Advanced search: clear the query form
+$('#btn_clearform').click(function(){
+    $('.advanced_query_form').val('');
+    //Don't forget also set the selected periods to empty
+    for (var i = 0 ; i<current_periods.length; i++){
+        if (current_periods[i] != 0){
+            remove_selected_period(current_periods[i][2]); 
+        }
+    }
+});
+
+//=========================
+// Pagination operations
+//=========================
 
 //Click on pagination
 

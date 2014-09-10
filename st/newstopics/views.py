@@ -5,6 +5,7 @@ from st import settings
 import simplejson as js
 import itertools
 import datetime
+import math
 # Create your views here.
 
 
@@ -23,6 +24,8 @@ def simple_search(request):
     c.update(csrf(request))
     c['advanced_search_status'] = 'hidden'
     query = request.GET.get('q', '')
+    current_page = request.GET.get('page', 1)
+    current_page = 1 if current_page == '' else int(current_page)
 
     # Set default values for the form
     if not query == '':
@@ -36,11 +39,16 @@ def simple_search(request):
             raw_query,
             settings.SEARCH_FIELDS,
             settings.PAGE_SIZE,
-            request.GET.get('start', 0)) 
+            (current_page-1)*settings.PAGE_SIZE) 
+
     if count == -1:
         c['total_results'] = ''
     else:
         c['total_results'] = '#%s results found'%count
+
+    c['pagination'] = make_pagination(count, current_page) 
+
+   
     # Return the results
     template = 'newstopics/index.html'
     return render_to_response(template, c)
@@ -54,6 +62,9 @@ def advanced_search(request):
     mustnot = request.GET.get('mustnot', '')
     should = request.GET.get('should', '')
     periods = request.GET.get('periods', '')
+
+    current_page = request.GET.get('page', 1)
+    current_page = 1 if current_page == '' else int(current_page)
 
     # Set default values for the form
     advanced_search_form = {}
@@ -78,15 +89,50 @@ def advanced_search(request):
             raw_query,
             settings.SEARCH_FIELDS,
             settings.PAGE_SIZE,
-            request.GET.get('start', 0)) 
+            (current_page-1)*settings.PAGE_SIZE) 
 
     if count == -1:
         c['total_results'] = ''
     else:
         c['total_results'] = '#%s results found'%count
 
+    c['pagination'] = make_pagination(count, current_page) 
+
     template = 'newstopics/index.html'
     return render_to_response(template, c)
+
+
+def make_pagination(count, current_page):
+    num_pages = int(math.ceil(float(count)/float(settings.PAGE_SIZE)))
+    left_most = max(current_page-3, 1)
+    right_most = min(current_page+6, num_pages)
+
+    left_most_hidden, right_most_hidden = '', ''
+    if left_most == 1:
+        left_most_hidden = 'hidden'
+    if right_most == num_pages:
+        right_most_hidden = 'hidden'
+    
+    pages = []
+    for i in range(left_most, right_most+1):
+        page_active = ''  
+        if i == current_page:
+            page_active = 'active'
+        pages.append({
+                'page_id':i,
+                'page_active': page_active,
+            })
+
+    pagination = {
+            'num_pages': num_pages,
+            'current_page': current_page,
+            'left_most': left_most,
+            'right_most':right_most,
+            'left_most_hidden': left_most_hidden,
+            'right_most_hidden': right_most_hidden,
+            'pages': pages
+             }
+    return pagination
 
 
 # Ajax version

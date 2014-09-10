@@ -68,7 +68,7 @@
             <div class="form-group">
             <label for="must" class="col-sm-3 control-label">must contain: </label>
             <div class="col-sm-9">
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control advanced_query_form" 
                     id="must" name="must" 
                     value="{{advanced_search_form.must}}"
                     placeholder="Terms that must occur in the article">
@@ -78,7 +78,7 @@
             <div class="form-group">
             <label for="mustnot" class="col-sm-3 control-label">must not contain: </label>
             <div class="col-sm-9">
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control advanced_query_form" 
                     id="mustnot" name="mustnot" 
                     value="{{advanced_search_form.mustnot}}"
                     placeholder="Terms that must not occur in the article">
@@ -88,7 +88,7 @@
             <div class="form-group">
             <label for="should" class="col-sm-3 control-label">should contain: </label>
             <div class="col-sm-9">
-            <input type="text" class="form-control" 
+            <input type="text" class="form-control advanced_query_form" 
                     id="should" name="should" 
                     value="{{advanced_search_form.should}}" 
                     placeholder="Terms that should but not necessarily occur in the article">
@@ -99,11 +99,11 @@
             <div class="form-group">
             <label for="periods" class="col-sm-3 control-label">in these periods: </label>
             <div class="col-sm-4">
-                <input type="text" size="4" maxlength="4" class="space3"
+                <input type="text" size="4" maxlength="4" class="space3 advanced_query_form"
                         id="period_start"
                         value = "{{advanced_search_form.period_start}}"
                         placeholder="1914"> to
-                <input type="text" size="4" maxlength="4" class="space3" 
+                <input type="text" size="4" maxlength="4" class="space3 advanced_query_form" 
                         id="period_end"
                         value = "{{advanced_search_form.period_end}}"
                         placeholder="1940">
@@ -144,8 +144,11 @@
             <!-- Submit the form -->
             <div class="form-group">
                 <div class="col-sm-offset-7 col-sm-5">
+                <!-- The start count of the results to be retrieved -->
+                <input type="hidden" name="page", id="page" value={{current_page}}>
+                <!-- submit buttons -->
                 <button type="submit" class="btn btn-success">Search</button>
-                <button type="button" class="btn btn-warning">Clear</button>
+                <button type="button" class="btn btn-warning" id="btn_clearform">Clear</button>
                 </div>
             </div>
 
@@ -172,7 +175,7 @@
                 {% autoescape off %}{{r.title}}{% endautoescape %}
             </div>
             <!--Meta info-->
-            <div class="matainfo">
+            <div class="metainfo">
             {{r.papertitle}}; {{r.date}}; {{r.loc}}
             </div>
             <div class="list-group-item-text">
@@ -180,6 +183,21 @@
          </a>
         {% endfor %}
     </div>
-    <div id="pagination" class="pull-right"></div>
+    <div id="pagination" class="pull-right">
+        <ul class="pagination pagination-sm">
+            <li id="left_pager" class="{{pagination.left_most_hidden}}">
+                <a class="pager">&laquo;</a>
+            </li>
+            {% for page in pagination.pages %}
+                <li id="page_{{page.page_id}}" class="{{page.page_active}}">
+                    <a class="pager">{{page.page_id}}</a>
+                </li>
+            {% endfor %}
+            <li id="right_pager" class="{{pagination.right_most_hidden}}">
+                <a class="pager">&raquo;</a>
+            </li>
+
+        </ul>    
+    </div>
 
 {% endblock %}
