@@ -9,6 +9,8 @@
    <script>
         var url_process_query = "{% url "newstopics.views.process_query" %}";
         var url_visualization = "{% url "newstopics.views.visualization" %}";
+        var num_pages = {{pagination.num_pages}};
+        var current_qry_mode = "{{current_query.mode}}";
     </script>    
 {% endblock %}
 
@@ -17,7 +19,7 @@
 	<a class="navbar-brand">KB News (1914-1940)</a> 
 
     {% csrf_token %}
-    <form action="/simple_search/" method="GET" id="simple_search">
+    <form action="/simple_search/" method="GET" id="simple_search_form">
     <div class="navbar-form navbar-left" >
     <div class="input-group">
         <!--Get the search query, and re-fill the inputbox after query being processed -->
@@ -64,7 +66,7 @@
             </ul>
         </div>
 
-        <form class="form-horizontal" role="form" action="/advanced_search/" method="GET">
+        <form id="advanced_search_form" class="form-horizontal" role="form" action="/advanced_search/" method="GET">
             <div class="form-group">
             <label for="must" class="col-sm-3 control-label">must contain: </label>
             <div class="col-sm-9">
@@ -145,7 +147,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-7 col-sm-5">
                 <!-- The start count of the results to be retrieved -->
-                <input type="hidden" name="page", id="page" value={{current_page}}>
+                <input type="hidden" name="page", id="page" value={{pagination.current_page}}>
                 <!-- submit buttons -->
                 <button type="submit" class="btn btn-success">Search</button>
                 <button type="button" class="btn btn-warning" id="btn_clearform">Clear</button>
@@ -172,6 +174,7 @@
         <!--Snippet-->
         <a class="list-group-item" target="_blank" href="{{r.url}}">
             <div class="restitle">
+                <span class="pull-right info">#{{r.res_counter}}</span>
                 {% autoescape off %}{{r.title}}{% endautoescape %}
             </div>
             <!--Meta info-->
@@ -184,17 +187,17 @@
         {% endfor %}
     </div>
     <div id="pagination" class="pull-right">
-        <ul class="pagination pagination-sm">
-            <li id="left_pager" class="{{pagination.left_most_hidden}}">
-                <a class="pager">&laquo;</a>
+        <ul id="pagination_pages" class="pagination pagination-sm">
+            <li id="li_left_pager" class="{{pagination.left_most_hidden}}">
+                <a class="pager" id="left_pager">&laquo;</a>
             </li>
             {% for page in pagination.pages %}
-                <li id="page_{{page.page_id}}" class="{{page.page_active}}">
-                    <a class="pager">{{page.page_id}}</a>
+                <li id="li_page_{{page.page_id}}" class="{{page.page_active}} li_pager">
+                    <a class="pager" id="page_{{page.page_id}}" >{{page.page_id}}</a>
                 </li>
             {% endfor %}
-            <li id="right_pager" class="{{pagination.right_most_hidden}}">
-                <a class="pager">&raquo;</a>
+            <li id="li_right_pager" class="{{pagination.right_most_hidden}}">
+                <a class="pager" id="right_pager">&raquo;</a>
             </li>
 
         </ul>    

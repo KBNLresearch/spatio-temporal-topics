@@ -57,22 +57,24 @@ class KBNewsES(object):
                 }
             }
         print processed_query
+
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
                 size=size, from_=start)
         #print res['hits']['hits'][0]['highlight']['text']
 
         total_results = res['hits']['total']
-        resultlist = [{'docid': doc['_id'],
-                    'url': 'http://resolver.kb.nl/resolve?urn=%s'%doc['_id'],
-                    'title': '...'.join(doc['highlight']['title']),
-                    'loc': doc['_source']['loc'],
-                    'date': doc['_source']['date'],
+        docs = res['hits']['hits']
+        resultlist = [{'docid': docs[i]['_id'],
+                    'url': 'http://resolver.kb.nl/resolve?urn=%s'%docs[i]['_id'],
+                    'title': '...'.join(docs[i]['highlight']['title']),
+                    'loc': docs[i]['_source']['loc'],
+                    'date': docs[i]['_source']['date'],
                      # Get the summary of the results
-                    'summary': '...'.join(doc['highlight']['text']),
-                    'papertitle': doc['_source']['papertitle']
-
-                } for doc in res['hits']['hits']] 
-
+                    'summary': '...'.join(docs[i]['highlight']['text']),
+                    'papertitle': docs[i]['_source']['papertitle'],
+                    'res_counter': i+1,
+                } for i in range(len(docs))] 
+      
         return resultlist, total_results 
 
   

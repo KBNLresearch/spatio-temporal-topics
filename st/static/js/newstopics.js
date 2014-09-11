@@ -1,12 +1,11 @@
 //Global variables
-var page_size = 10;
-var current_page = 1;
-var total_results = 0;
-var total_pages = 0;
-var start_page = 1;
-var end_page = 1;
-var current_query = ''
-var colormap = [];
+//var page_size = 10;
+//var total_results = 0;
+//var total_pages = 0;
+//var start_page = 1;
+//var end_page = 1;
+//var current_query = ''
+//var colormap = [];
 
 //store selected time periods
 var current_periods = []; 
@@ -20,7 +19,7 @@ $(document).ready(function(){
 
 //Advanced_search: turn on/off the option
 $('#advanced_option').click(function(){
-    $('#advance_search').toggleClass('hidden');       
+    $('#advance_search').toggleClass('hidden');
 });
 
 //Advanced search: Open/close query language instruction
@@ -80,22 +79,33 @@ $('#btn_clearform').click(function(){
 //=========================
 // Pagination operations
 //=========================
-
-//Click on pagination
-
-//Click on shifting paginaiton
-$('#pagination').on('click', '#left_pager', function(){
-    //move the current page to next
-    current_page = current_page - 1;
-    search_submit(current_query);     
+$('#li_right_pager').on('click', function(){
+    var current_page = parseInt($('#page').val());
+    //set the input value to new current_page
+    $('#page').val(current_page + 1);
+    //submit the form
+    get_search_results();
 });
 
-$('#pagination').on('click', '#right_pager', function(){
-    current_page = current_page + 1;
-    search_submit(current_query);
+$('#li_left_pager').on('click', function(){
+    var current_page = parseInt($('#page').val());
+    //set the input value to new current_page
+    $('#page').val(current_page - 1);
+    //submit the form
+    get_search_results();
 });
 
+$('.li_pager').on('click', function(){
+    $('#page').val($(this).attr('id').split('_')[2]);
+    //submit the form
+    get_search_results();
+   
+});
+
+//==============================
 //Click on filtering
+//===============================
+
 
 });
 
@@ -310,8 +320,18 @@ function set_selected_values(){
     $('#input_selected_periods').val(values.join(';'));  
 }
 
+//========= Pagination functions ==========
+// Functions related to paginations 
+//=========================================
 
-
+function get_search_results(){
+    if (current_qry_mode == 'simple')
+        $('#simple_search_form').submit();
+    else if (current_qry_mode == 'advanced'){
+        //console.log($('#advanced_search_form').attr('method'))
+        $('#advanced_search_form').submit();
+    }
+}
 
 /*
 function load_visualization(query){

@@ -48,12 +48,16 @@ def simple_search(request):
 
     c['pagination'] = make_pagination(count, current_page) 
 
-   
+    c['current_query'] = {
+            'mode': 'simple',
+            'query': query,
+        }   
     # Return the results
     template = 'newstopics/index.html'
     return render_to_response(template, c)
 
 def advanced_search(request):
+    print 'advanced search'
     c = {}
     c.update(csrf(request))
 
@@ -97,6 +101,13 @@ def advanced_search(request):
         c['total_results'] = '#%s results found'%count
 
     c['pagination'] = make_pagination(count, current_page) 
+    
+    c['current_query'] = {
+            'mode': 'advanced',
+            'query': 'MUST: %s; SHOULD: %s; MUSTNOT: %s'%(should, must, mustnot),
+            'periods': 'TIME: %s'%periods,
+            'newspapers': 'NEWSPAPERS: %s'%''
+        }
 
     template = 'newstopics/index.html'
     return render_to_response(template, c)
