@@ -16,6 +16,7 @@ def index(request):
     c = csrf(request)
     template = 'newstopics/index.html'
     c['advanced_search_status'] = 'hidden'
+    c['pagination'] = {'left_most_hidden': 'hidden', 'right_most_hidden': 'hidden'}
     return render_to_response(template, c)
 
 # URL version
