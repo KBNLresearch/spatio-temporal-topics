@@ -172,7 +172,8 @@
     <div id="resultlist" class="list-group">
         {% for r in resultlist %}
         <!--Snippet-->
-        <a class="list-group-item" target="_blank" href="{{r.url}}">
+        <!-- add target="_bland" to the link if we want it to open on a new tab-->
+        <a class="list-group-item result-item" href="{{r.url}}">
             <div class="restitle">
                 <span class="pull-right info">#{{r.res_counter}}</span>
                 {% autoescape off %}{{r.title}}{% endautoescape %}
@@ -181,7 +182,7 @@
             <div class="metainfo">
             {{r.papertitle}}; {{r.date}}; {{r.loc}}
             </div>
-            <div class="list-group-item-text">
+            <div class="list-group-item-text ressummary">
                 {% autoescape off %}{{r.summary}}{% endautoescape %}</div>
          </a>
         {% endfor %}

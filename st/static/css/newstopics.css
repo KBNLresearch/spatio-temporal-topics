@@ -8,19 +8,31 @@ span.highlight {
     background-color: yellow;
 }
 
-div.info {
+.info {
     color: #C0C0C0;
+    font-size: 14px;
+}
+
+
+a.result-item:link {
+    color: steelblue;
+}
+a.result-item:visited {
+    color: #660099; 
 }
 
 div.metainfo{
+    color: #666;
     font-weight: bold; 
 }
 
 div.restitle{
-    color: steelblue;
     font-size: 16px;
 }
 
+div.ressummary{
+    color: #555;
+}
 a.pager {
     cursor: pointer;
 }
@@ -81,3 +93,5 @@ span.remove_period{
 button.select_period {
     margin-top: 5px;
 }
+
+
