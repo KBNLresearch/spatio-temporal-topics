@@ -175,13 +175,14 @@
         <!-- add target="_bland" to the link if we want it to open on a new tab-->
         <a class="list-group-item result-item" href="{{r.url}}">
             <div class="restitle">
-                <span class="pull-right info">#{{r.res_counter}}</span>
+                <span class="pull-right info">{{r.res_counter}}</span>
                 {% autoescape off %}{{r.title}}{% endautoescape %}
             </div>
             <!--Meta info-->
             <div class="metainfo">
             {{r.papertitle}}; {{r.date}}; {{r.loc}}
             </div>
+            <div class="info">#{{r.doclength}} words</div>
             <div class="list-group-item-text ressummary">
                 {% autoescape off %}{{r.summary}}{% endautoescape %}</div>
          </a>

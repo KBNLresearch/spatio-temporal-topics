@@ -111,7 +111,16 @@ OCR = {
     'similarity': "LM",
     'term_vector': 'yes',
 }
- 
+
+
+# Extra information
+DOCLENGTH = {
+    'type': 'long',
+    'doc_values': True,
+    'store': True,
+    'null_value': 0,
+} 
+
 # properties of a news article
 MAPPING = {
     'article':{
@@ -126,6 +135,7 @@ MAPPING = {
             'entity_location': ENTITY,
             'entity_other': ENTITY,
             'text': OCR,
+            'doclength': DOCLENGTH,
         }
     } 
 }

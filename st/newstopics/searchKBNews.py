@@ -6,6 +6,8 @@ from elasticsearch import Elasticsearch
 import itertools as it
 import re
 from math import exp, log
+from st import settings 
+
 
 class KBNewsES(object):
     def __init__(self, es):
@@ -59,21 +61,30 @@ class KBNewsES(object):
         print processed_query
 
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
-                size=size, from_=start)
+                size=size, from_=start, fields=settings.RET_FIELDS)
         #print res['hits']['hits'][0]['highlight']['text']
 
         total_results = res['hits']['total']
         docs = res['hits']['hits']
-        resultlist = [{'docid': docs[i]['_id'],
+
+        # Prepare result list
+        resultlist = [{} for i in range(len(docs))]
+        for i in range(len(docs)):
+            source = docs[i]['_source']
+            highlights = docs[i]['highlight']
+            result = {
+                    'docid': docs[i]['_id'],
                     'url': 'http://resolver.kb.nl/resolve?urn=%s'%docs[i]['_id'],
-                    'title': '...'.join(docs[i]['highlight']['title']),
-                    'loc': docs[i]['_source']['loc'],
-                    'date': docs[i]['_source']['date'],
+                    'title': '...'.join(highlights['title']),
+                    'loc': source['loc'],
+                    'date': source['date'],
                      # Get the summary of the results
-                    'summary': '...'.join(docs[i]['highlight']['text']),
-                    'papertitle': docs[i]['_source']['papertitle'],
-                    'res_counter': i+1,
-                } for i in range(len(docs))] 
+                    'summary': '...'.join(highlights['text']),
+                    'papertitle': source['papertitle'],
+                    'res_counter': i+1+start,
+                    'doclength': source.get('doclength', 0)
+                } 
+            resultlist[i] = result
       
         return resultlist, total_results 
 
@@ -206,6 +217,7 @@ class KBNewsES(object):
                 'filter': filters
             }
         return query
+
 
     def topConcepts(self, results, topX, cmethod="ner"):
         """

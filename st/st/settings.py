@@ -115,6 +115,10 @@ DOC_TYPE = 'article'
 SEARCH_FIELDS = ['text', 'title']
 PAGE_SIZE = 10
 
+# Return metadata fields
+RET_FIELDS = '_source, date,loc,papertitle,doclength'
+
+
 #START_DATE = '1914'
 #END_DATE = '1940'
 

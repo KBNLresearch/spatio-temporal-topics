@@ -42,6 +42,7 @@ def simple_search(request):
             settings.PAGE_SIZE,
             (current_page-1)*settings.PAGE_SIZE) 
 
+
     if count == -1:
         c['total_results'] = ''
     else:
@@ -95,6 +96,7 @@ def advanced_search(request):
             settings.SEARCH_FIELDS,
             settings.PAGE_SIZE,
             (current_page-1)*settings.PAGE_SIZE) 
+
 
     if count == -1:
         c['total_results'] = ''
