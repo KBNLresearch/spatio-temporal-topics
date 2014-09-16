@@ -51,6 +51,12 @@ ROOT_URLCONF = 'st.urls'
 WSGI_APPLICATION = 'st.wsgi.application'
 
 
+# Session
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+SESSION_FILE_PATH = '%s/session/'%BASE_DIR
+
+
+
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 

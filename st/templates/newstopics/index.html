@@ -9,8 +9,10 @@
    <script>
         var url_process_query = "{% url "newstopics.views.process_query" %}";
         var url_visualization = "{% url "newstopics.views.visualization" %}";
-        var num_pages = {{pagination.num_pages}};
+        //var num_pages = {{pagination.num_pages}};
+        // record whehter it's simple or advanced search
         var current_qry_mode = "{{current_query.mode}}";
+
     </script>    
 {% endblock %}
 
@@ -24,6 +26,7 @@
     <div class="input-group">
         <!--Get the search query, and re-fill the inputbox after query being processed -->
         <input type="text" name="q" class="form-control" id="searchbox" placeholder="Search the news" value="{{ simple_search_form.q }}" />
+        
         <span class="input-group-btn">
             <button id="search_submit"  class="btn btn-success" type="submit"> Go
             <!--span class="glyphicon glyphicon-chevron-right"></span-->
@@ -139,8 +142,23 @@
             <div class="form-group">
             <label for="newspapers" class="col-sm-3 control-label">in these newspapers: </label>
             <div class="col-sm-9">
-                To be implemented
-            </div>
+                <!-- Newspaper options -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" id="btn-npselect">
+                    Select newspapers <span class="caret"></span>
+                    </button>
+                </div>
+                <ul class="list-group lg-npselect">
+                    {% for np in newspaper_counts %}
+                    <a class="list-group-item lgi-npselect" id="{{np.0}}">
+                        <input type="checkbox" 
+                            name="cb_newspaper"
+                            value="{{np.0}}"
+                            id="check_{{np.0}}">
+                        {{np.0}} <span class="info">({{np.1}})</span>
+                    </a>
+                    {% endfor%}
+                </ul>
             </div>
 
             <!-- Submit the form -->

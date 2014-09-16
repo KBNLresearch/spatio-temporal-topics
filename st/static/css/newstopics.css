@@ -9,7 +9,7 @@ span.highlight {
 }
 
 .info {
-    color: #C0C0C0;
+    color: #A0A0A0;
     font-size: 14px;
 }
 
@@ -94,4 +94,18 @@ button.select_period {
     margin-top: 5px;
 }
 
+a.lgi-npselect {
+    border: 0px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    cursor: pointer;
+}
 
+ul.lg-npselect {
+    border-style: solid;
+    border-color:#C0C0C0;
+    border-width: 1px;
+    border-radius: 4px;
+    height: 150px;
+    overflow: auto;
+}

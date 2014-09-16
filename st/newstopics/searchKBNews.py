@@ -7,7 +7,7 @@ import itertools as it
 import re
 from math import exp, log
 from st import settings 
-
+import operator
 
 class KBNewsES(object):
     def __init__(self, es):
@@ -217,6 +217,23 @@ class KBNewsES(object):
                 'filter': filters
             }
         return query
+
+
+    def agg_newspaper_counts(self, index, doc_type):
+        """
+        Aggregate counts of articles per newspaper
+        """
+        body = {
+                'aggs': {
+                    'papercount': {
+                        'terms': {'field': 'papertitle'}
+                    }
+                }
+            }
+        res = self.es.search(index=index, doc_type=doc_type, 
+            body=body, search_type="count") 
+        newspapers = res['aggregations']['papercount']['buckets']
+        return sorted([(p['key'], p['doc_count']) for p in newspapers], key=operator.itemgetter(0))
 
 
     def topConcepts(self, results, topX, cmethod="ner"):

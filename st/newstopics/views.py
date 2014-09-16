@@ -17,18 +17,30 @@ def index(request):
     template = 'newstopics/index.html'
     c['advanced_search_status'] = 'hidden'
     c['pagination'] = {'left_most_hidden': 'hidden', 'right_most_hidden': 'hidden'}
+    c['newspaper_counts'] = searcher.agg_newspaper_counts(settings.INDEX, settings.DOC_TYPE)
+    request.session['newspaper_counts'] = c['newspaper_counts']
+ 
     return render_to_response(template, c)
 
 # URL version
 def simple_search(request):
     c = {}
     c.update(csrf(request))
+    # Set contextual parameter values
+    c['newspaper_counts'] = request.session['newspaper_counts']
+    if c['newspaper_counts'] == None:
+        c['newspaper_counts'] = searcher.agg_newspaper_counts(settings.INDEX, settings.DOC_TYPE)
+        request.session['newspaper_counts'] = c['newspaper_counts']
+
+    # this is a simple search
     c['advanced_search_status'] = 'hidden'
+
+    # Process request
     query = request.GET.get('q', '')
     current_page = request.GET.get('page', 1)
     current_page = 1 if current_page == '' else int(current_page)
 
-    # Set default values for the form
+    # Contextual parameters passed to UI
     if not query == '':
         simple_search_form = {'q': query}
         c['simple_search_form'] = simple_search_form
@@ -63,7 +75,16 @@ def advanced_search(request):
     c = {}
     c.update(csrf(request))
 
+    # Context parameters passed to UI 
+    c['newspaper_counts'] = request.session['newspaper_counts']
+    if c['newspaper_counts'] == None:
+        c['newspaper_counts'] = searcher.agg_newspaper_counts(settings.INDEX, settings.DOC_TYPE)
+        request.session['newspaper_counts'] = c['newspaper_counts']
+
+    # Set advanced search box visible
     c ['advanced_search_status'] = ''
+
+    # Process request
     must = request.GET.get('must', '')
     mustnot = request.GET.get('mustnot', '')
     should = request.GET.get('should', '')
