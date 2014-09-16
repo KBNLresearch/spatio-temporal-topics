@@ -226,15 +226,17 @@ class KBNewsES(object):
         body = {
                 'aggs': {
                     'papercount': {
-                        'terms': {'field': 'papertitle'}
+                        'terms': {
+                            'field': 'papertitle',
+                            'size': 0
+                        },
                     }
                 }
             }
         res = self.es.search(index=index, doc_type=doc_type, 
-            body=body, search_type="count", size=1000)
-        print res
+            body=body, search_type="count")
         newspapers = res['aggregations']['papercount']['buckets']
-        return sorted([(p['key'], p['doc_count']) for p in newspapers], key=operator.itemgetter(0))
+        return sorted([(p['key'][:70], p['doc_count']) for p in newspapers], key=operator.itemgetter(0))
 
 
     def topConcepts(self, results, topX, cmethod="ner"):
