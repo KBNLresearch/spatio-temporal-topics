@@ -1,14 +1,9 @@
-//Global variables
-//var page_size = 10;
-//var total_results = 0;
-//var total_pages = 0;
-//var start_page = 1;
-//var end_page = 1;
-//var current_query = ''
-//var colormap = [];
-
 //store selected time periods
 var current_periods = []; 
+
+//store newspapers selection status
+//{loc: all/none/other}
+var newspaper_selection_status = {};
 
 $(document).ready(function(){
 
@@ -52,18 +47,18 @@ $('#btn_add_period').click(function(){
 });
 
 //Advanced search: set the selected periods on loding
-$('#div_selected_periods').ready(function(){
-    var selected_periods = $('#input_selected_periods').val();
+
+//$('#div_selected_periods').ready(function(){
+var selected_periods = $('#input_selected_periods').val();
     if (selected_periods != ''){
-        periods = selected_periods.split(';')
-        for (var i = 0; i < periods.length; i++){
-            var period = periods[i].split('-');
-            console.log(period);
-            current_periods.push([parseInt(period[0]), parseInt(period[1]), 'period_'+i]);
-        }
-        show_selected_periods();
+    periods = selected_periods.split(';')
+    for (var i = 0; i < periods.length; i++){
+        var period = periods[i].split('-');
+        current_periods.push([parseInt(period[0]), parseInt(period[1]), 'period_'+i]);
     }
-});
+    show_selected_periods();
+}
+//});
 
 //Advanced search: clear the query form
 $('#btn_clearform').click(function(){
@@ -74,6 +69,47 @@ $('#btn_clearform').click(function(){
             remove_selected_period(current_periods[i][2]); 
         }
     }
+});
+
+//Advanced search: set selected newspapers on loading
+set_newspaper_selections();
+
+//Advanced search: select all/none newspapers
+$('.selectpicker').on('change', function(){
+    var typenews = $(this).attr('id').split('_')[1];
+    var selection_status = newspaper_selection_status[typenews];
+    var selected = $('option:selected', this);
+    var selected = $(this).find(':selected');
+    //only new selection needs to be handeled 
+    //deselection are fine    
+    var new_selection = ''
+    selected.each(function(){
+        var select_id = $(this).attr('id');
+        if (selection_status[select_id] == false){
+            new_selection = $('#'+select_id).text();
+        }    
+    });
+    if (new_selection == 'All'){
+        $(this).selectpicker('deselectAll');
+        $(this).selectpicker('val', 'All');
+    }
+    else if (new_selection == 'None'){
+        $(this).selectpicker('deselectAll');
+        $(this).selectpicker('val', 'None');
+    }
+    else {
+        if (selection_status['all_'+typenews] || selection_status['none_'+typenews]){
+            $(this).selectpicker('deselectAll');
+            $(this).selectpicker('val', new_selection); 
+        }
+    }
+    //set the new selection
+    set_newspaper_selections();
+    
+});
+
+$('.option_all').on('select', function(){
+    console.log('here')
 });
 
 //=========================
@@ -319,6 +355,21 @@ function set_selected_values(){
     }
     $('#input_selected_periods').val(values.join(';'));  
 }
+
+
+//=========Newspaper functions ===============
+function set_newspaper_selections(){
+  $('select').each(function(){
+    var typenews = $(this).attr('id').split('_')[1];
+    var options =  $(this).find('option');
+    var sta = {}
+    options.each(function(){
+        sta[$(this).attr('id')] = $(this).is(':selected');
+    });
+    newspaper_selection_status[typenews] = sta;
+  });
+}
+
 
 //========= Pagination functions ==========
 // Functions related to paginations 

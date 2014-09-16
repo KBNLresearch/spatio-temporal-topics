@@ -223,6 +223,7 @@ class KBNewsES(object):
         """
         Aggregate counts of articles per newspaper
         """
+        
         body = {
                 'aggs': {
                     'papercount': {
@@ -233,11 +234,23 @@ class KBNewsES(object):
                     }
                 }
             }
-        res = self.es.search(index=index, doc_type=doc_type, 
-            body=body, search_type="count")
-        newspapers = res['aggregations']['papercount']['buckets']
-        return sorted([(p['key'][:70], p['doc_count']) for p in newspapers], key=operator.itemgetter(0))
 
+        newscounts = [] 
+        counter = 0
+        for loc in settings.NEWS_LOC:
+            filtered = {'terms': {'loc': ["%s"%loc]}}
+
+            body['query'] = {'filtered': {'filter': filtered}} 
+            res = self.es.search(index=index, doc_type=doc_type, 
+                body=body, search_type="count", fields="loc")
+            newspapers = res['aggregations']['papercount']['buckets']
+
+            np = sorted([(p['key'] if len(p['key'])<45 else '%s...'%p['key'][:50], p['doc_count']) for p in newspapers], key=operator.itemgetter(0))
+
+            newscounts.append({'loc': loc, 'id': counter, 
+                               'news': [[np[i][0], np[i][1], i] for i in range(len(np))]})
+            counter += 1 
+        return newscounts
 
     def topConcepts(self, results, topX, cmethod="ner"):
         """
