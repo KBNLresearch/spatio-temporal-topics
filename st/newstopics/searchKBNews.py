@@ -231,7 +231,8 @@ class KBNewsES(object):
                 }
             }
         res = self.es.search(index=index, doc_type=doc_type, 
-            body=body, search_type="count") 
+            body=body, search_type="count", size=1000)
+        print res
         newspapers = res['aggregations']['papercount']['buckets']
         return sorted([(p['key'], p['doc_count']) for p in newspapers], key=operator.itemgetter(0))
 
