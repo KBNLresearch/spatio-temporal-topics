@@ -79,7 +79,7 @@ class KBNewsES(object):
                     'loc': source['loc'],
                     'date': source['date'],
                      # Get the summary of the results
-                    'summary': '...'.join(highlights['text']),
+                    'summary': self.clean_snippet('...'.join(highlights['text'])),
                     'papertitle': source['papertitle'],
                     'res_counter': i+1+start,
                     'doclength': source.get('doclength', 0)
@@ -255,6 +255,15 @@ class KBNewsES(object):
                                'news': [[np[i][0], np[i][1], i] for i in range(len(np))]})
             counter += 1 
         return newscounts
+
+
+    def clean_snippet(self, snippet):
+        """ Clean the snippet in case it introduces broken html"""
+        tmp = snippet.replace('<span class="highlight">', '$HIGHLIGHT$').replace('</span>', '$HIGHLIGHTEND$')
+        tmp = re.sub(r'<.+?>', '', tmp)
+        tmp = tmp.replace('<', '').replace('>', '')
+        return tmp.replace('$HIGHLIGHT$', '<span class="highlight">').replace('$HIGHLIGHTEND$', '</span>')  
+
 
     def topConcepts(self, results, topX, cmethod="ner"):
         """
