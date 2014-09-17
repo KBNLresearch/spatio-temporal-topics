@@ -18,8 +18,9 @@ def index(request):
     c['advanced_search_status'] = 'hidden'
     c['pagination'] = {'left_most_hidden': 'hidden', 'right_most_hidden': 'hidden'}
     c['newspaper_counts'] = searcher.agg_newspaper_counts(settings.INDEX, settings.DOC_TYPE)
+    c['selected_newspapers'] = js.dumps(dict([(loc['id'],[]) for loc in c['newspaper_counts']]))
     request.session['newspaper_counts'] = c['newspaper_counts']
- 
+     
     return render_to_response(template, c)
 
 # URL version
@@ -31,7 +32,8 @@ def simple_search(request):
     if c['newspaper_counts'] == None:
         c['newspaper_counts'] = searcher.agg_newspaper_counts(settings.INDEX, settings.DOC_TYPE)
         request.session['newspaper_counts'] = c['newspaper_counts']
-
+    c['selected_newspapers'] = js.dumps(dict([(loc['id'],[]) for loc in c['newspaper_counts']]))
+ 
     # this is a simple search
     c['advanced_search_status'] = 'hidden'
 
@@ -90,6 +92,28 @@ def advanced_search(request):
     should = request.GET.get('should', '')
     periods = request.GET.get('periods', '')
 
+    # get newspaper selections
+    news_selection = {}
+    selected_papers = []
+    all_news = sorted(list([s[0] for np in c['newspaper_counts'] for s in np['news']]))
+    for np in c['newspaper_counts']:
+        id_map = dict([(p[0], p[2]) for p in np['news']])
+        selected_names = [name for name in request.GET.getlist('select_np_%s'%np['id'])]
+        # to show in UI
+        news_selection[np['id']] = selected_names
+        # to query 
+        if selected_names == ['All'] or selected_names == []:
+            selected_papers += [s[0] for s in np['news']]
+        elif selected_names == ['None']:
+            pass
+        else:
+            selected_papers += selected_names
+    selected_papers = sorted(list(set(selected_papers)))
+    if len(selected_papers) == len(all_news):
+        selected_papers = ''
+    elif len(selected_papers) == 0:
+        selected_papers = 'none'  
+
     current_page = request.GET.get('page', 1)
     current_page = 1 if current_page == '' else int(current_page)
 
@@ -103,11 +127,14 @@ def advanced_search(request):
         advanced_search_form['should'] = should 
     if not periods == '':
         advanced_search_form['selected_periods'] = periods
+    c['selected_newspapers'] = js.dumps(news_selection)
+
     c['advanced_search_form'] = advanced_search_form
 
     # Perform search
     raw_query = {'should': should, 'must': must, 'mustnot': mustnot,
                 'periods': periods,
+                'newspapers': selected_papers,
                 }
 
     c['resultlist'], count = searcher.search_news(

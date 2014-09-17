@@ -142,6 +142,10 @@ class KBNewsES(object):
 
         if should == '' and must == '' and mustnot == '':
             return ''
+        
+        if newspapers == 'none':
+            return ''
+
         # Construct the query part 
         query_bool = {}
         if not must == '':
@@ -188,7 +192,7 @@ class KBNewsES(object):
         np_filter = {}
         if not newspapers == '':
             filter_query = 'OR'.join(['("%s")'%title 
-                for title in newspapers.split(';')])  
+                for title in newspapers])  
             np_filter = {'query': 
                             {'query_string': 
                                 {'query': filter_query, 

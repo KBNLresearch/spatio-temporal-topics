@@ -12,6 +12,18 @@ $(document).ready(function(){
 // search request. 
 //================================================
 
+//If the form is changed, set search result to start from 1
+$('#advanced_search_form').change(function(){
+    $('#page').val('1');
+});
+
+$('#advanced_search_form').keydown(function(){
+    if (event.keyCode == 13){
+        $('#page').val('1');
+        $(this).submit();  
+    }
+});
+
 //Advanced_search: turn on/off the option
 $('#advanced_option').click(function(){
     $('#advance_search').toggleClass('hidden');
@@ -69,13 +81,23 @@ $('#btn_clearform').click(function(){
             remove_selected_period(current_periods[i][2]); 
         }
     }
+    //And clear the newspaper selection
+    $('select').selectpicker('deselectAll');
+    $('select').selectpicker('val', []);
+    set_newspaper_selections();
 });
 
 //Advanced search: set selected newspapers on loading
+$('select').each(function(){
+    var typenews = $(this).attr('id').split('_')[1];
+    var selected = selected_newspapers[typenews];
+    $(this).selectpicker('deselectAll');
+    $(this).selectpicker('val', selected); 
+});    
 set_newspaper_selections();
 
 //Advanced search: select all/none newspapers
-$('.selectpicker').on('change', function(){
+$('select').on('change', function(){
     var typenews = $(this).attr('id').split('_')[1];
     var selection_status = newspaper_selection_status[typenews];
     var selected = $('option:selected', this);
@@ -108,9 +130,6 @@ $('.selectpicker').on('change', function(){
     
 });
 
-$('.option_all').on('select', function(){
-    console.log('here')
-});
 
 //=========================
 // Pagination operations

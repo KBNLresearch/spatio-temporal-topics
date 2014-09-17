@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+
 {% block extrahead %}
     {% load staticfiles %}
    <link rel="stylesheet" href="{% static "css/newstopics.css" %}">
@@ -10,9 +11,11 @@
         var url_process_query = "{% url "newstopics.views.process_query" %}";
         var url_visualization = "{% url "newstopics.views.visualization" %}";
         //var num_pages = {{pagination.num_pages}};
+
         // record whehter it's simple or advanced search
         var current_qry_mode = "{{current_query.mode}}";
-
+        // get selected newspapers
+        var selected_newspapers = {{selected_newspapers|safe}};
     </script>    
 {% endblock %}
 
@@ -144,10 +147,10 @@
             <div class="col-sm-9">
                 <!--Newspaper options-->
                 {% for np_group in newspaper_counts %}
-                <select class="selectpicker" name="select_np[]" multiple
+                <select class="selectpicker" name="select_np_{{np_group.id}}" multiple
                     data-live-search=true title="{{np_group.loc}}"
                     data-selected-text-format="count>2"
-                    data-width=60%
+                    data-width=75%
                     id="selectpicker_{{np_group.id}}"
                     >
                         <option id="all_{{np_group.id}}" class="option_all" >All</option>
@@ -166,7 +169,7 @@
                 <!-- The start count of the results to be retrieved -->
                 <input type="hidden" name="page", id="page" value={{pagination.current_page}}>
                 <!-- submit buttons -->
-                <button type="submit" class="btn btn-success">Search</button>
+                <button type="submit" class="btn btn-success" id="search_submit_advanced">Search</button>
                 <button type="button" class="btn btn-danger" id="btn_clearform">Clear all</button>
                 </div>
             </div>
