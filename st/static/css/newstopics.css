@@ -90,6 +90,14 @@ span.remove_period{
     cursor: pointer;
 }
 
+span.rm-date {
+    font: 16px;
+    color: #C0C0C0; 
+    background-color:#fff;
+    border-color: #fff;
+    cursor: pointer;
+}
+
 button.select_period {
     margin-top: 5px;
 }
@@ -100,4 +108,7 @@ select.select-news {
 
 li.selected {
     background-color: #CEECF5;
+}
+div.div_datepicker {
+    margin-top: 5px;
 }

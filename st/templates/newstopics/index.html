@@ -103,6 +103,23 @@
             </div>
             </div>
 
+            {# New date selection widget #}
+            <div class="form-group">
+            <label for="periods" class="col-sm-3 control-label">in these periods: </label>
+                <div class="col-sm-8">
+                    <!-- Area for datepickers-->
+                    <div id="datepickers"></div>
+                    <!--Hidden input save the dates -->
+                    <input type="hidden" id="periods" name="periods" value="{{advanced_search_form.periods}}">
+                    <!-- Add another date range -->
+                    <br/>
+                    <button type="button" class="btn btn-sm btn-primary" id="add_datepicker">
+                    Add a period
+                    </button>
+                </div>
+            </div>
+
+            {% comment %}
             <!-- specify the time periods-->
             <div class="form-group">
             <label for="periods" class="col-sm-3 control-label">in these periods: </label>
@@ -116,10 +133,10 @@
                         value = "{{advanced_search_form.period_end}}"
                         placeholder="1940">
             </div>
+        
             <!--adding a specified period-->
             <div class="col-sm-5">
-                <a   
-                    class="btn btn-sm btn-primary"
+                <a class="btn btn-sm btn-primary"
                     id="btn_add_period"
                     >Add this period</a>
             </div>
@@ -140,7 +157,8 @@
                     value="{{advanced_search_form.selected_periods}}"
                     > 
             </div>
-            
+            {% endcomment %}
+    
             <!-- Select newspaepers to be searched-->
             <div class="form-group">
             <label for="newspapers" class="col-sm-3 control-label">in these newspapers: </label>

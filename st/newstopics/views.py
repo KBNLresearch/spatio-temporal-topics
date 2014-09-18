@@ -91,7 +91,7 @@ def advanced_search(request):
     mustnot = request.GET.get('mustnot', '')
     should = request.GET.get('should', '')
     periods = request.GET.get('periods', '')
-
+    print periods
     # get newspaper selections
     news_selection = {}
     selected_papers = []
@@ -126,7 +126,7 @@ def advanced_search(request):
     if not should == '':
         advanced_search_form['should'] = should 
     if not periods == '':
-        advanced_search_form['selected_periods'] = periods
+        advanced_search_form['periods'] = periods
     c['selected_newspapers'] = js.dumps(news_selection)
 
     c['advanced_search_form'] = advanced_search_form
@@ -152,11 +152,12 @@ def advanced_search(request):
         c['total_results'] = '#%s results found'%count
 
     c['pagination'] = make_pagination(count, current_page) 
-    
+   
+    # In case we want to show the current query 
     c['current_query'] = {
             'mode': 'advanced',
             'query': 'MUST: %s; SHOULD: %s; MUSTNOT: %s'%(should, must, mustnot),
-            'periods': 'TIME: %s'%periods,
+            'periods': 'PERIODS: %s'%periods,
             'newspapers': 'NEWSPAPERS: %s'%''
         }
 

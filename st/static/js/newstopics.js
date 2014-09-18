@@ -1,9 +1,12 @@
 //store selected time periods
-var current_periods = []; 
+//var current_periods = []; 
 
 //store newspapers selection status
 //{loc: all/none/other}
 var newspaper_selection_status = {};
+
+var default_dateStart = new Date(1913, 12, 1)
+var default_dateEnd = new Date(1940, 11, 31)
 
 $(document).ready(function(){
 
@@ -38,41 +41,49 @@ $('#advanced_searchbox_hideinfo').click(function(){
     $('#advanced_searchbox_info').toggleClass('hidden');
 });
 
-//Advanced_search: add time period
-$('#btn_add_period').click(function(){
-    //Get the filled in years
-    var str_start = $('#period_start').val();
-    var str_end = $('#period_end').val();
-    if (str_start == '')
-        start = 0;
-    else
-        start = parseInt(str_start);
-    if (str_end == '')
-        end = 0;
-    else
-        end = parseInt(str_end);
- 
-    if (check_year(start, end)){
-        // Try to add the new period
-        add_period(start, end);          
-    }
+//Advanced search: Datepicker
+//Datepicker: Create selected pickers onloading
+var periods = [];
+if ($('#periods').val() != '')
+    var periods = $('#periods').val().split(' ');
+
+for(var i = 0; i<periods.length; i++){
+    var dates = periods[i].split(':')
+    $('#datepickers').append(make_datepicker(i, dates[0], dates[1]));
+}
+
+//Datepicker: activate the datepickers
+$('.div_datepicker').each(function(){
+    var id = $(this).attr('id').split('_')[1];
+    var from_date = parseDate($('#datepicker_from_'+id).val());
+    var to_date = parseDate($('#datepicker_to_'+id).val());
+    if (from_date == '') from_date = default_DateStart;
+    if (to_date == '') to_date = default_DateEnd;
+    activate_datepicker(id, from_date, to_date);
+})
+
+//Datepicker: remove a datepicker
+$('.rm-date').click(function(){
+    $('#datepicker_'+$(this).attr('id').split('_')[1]).remove();
+    set_input_dates(); 
 });
 
-//Advanced search: set the selected periods on loding
+//Datepicker: add a datepicker
+$('#add_datepicker').click(function(){
+    var current_ids = [];
+    $('.div_datepicker').each(function(){
+        current_ids.push(parseInt($(this).attr('id').split('_')[1]))
+    })
+    var id = 0;
+    if (current_ids.length>0)
+        id = Math.max.apply(Math, current_ids)+1;
+    $('#datepickers').append(make_datepicker(id, '', ''));
+    
+    activate_datepicker(id, default_dateStart, default_dateEnd);
+});
 
-//$('#div_selected_periods').ready(function(){
-var selected_periods = $('#input_selected_periods').val();
-    if (selected_periods != ''){
-    periods = selected_periods.split(';')
-    for (var i = 0; i < periods.length; i++){
-        var period = periods[i].split('-');
-        current_periods.push([parseInt(period[0]), parseInt(period[1]), 'period_'+i]);
-    }
-    show_selected_periods();
-}
-//});
 
-//Advanced search: clear the query form
+//Advancedsearch: clear the form
 $('#btn_clearform').click(function(){
     $('.advanced_query_form').val('');
     //Don't forget also set the selected periods to empty
@@ -171,6 +182,153 @@ $('.li_pager').on('click', function(){
 //  Functions related to query operations
 // ========================================
 
+//========= Datepicker functions ===================
+function make_datepicker(idx, start, end){
+    var id = 'datepicker_'+idx;
+    var picker = [ 
+        '<div class="input-group input-group-sm div_datepicker" id="'+id+'">',
+        '<input type="text" class="form-control datepicker datepicker-from" ', 
+        'value="'+start+'" ',
+        'id="datepicker_from_'+idx+'">',
+        '<span class="input-group-addon">to</span>',
+        '<input type="text" class="form-control datepicker datepicker-to" ',
+        'value="'+end+'" ',
+        'id="datepicker_to_'+idx+'">',
+        '<span class="input-group-addon glyphicon glyphicon-remove rm-date" id="rm_'+idx+'">',
+        '</div>'
+    ];
+    return picker.join('\n');
+}
+
+function set_input_dates(){
+    var dates = [];
+    $('.div_datepicker').each(function(){
+        var id = $(this).attr('id').split('_')[1];
+        var from = $('.datepicker-from', this).val();
+        var to = $('.datepicker-to', this).val();
+        var to_add = true;
+        if (from == '' && to == '')
+            to_add = false;
+        else if (from == '')
+            from = '1914-01-01'
+        else if (to == '')
+            to = '1940-12-31' 
+        if (to_add)
+            dates.push(from + ':' + to);
+    })
+    $('#periods').val(dates.join(' '))
+}
+
+function activate_datepicker(id, from_date, to_date){
+    $('#datepicker_from_'+id).datepicker({
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        changeMonth: true,
+        minDate: default_dateStart,
+        maxDate: default_dateEnd,
+        yearRange: "1914:1940",
+        defaultDate: from_date,
+        onSelect: function(selected){
+            $('#datepicker_to_'+id).datepicker('option', 'minDate', selected);
+            set_input_dates();
+        } 
+    });
+
+    $('#datepicker_to_'+id).datepicker({
+        dateFormat: 'yy-mm-dd',
+        changeYear: true,
+        changeMonth: true,
+        minDate: default_dateStart,
+        maxDate: default_dateEnd,
+        yearRange: "1914:1940",
+        defaultDate: to_date,
+        onSelect: function(selected){
+            $('#datepicker_from_'+id).datepicker('option', 'maxDate', selected);
+            set_input_dates();
+        } 
+    });
+   
+}
+
+function parseDate(date_string){
+    var date = date_string.split('-');
+    return new Date(parseInt(date[0]), parseInt(date[1]), parseInt(date[2]));
+}
+
+//=========Newspaper functions ===============
+function set_newspaper_selections(){
+  $('select').each(function(){
+    var typenews = $(this).attr('id').split('_')[1];
+    var options =  $(this).find('option');
+    var sta = {}
+    options.each(function(){
+        sta[$(this).attr('id')] = $(this).is(':selected');
+    });
+    newspaper_selection_status[typenews] = sta;
+  });
+}
+
+
+//========= Pagination functions ==========
+// Functions related to paginations 
+//=========================================
+
+function get_search_results(){
+    if (current_qry_mode == 'simple')
+        $('#simple_search_form').submit();
+    else if (current_qry_mode == 'advanced'){
+        //console.log($('#advanced_search_form').attr('method'))
+        $('#advanced_search_form').submit();
+    }
+}
+
+
+
+
+
+
+
+//================ OLD =================
+
+/*
+//Advanced_search: add time period
+$('#btn_add_period').click(function(){
+    //Get the filled in years
+    var str_start = $('#period_start').val();
+    var str_end = $('#period_end').val();
+    if (str_start == '')
+        start = 0;
+    else
+        start = parseInt(str_start);
+    if (str_end == '')
+        end = 0;
+    else
+        end = parseInt(str_end);
+ 
+    if (check_year(start, end)){
+        // Try to add the new period
+        add_period(start, end);          
+    }
+});
+
+//Advanced search: set the selected periods on loding
+
+//$('#div_selected_periods').ready(function(){
+var selected_periods = $('#input_selected_periods').val();
+    if (selected_periods != ''){
+    periods = selected_periods.split(';')
+    for (var i = 0; i < periods.length; i++){
+        var period = periods[i].split('-');
+        current_periods.push([parseInt(period[0]), parseInt(period[1]), 'period_'+i]);
+    }
+    show_selected_periods();
+}
+//});
+*/
+
+
+
+/*
 //Check the input time period
 function check_year(syear, eyear) {
     err1 = 'Error: Input should be a 4-digit number between 1914 and 1940, inclusive.'
@@ -374,34 +532,8 @@ function set_selected_values(){
     }
     $('#input_selected_periods').val(values.join(';'));  
 }
+*/
 
-
-//=========Newspaper functions ===============
-function set_newspaper_selections(){
-  $('select').each(function(){
-    var typenews = $(this).attr('id').split('_')[1];
-    var options =  $(this).find('option');
-    var sta = {}
-    options.each(function(){
-        sta[$(this).attr('id')] = $(this).is(':selected');
-    });
-    newspaper_selection_status[typenews] = sta;
-  });
-}
-
-
-//========= Pagination functions ==========
-// Functions related to paginations 
-//=========================================
-
-function get_search_results(){
-    if (current_qry_mode == 'simple')
-        $('#simple_search_form').submit();
-    else if (current_qry_mode == 'advanced'){
-        //console.log($('#advanced_search_form').attr('method'))
-        $('#advanced_search_form').submit();
-    }
-}
 
 /*
 function load_visualization(query){
@@ -418,6 +550,7 @@ function load_visualization(query){
 
 }
 */
+/*
 function search_submit(query){
 	 $.ajax({
            	type: "POST",
@@ -515,6 +648,8 @@ function pagination(){
     p.push('</ul>');
     return p.join(''); 
 }
+*/
+
 /*
 function visualize(query){
     // Get the locations to be visualized

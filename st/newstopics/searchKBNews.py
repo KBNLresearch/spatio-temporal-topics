@@ -175,12 +175,12 @@ class KBNewsES(object):
         # time filters
         time_filter = {}
         if not time_period == '': 
-            periods = [t.split('-') for t in time_period.split(';')]
+            periods = [t.split(':') for t in time_period.split(' ')]
             # conditions of ranges in "or" relation
             cond_periods = [{'range': 
                                 {'date':
-                                    {'gte': '%s-01-01'%p[0],
-                                    'lte': '%s-12-31'%p[1],}
+                                    {'gte': p[0],
+                                    'lte': p[1],}
                                 }
                             } for p in periods]
             if len(cond_periods) == 1:
