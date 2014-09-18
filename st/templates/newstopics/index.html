@@ -31,11 +31,18 @@
         <input type="text" name="q" class="form-control" id="searchbox" placeholder="Search the news" value="{{ simple_search_form.q }}" />
         
         <span class="input-group-btn">
-            <button id="search_submit"  class="btn btn-success" type="submit"> Go
-            <!--span class="glyphicon glyphicon-chevron-right"></span-->
+            <button id="search_submit"  class="btn btn-success" type="submit">
+            Go
+            <!--span class="glyphicon glyphicon-search"></span-->
             </button>
         </span>
+
+        <span id="btn_show_analyses"  class="advanced_searchbox_info pull-right">
+        Show analyses &raquo;
+        </span>
         <span class="advanced_searchbox_info pull-right" id="advanced_option">Advanced search &raquo;</span>
+
+
     </div>
     </div>
     </form>
@@ -206,6 +213,9 @@
 {% endblock %}
 
 {% block C %}
+    <div id="show_analyses" class="analyses">
+    </div>
+    <div id="analyses"></div>
     <div id="result_top" class="info">{{total_results}}</div>
     <div id="resultlist" class="list-group">
         {% for r in resultlist %}

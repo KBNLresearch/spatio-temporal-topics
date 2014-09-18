@@ -10,6 +10,14 @@ var default_dateEnd = new Date(1940, 11, 31)
 
 $(document).ready(function(){
 
+//============ Show/Hide analyses ================
+$('#btn_show_analyses').click(function(){
+    $(this).text(
+        $(this).text().trim()=='Show analyses \u00bb'?'Hide analyses \u00AB':'Show analyses \u00bb'
+    );
+});
+
+
 //=========== Query operations ==================
 // Operations related to submit and specify
 // search request. 
