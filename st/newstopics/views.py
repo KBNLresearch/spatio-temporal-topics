@@ -8,9 +8,13 @@ import datetime
 import math
 # Create your views here.
 
-
-
 searcher = KBNewsES(settings.ES)
+sort_options = {
+    '': 'Relevance',
+    'date': 'Date',
+    'doclength': 'Article length',
+#    'page': 'Newspaper page',
+}
 
 def index(request):
     c = csrf(request)
@@ -19,6 +23,7 @@ def index(request):
     c['pagination'] = {'left_most_hidden': 'hidden', 'right_most_hidden': 'hidden'}
     c['newspaper_counts'] = searcher.agg_newspaper_counts(settings.INDEX, settings.DOC_TYPE)
     c['selected_newspapers'] = js.dumps(dict([(loc['id'],[]) for loc in c['newspaper_counts']]))
+    c['retrieval_status'] = 'hidden'
     request.session['newspaper_counts'] = c['newspaper_counts']
      
     return render_to_response(template, c)
@@ -64,11 +69,13 @@ def simple_search(request):
 
     if count == -1:
         c['total_results'] = ''
+        c['retrieval_status'] = 'hidden'
     else:
         c['total_results'] = '#%s results found'%count
 
     # Context of reulst operation
-    c['result_sort'] = sort
+    # get the sorting name for the selected sorting type
+    c['result_sort'] = {'type': sort, 'name': sort_options[sort]} 
 
     # Context of pagiation
     c['pagination'] = make_pagination(count, current_page) 
@@ -163,6 +170,7 @@ def advanced_search(request):
 
     if count == -1:
         c['total_results'] = ''
+        c['retrieval_status'] = 'hidden'
     else:
         c['total_results'] = '#%s results found'%count
 
@@ -170,7 +178,7 @@ def advanced_search(request):
     c['pagination'] = make_pagination(count, current_page) 
    
     # Context of result operation
-    c['result_sort'] = sort
+    c['result_sort'] = {'name': sort_options[sort], 'type': sort}
 
     # In case we want to show the current query 
     c['current_query'] = {

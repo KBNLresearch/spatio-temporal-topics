@@ -37,6 +37,8 @@ class KBNewsES(object):
         """   
         res = []
         processed_query = self.construct_query(query, fields)
+        sorting = self.sorting_option(query)
+
         if processed_query == '':
             return res, -1
         qry = {
@@ -58,6 +60,8 @@ class KBNewsES(object):
                     }    
                 }
             }
+        if not sorting == '':
+            qry['sort'] = sorting
         print processed_query
 
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
@@ -220,8 +224,20 @@ class KBNewsES(object):
                 'query': query_part,
                 'filter': filters
             }
+
         return query
 
+    def sorting_option(self, raw_query):
+        """
+            process sorting request 
+        """
+        sort = raw_query.get('sort', '')
+        if sort == '':
+            return ''
+        elif sort == 'date':
+            return {'date': {'order': 'asc'}}
+        elif sort == 'doclength':
+            return {'doclength': {'order': 'desc'}}
 
     def agg_newspaper_counts(self, index, doc_type):
         """

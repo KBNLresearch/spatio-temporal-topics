@@ -176,6 +176,21 @@ $('.li_pager').on('click', function(){
    
 });
 
+//===============================
+// Sorting operations
+//===============================
+$('.opt_sort').click(function(){
+    //set hidden input data
+    $('.input_sort').val($(this).attr('data'));
+    //set dropdown data
+    $('#sortby').text($(this).text());
+    //submit search
+    if (current_qry_mode == 'simple')
+        $('#simple_search_form').submit();
+    else if (current_qry_mode == 'advanced')
+        $('#advanced_search_form').submit();
+});
+
 //==============================
 //Click on filtering
 //===============================

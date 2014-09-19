@@ -13,6 +13,13 @@ span.highlight {
     font-size: 14px;
 }
 
+a.select_sort {
+    cursor: pointer;
+}
+
+li.opt_sort {
+    cursor: pointer;
+}
 
 a.result-item:link {
     color: steelblue;

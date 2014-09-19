@@ -25,6 +25,9 @@
 
     {% csrf_token %}
     <form action="/simple_search/" method="GET" id="simple_search_form">
+    <!-- hidden inputs -->
+    <input type="hidden" name="sort" id="res_sort" class="input_sort" value={{result_sort.type}}>
+
     <div class="navbar-form navbar-left" >
     <div class="input-group">
         <!--Get the search query, and re-fill the inputbox after query being processed -->
@@ -80,6 +83,11 @@
         </div>
 
         <form id="advanced_search_form" class="form-horizontal" role="form" action="/advanced_search/" method="GET">
+            <!-- hidden inputs -->
+            <input type="hidden" name="sort" id="res_sort" class="input_sort" value={{result_sort.type}}>
+
+
+            <!-- Form fields-->
             <div class="form-group">
             <label for="must" class="col-sm-3 control-label">must contain: </label>
             <div class="col-sm-9">
@@ -219,10 +227,20 @@
     <div id="analyses"></div>
 
     <!-- Meta info of the result list -->
-    <div id="result_top" class="info">
+    <div id="result_top" class="info {{retrieval_status}}">
         {{total_results}}
-
-
+        <div class="dropdown pull-right">
+            Sort by: 
+            <a data-toggle="dropdown" data-target="#" class="select_sort">
+                <span id="sortby">{{result_sort.name}}</span>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li class="opt_sort" data=""><a>Relevance</a></li>
+                <li class="opt_sort" data="date"><a>Date</a></li>
+                <li class="opt_sort" data="doclength"><a>Article length</a></li>
+            </ul>
+        </div>
     </div>
 
     <!--Result list -->
