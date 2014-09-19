@@ -18,6 +18,7 @@ $('#btn_show_analyses').click(function(){
 });
 
 
+
 //=========== Query operations ==================
 // Operations related to submit and specify
 // search request. 
@@ -94,12 +95,11 @@ $('#add_datepicker').click(function(){
 //Advancedsearch: clear the form
 $('#btn_clearform').click(function(){
     $('.advanced_query_form').val('');
-    //Don't forget also set the selected periods to empty
-    for (var i = 0 ; i<current_periods.length; i++){
-        if (current_periods[i] != 0){
-            remove_selected_period(current_periods[i][2]); 
-        }
-    }
+
+    //Clear the selected periods
+    $('#datepickers').html('');
+    set_input_dates(); 
+
     //And clear the newspaper selection
     $('select').selectpicker('deselectAll');
     $('select').selectpicker('val', []);
@@ -228,40 +228,51 @@ function set_input_dates(){
 }
 
 function activate_datepicker(id, from_date, to_date){
-    $('#datepicker_from_'+id).datepicker({
-        dateFormat: 'yy-mm-dd',
-        changeYear: true,
-        changeMonth: true,
-        minDate: default_dateStart,
-        maxDate: default_dateEnd,
-        yearRange: "1914:1940",
-        defaultDate: from_date,
-        onSelect: function(selected){
-            $('#datepicker_to_'+id).datepicker('option', 'minDate', selected);
-            set_input_dates();
-        } 
-    });
+    $('#datepicker_from_'+id).datetimepicker({
+        format: 'yyyy-mm-dd',
+        startDate: default_dateStart,
+        endDate: default_dateEnd,
+        startView: 4,
+        minView: 2,
+        initialDate: from_date,
+    })
+    .on('changeDate', function(ev){
+            var date = new Date(ev.date.valueOf());
+            var date_string = date.getFullYear() 
+                    + '-' + padStr(date.getMonth()+1) 
+                    + '-' + padStr(date.getDate());
 
-    $('#datepicker_to_'+id).datepicker({
-        dateFormat: 'yy-mm-dd',
-        changeYear: true,
-        changeMonth: true,
-        minDate: default_dateStart,
-        maxDate: default_dateEnd,
-        yearRange: "1914:1940",
-        defaultDate: to_date,
-        onSelect: function(selected){
-            $('#datepicker_from_'+id).datepicker('option', 'maxDate', selected);
+            $('#datepicker_to_'+id).datetimepicker('setStartDate', date_string);
             set_input_dates();
-        } 
-    });
-   
+    }); 
+
+    $('#datepicker_to_'+id).datetimepicker({
+        format: 'yyyy-mm-dd',
+        startDate: default_dateStart,
+        endDate: default_dateEnd,
+        startView: 4,
+        minView: 2,
+        initialDate: to_date,
+    }).on('changeDate', function(ev){
+            var date = new Date(ev.date.valueOf());
+            var date_string = date.getFullYear() 
+                    + '-' + padStr(date.getMonth()+1) 
+                    + '-' + padStr(date.getDate());
+
+            $('#datepicker_from_'+id).datetimepicker('setEndDate', date_string);
+            set_input_dates();
+    }); 
 }
 
 function parseDate(date_string){
     var date = date_string.split('-');
     return new Date(parseInt(date[0]), parseInt(date[1]), parseInt(date[2]));
 }
+
+function padStr(i) {
+    return (i < 10) ? "0" + i : "" + i;
+}
+
 
 //=========Newspaper functions ===============
 function set_newspaper_selections(){
@@ -289,9 +300,6 @@ function get_search_results(){
         $('#advanced_search_form').submit();
     }
 }
-
-
-
 
 
 

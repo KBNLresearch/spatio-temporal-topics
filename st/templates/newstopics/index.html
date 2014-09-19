@@ -185,6 +185,7 @@
                         <option data-subtext="({{np.1}})" id="opt_{{np_group.id}}_{{np.2}}" >{{np.0}}</option>
                         {% endfor %}
                 </select>
+ 
                 <p class="text-info"> {{np_group.loc}} newspapers</p>
                 {% endfor %}
             </div>
@@ -216,7 +217,15 @@
     <div id="show_analyses" class="analyses">
     </div>
     <div id="analyses"></div>
-    <div id="result_top" class="info">{{total_results}}</div>
+
+    <!-- Meta info of the result list -->
+    <div id="result_top" class="info">
+        {{total_results}}
+
+
+    </div>
+
+    <!--Result list -->
     <div id="resultlist" class="list-group">
         {% for r in resultlist %}
         <!--Snippet-->
