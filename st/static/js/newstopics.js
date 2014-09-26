@@ -317,6 +317,13 @@ function get_search_results(){
 }
 
 
+//========= Visualization functions ============
+// Functions related to visualizations
+// Note: the actual drawing functions are in 
+// vis.js
+//==============================================
+
+
 
 
 //================ OLD =================

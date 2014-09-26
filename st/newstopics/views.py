@@ -22,6 +22,7 @@ def index(request):
     c['advanced_search_status'] = 'hidden'
     c['pagination'] = {'left_most_hidden': 'hidden', 'right_most_hidden': 'hidden'}
     c['newspaper_counts'] = searcher.agg_newspaper_counts(settings.INDEX, settings.DOC_TYPE)
+    print len(c['newspaper_counts'][0]['news']), len(c['newspaper_counts'][1]['news'])
     c['selected_newspapers'] = js.dumps(dict([(loc['id'],[]) for loc in c['newspaper_counts']]))
     c['retrieval_status'] = 'hidden'
     request.session['newspaper_counts'] = c['newspaper_counts']
@@ -128,6 +129,7 @@ def advanced_search(request):
         else:
             selected_papers += selected_names
     selected_papers = sorted(list(set(selected_papers)))
+    print len(selected_papers), len(all_news)
     if len(selected_papers) == len(all_news):
         selected_papers = ''
     elif len(selected_papers) == 0:

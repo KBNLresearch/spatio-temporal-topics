@@ -211,14 +211,14 @@
 
         </form> 
     </div>
+
     <!--Summarize comparison of concept statistics between locations-->
-    <div id="vis_loc_summary" class="visualization">
-    {% for loc in newsloc %}
-    <div id="{{loc|safe}}">
-    <div id="vis_composition_{{loc}}"></div>
+    <div id="vis_area" class="visualization">
+        <div id="vis_news_counts">
+            
+        </div>
     </div>
-    {% endfor %}
-    </div>
+
 {% endblock %}
 
 {% block C %}
