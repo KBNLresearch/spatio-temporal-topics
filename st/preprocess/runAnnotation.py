@@ -47,6 +47,9 @@ def process_docs(startdate, enddate, method):
         )
     records += [d['_id'] for d in res['hits']['hits']]
     total = res['hits']['total']
+    print "Annotating: %s - %s/%s"%(start, start+size, total)
+    for d in res['hits']['hits']: 
+        an.annotate(d['_id'])
 
     start += size
     while start < total:

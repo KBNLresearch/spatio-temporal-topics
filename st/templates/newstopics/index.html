@@ -5,15 +5,16 @@
 {% block extrahead %}
     {% load staticfiles %}
    <link rel="stylesheet" href="{% static "css/newstopics.css" %}">
-   <script src="{% static "js/newstopics.js" %}"></script>
    <script src="{% static "js/vis.js" %}"></script>
+   <script src="{% static "js/newstopics.js" %}"></script>
    <script>
         var url_process_query = "{% url "newstopics.views.process_query" %}";
-        var url_visualization = "{% url "newstopics.views.visualization" %}";
+        var url_vis_termclouds = "{% url "newstopics.views.vis_termclouds" %}";
         //var num_pages = {{pagination.num_pages}};
 
         // record whehter it's simple or advanced search
         var current_qry_mode = "{{current_query.mode}}";
+        var current_qry = {{current_query.query|safe}};
         // get selected newspapers
         var selected_newspapers = {{selected_newspapers|safe}};
     </script>    
@@ -39,10 +40,6 @@
             <!--span class="glyphicon glyphicon-search"></span-->
             </button>
         </span>
-
-        <span id="btn_show_analyses"  class="advanced_searchbox_info pull-right">
-        Show analyses &raquo;
-        </span>
         <span class="advanced_searchbox_info pull-right" id="advanced_option">Advanced search &raquo;</span>
 
 
@@ -57,7 +54,7 @@
     <!-- advanced search options -->
     <div id="advance_search" class="advanced_searchbox {{advanced_search_status}}">
         <div class="advanced_searchbox_title">
-            The articles returned as search results ...
+            Find articles that ... 
             <span class="advanced_searchbox_info pull-right" id="advanced_searchbox_learn">Learn more &raquo;</span>
         </div>
 
@@ -183,7 +180,7 @@
                 <select class="selectpicker" name="select_np_{{np_group.id}}" multiple
                     data-live-search=true title="{{np_group.loc}}"
                     data-selected-text-format="count>2"
-                    data-width=75%
+                    data-width=50%
                     id="selectpicker_{{np_group.id}}"
                     >
                         <option id="all_{{np_group.id}}" class="option_all" >All</option>
@@ -212,23 +209,16 @@
         </form> 
     </div>
 
-    <!--Summarize comparison of concept statistics between locations-->
-    <div id="vis_area" class="visualization">
-        <div id="vis_news_counts">
-            
-        </div>
-    </div>
-
 {% endblock %}
 
 {% block C %}
-    <div id="show_analyses" class="analyses">
-    </div>
-    <div id="analyses"></div>
 
+    <div id="analyses" class="jumbotron jumbotron-analyses" >
+    </div>
     <!-- Meta info of the result list -->
     <div id="result_top" class="info {{retrieval_status}}">
         {{total_results}}
+
         <div class="dropdown pull-right">
             Sort by: 
             <a data-toggle="dropdown" data-target="#" class="select_sort">

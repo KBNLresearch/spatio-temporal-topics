@@ -18,7 +18,7 @@ urlpatterns = patterns('',
 
     url(r'^submit_query/$', 'newstopics.views.process_query'),
 
-    url(r'^visualization/$', 'newstopics.views.visualization'),
+    url(r'^vis_termclouds/$', 'newstopics.views.vis_termclouds'),
 
 )
 

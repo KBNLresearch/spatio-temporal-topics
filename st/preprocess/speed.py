@@ -62,8 +62,9 @@ def process_documents(startyear, endyear, field):
     records += [d['_id'] for d in res['hits']['hits']]
     total = res['hits']['total']
     docs = res['hits']['hits']
+    print "Add %s: %s - %s/%s"%(field, start, start+size, total)
     add_field(docs, field)
-
+ 
     start += size
     while start < total:
         res = es.search(index=p.INDEX, 

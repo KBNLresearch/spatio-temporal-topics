@@ -121,6 +121,7 @@ div.div_datepicker {
     margin-top: 5px;
 }
 
-div.analyses {
-    margin-bottom: 15px;
+div.jumbotron-analyses {
+    background-color: white;
 }
+

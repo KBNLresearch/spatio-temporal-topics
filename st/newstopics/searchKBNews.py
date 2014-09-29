@@ -281,6 +281,29 @@ class KBNewsES(object):
         return tmp.replace('$HIGHLIGHT$', '<span class="highlight">').replace('$HIGHLIGHTEND$', '</span>')  
 
 
+    def term_clouds(self, index, doc_type, field, query, fields):
+        """
+        field: field for constructing term clouds
+        query: the raw query
+        fields: fields for search matched terms
+        """
+        if query == {}:
+            return []  
+        processed_query = self.construct_query(query, fields)
+        if processed_query == '':
+            return [] 
+        qry = {
+            'query': processed_query,
+            'aggregations': {
+                "term_clouds" : {
+                    "significant_terms" : { "field" : field}
+                }
+            } 
+        }
+        res = self.es.search(index=index, doc_type=doc_type, body=qry)
+        print res['aggregations']
+                    
+
     def topConcepts(self, results, topX, cmethod="ner"):
         """
         Get top X concepts from a set of documents

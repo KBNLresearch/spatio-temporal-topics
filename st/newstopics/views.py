@@ -22,17 +22,25 @@ def index(request):
     c['advanced_search_status'] = 'hidden'
     c['pagination'] = {'left_most_hidden': 'hidden', 'right_most_hidden': 'hidden'}
     c['newspaper_counts'] = searcher.agg_newspaper_counts(settings.INDEX, settings.DOC_TYPE)
-    print len(c['newspaper_counts'][0]['news']), len(c['newspaper_counts'][1]['news'])
     c['selected_newspapers'] = js.dumps(dict([(loc['id'],[]) for loc in c['newspaper_counts']]))
     c['retrieval_status'] = 'hidden'
     request.session['newspaper_counts'] = c['newspaper_counts']
-     
+
+    c['current_query'] = {
+            'mode': 'simple',
+            'query': js.dumps({}),
+        } 
+    
     return render_to_response(template, c)
 
 # URL version
 def simple_search(request):
     c = {}
     c.update(csrf(request))
+
+    # this is a simple search
+    c['advanced_search_status'] = 'hidden'
+
     # Set contextual parameter values
     c['newspaper_counts'] = request.session['newspaper_counts']
     if c['newspaper_counts'] == None:
@@ -40,9 +48,6 @@ def simple_search(request):
         request.session['newspaper_counts'] = c['newspaper_counts']
     c['selected_newspapers'] = js.dumps(dict([(loc['id'],[]) for loc in c['newspaper_counts']]))
  
-    # this is a simple search
-    c['advanced_search_status'] = 'hidden'
-
     # Process request
     query = request.GET.get('q', '')
     sort = request.GET.get('sort', '')
@@ -84,14 +89,14 @@ def simple_search(request):
     # Context of current query 
     c['current_query'] = {
             'mode': 'simple',
-            'query': query,
+            'query': js.dumps(raw_query),
         } 
     # Return the results
     template = 'newstopics/index.html'
     return render_to_response(template, c)
 
 def advanced_search(request):
-    print 'advanced search'
+    #print 'advanced search'
     c = {}
     c.update(csrf(request))
 
@@ -129,7 +134,7 @@ def advanced_search(request):
         else:
             selected_papers += selected_names
     selected_papers = sorted(list(set(selected_papers)))
-    print len(selected_papers), len(all_news)
+    #print len(selected_papers), len(all_news)
     if len(selected_papers) == len(all_news):
         selected_papers = ''
     elif len(selected_papers) == 0:
@@ -185,9 +190,7 @@ def advanced_search(request):
     # In case we want to show the current query 
     c['current_query'] = {
             'mode': 'advanced',
-            'query': 'MUST: %s; SHOULD: %s; MUSTNOT: %s'%(should, must, mustnot),
-            'periods': 'PERIODS: %s'%periods,
-            'newspapers': 'NEWSPAPERS: %s'%''
+            'query': js.dumps(raw_query),
         }
 
     template = 'newstopics/index.html'
@@ -226,69 +229,24 @@ def make_pagination(count, current_page):
              }
     return pagination
 
-
-# Ajax version
-def process_query(request):
-    # Force csrf token to be set
+def vis_termclouds(request):
     if request.is_ajax:
         data = {}
 
         # prameters for searching
         index = 'kb_krant'
         doc_type = 'article'
+        field = request.POST.get('cloud_type', '') 
+
         fields = ['text', 'title']
-        field = 'text'
-
-        # search for keywords
-        size = int(request.POST['page_size'])
-        start = (int(request.POST['current_page']) - 1) * size 
-        query = request.POST['query']
-        res = searcher.keyword_search(index, doc_type, query, fields, size, start)
-        if res['hits']['total'] > 0:
-            results = [{'docid': doc['_id'],
-                    'url': 'http://resolver.kb.nl/resolve?urn=%s'%doc['_id'],
-                    'title': '...'.join(doc['highlight']['title']),
-                    'loc': doc['_source']['loc'],
-                    'date': doc['_source']['date'],
-                     # Get the summary of the results
-                    'summary': '...'.join(doc['highlight']['text']),
-                    'papertitle': doc['_source']['papertitle']
-
-                } for doc in res['hits']['hits']] 
-
-            data = {'results': results, 'total': res['hits']['total']}
-        json_data = js.dumps(data)		
-        response = HttpResponse(json_data, content_type="application/json")
-    else:
-        return render_to_response('errors/403.html')
-    return response
-
-def visualization(request):
-    if request.is_ajax:
-        data = {}
-
-        # prameters for searching
-        index = 'kb_krant'
-        doc_type = 'article'
-        fields = ['text', 'title']
-        field = 'text'
-
-        # search for keywords
-        size = settings.SAMPLE_SIZE
-        start = 0
-        query = request.POST['query']
-
-        res = searcher.keyword_search(index, doc_type, query, fields, size, start)
-        # Get top concepts from this result set
-        topConcepts = searcher.topConcepts(res, settings.NUM_TOPICS, cmethod=settings.CMETHOD)
-        data['counts']= count_concepts(topConcepts)
-        # normalize the scores between 15 and 70
-        scores = [c[1] for c in topConcepts]
-        
-        scores = [(s-min(scores))/(max(scores)-min(scores)+1)*(70-15)+15
-                for s in scores]
-        data['concepts'] = [(topConcepts[i][0], scores[i]) 
-                for i in range(len(scores))]
+        query = {
+            'must': request.POST.get('must', ''),
+            'mustnot': request.POST.get('mustnot', ''),
+            'should' : request.POST.get('should', ''),
+            'periods' : request.POST.get('periods', ''),
+            'newspapers': request.POST.getlist('newspapers[]', ''),
+        }
+        data = searcher.term_clouds(index, doc_type, field, query, fields)
         json_data = js.dumps(data)		
         response = HttpResponse(json_data, content_type="application/json")
     else:

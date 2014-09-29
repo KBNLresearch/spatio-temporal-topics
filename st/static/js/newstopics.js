@@ -10,15 +10,6 @@ var default_dateEnd = new Date(1940, 11, 31)
 
 $(document).ready(function(){
 
-//============ Show/Hide analyses ================
-$('#btn_show_analyses').click(function(){
-    $(this).text(
-        $(this).text().trim()=='Show analyses \u00bb'?'Hide analyses \u00AB':'Show analyses \u00bb'
-    );
-});
-
-
-
 //=========== Query operations ==================
 // Operations related to submit and specify
 // search request. 
@@ -61,6 +52,12 @@ for(var i = 0; i<periods.length; i++){
     $('#datepickers').append(make_datepicker(i, dates[0], dates[1]));
 }
 
+//remove loaded dates
+$('.rm-date').on('click', function(){
+    $('#datepicker_'+$(this).attr('id').split('_')[1]).remove();
+    set_input_dates(); 
+});
+
 //Datepicker: activate the datepickers
 $('.div_datepicker').each(function(){
     var id = $(this).attr('id').split('_')[1];
@@ -71,11 +68,6 @@ $('.div_datepicker').each(function(){
     activate_datepicker(id, from_date, to_date);
 })
 
-//Datepicker: remove a datepicker
-$('.rm-date').click(function(){
-    $('#datepicker_'+$(this).attr('id').split('_')[1]).remove();
-    set_input_dates(); 
-});
 
 //Datepicker: add a datepicker
 $('#add_datepicker').click(function(){
@@ -89,6 +81,13 @@ $('#add_datepicker').click(function(){
     $('#datepickers').append(make_datepicker(id, '', ''));
     
     activate_datepicker(id, default_dateStart, default_dateEnd);
+
+    //remove a datepicker
+    $('.rm-date').on('click', function(){
+        $('#datepicker_'+$(this).attr('id').split('_')[1]).remove();
+        set_input_dates(); 
+    });
+
 });
 
 
@@ -190,6 +189,11 @@ $('.opt_sort').click(function(){
     else if (current_qry_mode == 'advanced')
         $('#advanced_search_form').submit();
 });
+
+
+//============ Analyses ================
+query_term_clouds(current_qry, 'text');
+
 
 //==============================
 //Click on filtering
@@ -322,6 +326,19 @@ function get_search_results(){
 // Note: the actual drawing functions are in 
 // vis.js
 //==============================================
+function query_term_clouds(current_query, cloud_type){
+    var data = current_query
+    data['cloud_type'] = cloud_type
+    $.ajax({
+       	type: "POST",
+        url: url_vis_termclouds,
+        data: data,
+
+    }).done(function(response) {
+        console.log(response)
+    });
+}
+
 
 
 
