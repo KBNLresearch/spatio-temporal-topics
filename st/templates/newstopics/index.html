@@ -5,6 +5,8 @@
 {% block extrahead %}
     {% load staticfiles %}
    <link rel="stylesheet" href="{% static "css/newstopics.css" %}">
+   <link rel="stylesheet" href="{% static "css/vis.css" %}">
+  
    <script src="{% static "js/vis.js" %}"></script>
    <script src="{% static "js/newstopics.js" %}"></script>
    <script>
@@ -88,7 +90,7 @@
             <div class="form-group">
             <label for="must" class="col-sm-3 control-label">must contain: </label>
             <div class="col-sm-9">
-            <input type="text" class="form-control advanced_query_form" 
+            <input type="text" class="form-control advanced_query_form query_term" 
                     id="must" name="must" 
                     value="{{advanced_search_form.must}}"
                     placeholder="Terms that must occur in the article">
@@ -98,7 +100,7 @@
             <div class="form-group">
             <label for="mustnot" class="col-sm-3 control-label">must not contain: </label>
             <div class="col-sm-9">
-            <input type="text" class="form-control advanced_query_form" 
+            <input type="text" class="form-control advanced_query_form query_term" 
                     id="mustnot" name="mustnot" 
                     value="{{advanced_search_form.mustnot}}"
                     placeholder="Terms that must not occur in the article">
@@ -108,7 +110,7 @@
             <div class="form-group">
             <label for="should" class="col-sm-3 control-label">should contain: </label>
             <div class="col-sm-9">
-            <input type="text" class="form-control advanced_query_form" 
+            <input type="text" class="form-control advanced_query_form query_term" 
                     id="should" name="should" 
                     value="{{advanced_search_form.should}}" 
                     placeholder="Terms that should but not necessarily occur in the article">
@@ -191,7 +193,7 @@
                         {% endfor %}
                 </select>
  
-                <p class="text-info"> {{np_group.loc}} newspapers</p>
+                <p class="text-info np_group" id="p_{{np_group.id}}"> {{np_group.loc}} newspapers</p>
                 {% endfor %}
             </div>
             <!-- Submit the form -->
@@ -213,8 +215,9 @@
 
 {% block C %}
 
-    <div id="analyses" class="jumbotron jumbotron-analyses" >
+    <div id="analyses_termclouds">
     </div>
+
     <!-- Meta info of the result list -->
     <div id="result_top" class="info {{retrieval_status}}">
         {{total_results}}

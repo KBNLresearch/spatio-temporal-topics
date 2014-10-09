@@ -236,7 +236,7 @@ def vis_termclouds(request):
         # prameters for searching
         index = 'kb_krant'
         doc_type = 'article'
-        field = request.POST.get('cloud_type', '') 
+        field = request.POST.get('cloud_type', 'text') 
 
         fields = ['text', 'title']
         query = {
@@ -244,9 +244,24 @@ def vis_termclouds(request):
             'mustnot': request.POST.get('mustnot', ''),
             'should' : request.POST.get('should', ''),
             'periods' : request.POST.get('periods', ''),
-            'newspapers': request.POST.getlist('newspapers[]', ''),
+            'newspapers': {}
         }
-        data = searcher.term_clouds(index, doc_type, field, query, fields)
+        term_clouds = {}
+        papers = {}
+        for np in request.session['newspaper_counts']:
+            select = request.POST.getlist('newspapers_%s'%np['id'])
+            if select[0] == '' or select[0] == 'all':
+                query['newspapers'] = [x[0] for x in np['news']]
+            elif select[0] == 'none':
+                tc = []
+            else:
+                query['newspapers'] = [np['news'][int(x.split('_')[-1])][0] 
+                        for x in select[0].split(';')]
+        
+            tc = searcher.term_clouds(index, doc_type, field, query, fields)
+            term_clouds[np['id']] = tc[0:10]
+            papers[np['id']] = select[0] 
+
         json_data = js.dumps(data)		
         response = HttpResponse(json_data, content_type="application/json")
     else:

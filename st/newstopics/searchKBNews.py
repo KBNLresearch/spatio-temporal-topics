@@ -62,7 +62,6 @@ class KBNewsES(object):
             }
         if not sorting == '':
             qry['sort'] = sorting
-        print processed_query
 
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
                 size=size, from_=start, fields=settings.RET_FIELDS)
@@ -243,7 +242,6 @@ class KBNewsES(object):
         """
         Aggregate counts of articles per newspaper
         """
-        
         body = {
                 'aggs': {
                     'papercount': {
@@ -300,9 +298,13 @@ class KBNewsES(object):
                 }
             } 
         }
-        res = self.es.search(index=index, doc_type=doc_type, body=qry)
-        print res['aggregations']
-                    
+        print qry
+        res = self.es.search(index=index, doc_type=doc_type, body=qry, size=100)
+        self.es.index.flush(index=index)
+        #print res
+        terms = [[t['key'], t['score']] for t in res['aggregations']['term_clouds']['buckets']]
+        
+        return terms            
 
     def topConcepts(self, results, topX, cmethod="ner"):
         """
