@@ -10,7 +10,7 @@ var delay = (function(){
   };
 })();
 
-var keyup_delay = 500;
+var keyup_delay = 800;
 var timeline_start = 1914;
 var timeline_end = 1940
 
@@ -370,9 +370,15 @@ function update_term_clouds(query){
         for (var year = timeline_start; year <= timeline_end; year++){
             //make the slot for each year
             var year_div = '<div>'+year+'</div>';
-            var term_div = '<div id="cloud_terms_'+loc_id+'_'+year+'"></div>';
+            var term_div = '<div class="termcloud_terms" id="cloud_terms_'+loc_id+'_'+year+'"></div>';
+            var waiting_div = [
+                    '<div class="loading" id="loading_'+loc_id+'_'+year+'" style="display:none;">',
+                    '<img src="'+spinner_path+'" alt="Loading" />',
+                    '</div>'
+                ]
             var tc_div = ['<div class="termcloud" id="cloud_'+loc_id+'_'+year+'">',
                     year_div,
+                    waiting_div.join(''),
                     term_div,
                     '</div>'];
             wrap_div.push(tc_div.join(''));
@@ -381,11 +387,13 @@ function update_term_clouds(query){
         wraps.push(wrap_div.join(''));
     });
     $('#analyses_termclouds').html(wraps.join('\n'));    
-    
+    $('.loading').show();
+
     //update year based termclouds
     for (var year = timeline_start; year <= timeline_end; year++){
         query['periods'] = year+'-01-01:'+year+'-12-31';
-        query['year'] = year
+        query['year'] = year;
+
         //console.log(query)
         $.ajax({
        	    type: "POST",
@@ -399,29 +407,30 @@ function update_term_clouds(query){
 }
 
 function show_termcloud(data){
-    console.log(year)
-    var tc = data['tc']
-    var papers = data['papers']
-    var year = data['year'] 
+    var tc = data['tc'];
+    var papers = data['papers'];
+    var year = data['year']; 
     $.each(tc, function(key, value){
         var div_id = 'cloud_terms_'+key+'_'+year;
-        var max_score = value[0][1];
-        var min_score = value[value.length-1][1];
-        var cloud = [];
+        if (value.length > 0){
+            var max_score = value[0][1];
+            var min_score = value[value.length-1][1];
+            var cloud = [];
 
-        for (var i = 0; i<value.length; i++){
-            var perc = (value[i][1]-min_score)/(max_score-min_score);
-            var fontsize = Math.max(12+Math.round(10*perc)); 
-            var opacity = 0.7+(0.3*perc);
-            var concept = value[i][2]
-            //console.log(value[i][0])
-            //console.log(fontsize)
-            var term = '<div class="tc-term" style="font-size: '+fontsize+'px; opacity: '+opacity+'">';
-            term  = term + concept+'</div>';
-            cloud.push(term);
+            for (var i = 0; i<value.length; i++){
+                var perc = (value[i][1]-min_score)/(max_score-min_score);
+                var fontsize = Math.max(12+Math.round(10*perc)); 
+                var opacity = 0.7+(0.3*perc);
+                var concept = value[i][2]
+                //console.log(value[i][0])
+                //console.log(fontsize)
+                var term = '<div class="tc-term" style="font-size: '+fontsize+'px; opacity: '+opacity+'">';
+                term  = term + concept+'</div>';
+                cloud.push(term);
+            }
+            $('#'+div_id).html(cloud.join(''));
         }
-        $('#'+div_id).html(cloud.join(''));
-       
+        $('#loading_'+key+'_'+year).hide();       
     })  
 }
 

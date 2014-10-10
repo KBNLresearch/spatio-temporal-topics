@@ -248,6 +248,7 @@ def vis_termclouds(request):
         }
         term_clouds = {}
         papers = {}
+        # loop over np types (location)
         for np in request.session['newspaper_counts']:
             select = request.POST.getlist('newspapers_%s'%np['id'])
             if select[0] == '' or select[0] == 'all':
