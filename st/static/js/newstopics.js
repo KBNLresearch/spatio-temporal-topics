@@ -381,6 +381,7 @@ function update_term_clouds(query){
     //update year based termclouds
     for (var year = timeline_start; year <= timeline_end; year++){
         query['periods'] = year+'-01-01:'+year+'-12-31';
+        query['year'] = year
         //console.log(query)
         $.ajax({
        	    type: "POST",
@@ -388,13 +389,34 @@ function update_term_clouds(query){
             data: query,
 
         }).done(function(response) {
-            show_termcloud(response, year)             
+            show_termcloud(response)    
         });
     }
 }
 
-function show_termcloud(data, year){
-     
+function show_termcloud(data){
+    console.log(year)
+    var tc = data['tc']
+    var papers = data['papers']
+    var year = data['year'] 
+    $.each(tc, function(key, value){
+        var div_id = 'cloud_'+key+'_'+year;
+        var max_score = value[0][1];
+        var min_score = value[value.length-1][1];
+        var cloud = [];
+        for (var i = 0; i<value.length; i++){
+            var perc = (value[i][1]-min_score)/(max_score-min_score);
+            var fontsize = Math.max(12+Math.round(10*perc)); 
+            var opacity = 0.7+(0.3*perc);
+            var concept = value[i][2]
+            //console.log(value[i][0])
+            //console.log(fontsize)
+            var term = '<div class="tc-term" style="font-size: '+fontsize+'px; opacity: '+opacity+'">';
+            term  = term + concept+'</div>';
+            cloud.push(term);
+        }
+        $('#'+div_id).append(cloud.join(''))
+    })  
 }
 
 //Collect current query for constructing term clouds

@@ -2,7 +2,7 @@ div.termcloud_wrap {
     overflow-x: auto;
     overflow-y: auto;
     white-space: nowrap;
-    height: 120px;
+    height: 200px;
     width: 100%;
     margin-top: 10px;
     margin-bottom: 20px;
@@ -11,8 +11,15 @@ div.termcloud_wrap {
 }
 
 div.termcloud {
-    height: 100px;
-    width: 100px;
+    height: 150px;
+    width: 200px;
     margin-right: 5px;
+    margin-left: 5px;
     display: inline-block;
+}
+
+div.tc-term {
+    float: left;
+    margin-left: 7px;
+    color: steelblue;
 }

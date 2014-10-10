@@ -262,6 +262,9 @@ def vis_termclouds(request):
             term_clouds[np['id']] = tc[0:10]
             papers[np['id']] = select[0] 
 
+        data['tc'] = term_clouds
+        data['papers'] = papers
+        data['year'] = request.POST['year']
         json_data = js.dumps(data)		
         response = HttpResponse(json_data, content_type="application/json")
     else:

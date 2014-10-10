@@ -290,6 +290,7 @@ class KBNewsES(object):
         processed_query = self.construct_query(query, fields)
         if processed_query == '':
             return [] 
+        """
         qry = {
             'query': processed_query,
             'aggregations': {
@@ -298,11 +299,15 @@ class KBNewsES(object):
                 }
             } 
         }
-        print qry
+        """
+        # search for results, then make the ner cloud
+        qry = {'query': processed_query}
         res = self.es.search(index=index, doc_type=doc_type, body=qry, size=100)
-        self.es.index.flush(index=index)
-        #print res
-        terms = [[t['key'], t['score']] for t in res['aggregations']['term_clouds']['buckets']]
+        terms = self.topConcepts(res, 10)
+        if not terms == []:
+            print qry
+            print terms
+        #terms = [[t['key'], t['score']] for t in res['aggregations']['term_clouds']['buckets']]
         
         return terms            
 
@@ -333,25 +338,28 @@ class KBNewsES(object):
 
         concepts = []
         for doc in docs:
-            entities = doc['_source'].get('entity')
-            if not entities == None:
-                # filter concepts based on method and score
-                entities = list(it.ifilter(lambda x: x.get('method', [])==cmethod, entities))
-                concepts += [(doc, self.clean(e.get('concept', '')), e) 
+            E = [doc.get('_source', {}).get('entity_other', []), 
+                    doc.get('_source', {}).get('entity_person', []),
+                    doc.get('_source', {}).get('entity_organization', []), 
+                    doc.get('_source', {}).get('entity_location', [])]
+            E = [[] if e == None else e for e in E]
+
+            if not E == []:
+                entities = [e for sublist in E for e in sublist]
+
+            tmp = [(doc, self.clean(e.get('concept', '')), e) 
                     for e in entities]
-
-        #concepts = [(doc, self.clean(concept.get('concept', '')), concept)
-        #    for doc in docs 
-        #    for concept in doc.get('_source', {}).get('entity', {})]
-
+            concepts.extend(tmp)
+            
         # for each concept, compute the score
         concept_score = []
         concepts.sort(key=lambda x: x[1])
+        # group the same concepts together
         for k, g in it.groupby(concepts, lambda x:x[1]):
             g = list(g)
-            if len(g) <= 2:
+            if len(g) <= 1:
                 continue
-            docs = [(gg[0]['_source']['loc'], gg[0]['_source']['date']) for gg in g]
+            #docs = [(gg[0]['_source']['loc'], gg[0]['_source']['date']) for gg in g]
             # p(e|D) \propto \sum_{w \in e} exp(log p(e|d) + log(d))
             p_e_D = log(sum([exp(gg[2]['doc_score']+gg[0]['_score']) for gg in g]))
 
@@ -359,9 +367,11 @@ class KBNewsES(object):
             
             # score = log(p(e|D)) - log(p(e|C))
             score = p_e_D - p_e_C 
-            concept_score.append((k, score, docs)) 
+            #concept_score.append((k, score, docs)) 
+            rep =  g[0][2].get('concept', '')
+            concept_score.append((k, score, rep))
         concept_score.sort(key=(lambda x: x[1]), reverse=True)
-        
+#       print concept_score         
         return concept_score[0:topX]
 
          
@@ -418,7 +428,7 @@ if __name__ == '__main__':
                 }
             }
     qry = {'query': query}
-    res = es.search(index=index, doc_type=doc_type, body=qry, size=10, from_=0)
+    res = es.search(index=index, doc_type=doc_type, body=qry, size=10)
     print res['hits']['total']
    # res = searcher.keyword_search(index, doc_type, query, fields, 1000, 0)
    # for doc in res['hits']['hits']:
