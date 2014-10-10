@@ -13,6 +13,7 @@ div.termcloud_wrap {
 div.termcloud {
     height: 150px;
     width: 200px;
+    margin-top: 10px;
     margin-right: 5px;
     margin-left: 5px;
     display: inline-block;
@@ -22,4 +23,10 @@ div.tc-term {
     float: left;
     margin-left: 7px;
     color: steelblue;
+}
+
+.section-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 10px;
 }

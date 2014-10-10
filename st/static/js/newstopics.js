@@ -359,15 +359,18 @@ function update_term_clouds(query){
         && query['should'].trim() == '' 
         && query['mustnot'].trim() == '')
         return 0;
-
     //prepare wrap div
     var wraps = [];
     $('.np_group').each(function(){
         var loc_id = $(this).attr('id').split('_')[1]
         var loc = $(this).text();
-        var label = '<h5>'+ loc +'</h5>';
+        var label = ['<div id="tc_loc_'+loc_id+'">',
+                    '<span class="section-label">'+ loc +'</span>',
+                    '<span id="selected_np_'+loc_id+'" class="info"></span>',
+                    '</div>',
+                ];
         var wrap_div = ['<div class="termcloud_wrap" id="tc_'+loc_id+'">'];
-        wrap_div.push(label);
+        wrap_div.push(label.join(''));
         for (var year = timeline_start; year <= timeline_end; year++){
             //make the slot for each year
             var year_div = '<div>'+year+'</div>';
@@ -413,6 +416,7 @@ function show_termcloud(data){
     var year = data['year']; 
     $.each(tc, function(key, value){
         var div_id = 'cloud_terms_'+key+'_'+year;
+        $('#'+div_id).html('');
         if (value.length > 0){
             var max_score = value[0][1];
             var min_score = value[value.length-1][1];
@@ -431,7 +435,9 @@ function show_termcloud(data){
             }
             $('#'+div_id).html(cloud.join(''));
         }
-        $('#loading_'+key+'_'+year).hide();       
+        $('#loading_'+key+'_'+year).hide();
+        //update selected newspapers
+        $('#selected_np_'+key).html(papers[key]);
     })  
 }
 

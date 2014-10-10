@@ -253,15 +253,19 @@ def vis_termclouds(request):
             select = request.POST.getlist('newspapers_%s'%np['id'])
             if select[0] == '' or select[0] == 'all':
                 query['newspapers'] = [x[0] for x in np['news']]
+                papers[np['id']] = 'All'
+                tc = searcher.term_clouds(index, doc_type, field, query, fields)
+
             elif select[0] == 'none':
                 tc = []
+                papers[np['id']] = 'None'
             else:
                 query['newspapers'] = [np['news'][int(x.split('_')[-1])][0] 
                         for x in select[0].split(';')]
-        
-            tc = searcher.term_clouds(index, doc_type, field, query, fields)
+                papers[np['id']] = '; '.join(query['newspapers']) 
+                tc = searcher.term_clouds(index, doc_type, field, query, fields)
+
             term_clouds[np['id']] = tc[0:10]
-            papers[np['id']] = select[0] 
 
         data['tc'] = term_clouds
         data['papers'] = papers
