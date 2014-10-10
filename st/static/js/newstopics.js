@@ -370,8 +370,12 @@ function update_term_clouds(query){
         for (var year = timeline_start; year <= timeline_end; year++){
             //make the slot for each year
             var year_div = '<div>'+year+'</div>';
-            var tc_div = '<div class="termcloud" id="cloud_'+loc_id+'_'+year+'">'+year_div+'</div>';
-            wrap_div.push(tc_div);
+            var term_div = '<div id="cloud_terms_'+loc_id+'_'+year+'"></div>';
+            var tc_div = ['<div class="termcloud" id="cloud_'+loc_id+'_'+year+'">',
+                    year_div,
+                    term_div,
+                    '</div>'];
+            wrap_div.push(tc_div.join(''));
         }
         wrap_div.push('</div>');
         wraps.push(wrap_div.join(''));
@@ -400,10 +404,11 @@ function show_termcloud(data){
     var papers = data['papers']
     var year = data['year'] 
     $.each(tc, function(key, value){
-        var div_id = 'cloud_'+key+'_'+year;
+        var div_id = 'cloud_terms_'+key+'_'+year;
         var max_score = value[0][1];
         var min_score = value[value.length-1][1];
         var cloud = [];
+
         for (var i = 0; i<value.length; i++){
             var perc = (value[i][1]-min_score)/(max_score-min_score);
             var fontsize = Math.max(12+Math.round(10*perc)); 
@@ -415,7 +420,8 @@ function show_termcloud(data){
             term  = term + concept+'</div>';
             cloud.push(term);
         }
-        $('#'+div_id).append(cloud.join(''))
+        $('#'+div_id).html(cloud.join(''));
+       
     })  
 }
 
