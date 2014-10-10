@@ -365,8 +365,9 @@ function update_term_clouds(query){
     $('.np_group').each(function(){
         var loc_id = $(this).attr('id').split('_')[1]
         var loc = $(this).text();
-        var label = '<h3>'+ loc +'</h3>';
+        var label = '<h5>'+ loc +'</h5>';
         var wrap_div = ['<div class="termcloud_wrap" id="tc_'+loc_id+'">'];
+        wrap_div.push(label);
         for (var year = timeline_start; year <= timeline_end; year++){
             //make the slot for each year
             var year_div = '<div>'+year+'</div>';
