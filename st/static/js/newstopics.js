@@ -429,7 +429,8 @@ function show_termcloud(data){
                 var concept = value[i][2]
                 //console.log(value[i][0])
                 //console.log(fontsize)
-                var term = '<div class="tc-term" style="font-size: '+fontsize+'px; opacity: '+opacity+'">';
+                var term = '<div class="tc-term wordwrap" style="font-size: '+fontsize+'px; opacity: '+opacity+'">';
+                //term = term + '<div class="tc-term-constraint wordwrap">';
                 term  = term + concept+'</div>';
                 cloud.push(term);
             }
