@@ -279,11 +279,12 @@ class KBNewsES(object):
         return tmp.replace('$HIGHLIGHT$', '<span class="highlight">').replace('$HIGHLIGHTEND$', '</span>')  
 
 
-    def term_clouds(self, index, doc_type, field, query, fields):
+    def term_clouds(self, index, doc_type, field, query, fields, topX):
         """
         field: field for constructing term clouds
         query: the raw query
         fields: fields for search matched terms
+        topX: return top X term clouds
         """
         if query == {}:
             return []  
@@ -303,7 +304,7 @@ class KBNewsES(object):
         # search for results, then make the ner cloud
         qry = {'query': processed_query}
         res = self.es.search(index=index, doc_type=doc_type, body=qry, size=100)
-        terms = self.topConcepts(res, 10)
+        terms = self.topConcepts(res, topX)
         if not terms == []:
             print qry
             print terms

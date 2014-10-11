@@ -128,7 +128,7 @@ $('select').each(function(){
 });    
 set_newspaper_selections();
 
-//Advanced search: select all/none newspapers
+//Advanced search: select  newspapers
 $('select').on('change', function(){
     var typenews = $(this).attr('id').split('_')[1];
     var selection_status = newspaper_selection_status[typenews];
@@ -159,7 +159,9 @@ $('select').on('change', function(){
     }
     //set the new selection
     set_newspaper_selections();
-    
+    //update termclouds
+    query = get_query()
+    update_term_clouds(query, [typenews]);
 });
 
 
@@ -211,16 +213,16 @@ $('.opt_sort').click(function(){
 $('.query_term').keyup(function(){
     //update term cloud
     delay(function(){
-        query = get_query()
-        update_term_clouds(query);
+        query = get_query();
+        changed_loc_ids = [];
+        $('.np_group').each(function(){
+            var loc_id = $(this).attr('id').split('_')[1];
+            changed_loc_ids.push(loc_id);
+        });
+        update_term_clouds(query, changed_loc_ids);
     }, keyup_delay);
 });
 
-//When newspaper selection changed, change termclouds
-
-//When query is submitted, create termclouds onload
-
-//When click on a year, zoom in to the month view of the year
 
 
 //==============================
@@ -354,59 +356,47 @@ function get_search_results(){
 // Note: the actual drawing functions are in 
 // vis.js
 //==============================================
-function update_term_clouds(query){
+function update_term_clouds(query, changed_loc_ids){
     if (query['must'].trim() == '' 
         && query['should'].trim() == '' 
         && query['mustnot'].trim() == '')
         return 0;
-    //prepare wrap div
-    var wraps = [];
-    $('.np_group').each(function(){
-        var loc_id = $(this).attr('id').split('_')[1]
-        var loc = $(this).text();
-        var label = ['<div id="tc_loc_'+loc_id+'">',
-                    '<span class="section-label">'+ loc +'</span>',
-                    '<span id="selected_np_'+loc_id+'" class="info"></span>',
-                    '</div>',
-                ];
-        var wrap_div = ['<div class="termcloud_wrap" id="tc_'+loc_id+'">'];
-        wrap_div.push(label.join(''));
-        for (var year = timeline_start; year <= timeline_end; year++){
-            //make the slot for each year
-            var year_div = '<div>'+year+'</div>';
-            var term_div = '<div class="termcloud_terms" id="cloud_terms_'+loc_id+'_'+year+'"></div>';
-            var waiting_div = [
-                    '<div class="loading" id="loading_'+loc_id+'_'+year+'" style="display:none;">',
-                    '<img src="'+spinner_path+'" alt="Loading" />',
-                    '</div>'
-                ]
-            var tc_div = ['<div class="termcloud" id="cloud_'+loc_id+'_'+year+'">',
-                    year_div,
-                    waiting_div.join(''),
-                    term_div,
-                    '</div>'];
-            wrap_div.push(tc_div.join(''));
+    for (var i = 0; i<changed_loc_ids.length; i++){
+        //check if the wrap exists
+        var loc_id = changed_loc_ids[i];
+        if ($('#tc_'+ loc_id).length > 0){
+            //if exists, reset it
+            $('#tc_'+loc_id).html(prepare_tc_wrap(loc_id));
+        } 
+        else{
+            //else, create it 
+            var wrap_div = ['<div class="termcloud_wrap" id="tc_'+loc_id+'">'];
+            wrap_div.push(prepare_tc_wrap(loc_id));
+            wrap_div.push('</div>');
+            $('#analyses_termclouds').append(wrap_div.join(''));
         }
-        wrap_div.push('</div>');
-        wraps.push(wrap_div.join(''));
-    });
-    $('#analyses_termclouds').html(wraps.join('\n'));    
-    $('.loading').show();
+
+        $('.loading_'+loc_id).show();
+    }
+
 
     //update year based termclouds
-    for (var year = timeline_start; year <= timeline_end; year++){
-        query['periods'] = year+'-01-01:'+year+'-12-31';
-        query['year'] = year;
+    for (var i = 0; i<changed_loc_ids.length; i++){
+        query['changed_loc_id'] = changed_loc_ids[i]; 
+        for (var year = timeline_start; year <= timeline_end; year++){
+            query['periods'] = year+'-01-01:'+year+'-12-31';
+            query['year'] = year;
+            query['changed_']
+            //console.log(query)
+            $.ajax({
+       	        type: "POST",
+                url: url_vis_termclouds,
+                data: query,
 
-        //console.log(query)
-        $.ajax({
-       	    type: "POST",
-            url: url_vis_termclouds,
-            data: query,
-
-        }).done(function(response) {
-            show_termcloud(response)    
-        });
+            }).done(function(response) {
+                show_termcloud(response)    
+            });
+        }
     }
 }
 
@@ -414,32 +404,61 @@ function show_termcloud(data){
     var tc = data['tc'];
     var papers = data['papers'];
     var year = data['year']; 
-    $.each(tc, function(key, value){
-        var div_id = 'cloud_terms_'+key+'_'+year;
-        $('#'+div_id).html('');
-        if (value.length > 0){
-            var max_score = value[0][1];
-            var min_score = value[value.length-1][1];
-            var cloud = [];
+    var loc_id = data['loc_id'];
 
-            for (var i = 0; i<value.length; i++){
-                var perc = (value[i][1]-min_score)/(max_score-min_score);
-                var fontsize = Math.max(12+Math.round(10*perc)); 
-                var opacity = 0.7+(0.3*perc);
-                var concept = value[i][2]
-                //console.log(value[i][0])
-                //console.log(fontsize)
-                var term = '<div class="tc-term wordwrap" style="font-size: '+fontsize+'px; opacity: '+opacity+'">';
-                //term = term + '<div class="tc-term-constraint wordwrap">';
-                term  = term + concept+'</div>';
-                cloud.push(term);
-            }
-            $('#'+div_id).html(cloud.join(''));
+    var div_id = 'cloud_terms_'+loc_id+'_'+year;
+    $('#'+div_id).html('');
+    if (tc.length > 0){
+        var max_score = tc[0][1];
+        var min_score = tc[tc.length-1][1];
+        var cloud = [];
+
+        for (var i = 0; i<tc.length; i++){
+            var perc = (tc[i][1]-min_score)/(max_score-min_score);
+            var fontsize = Math.max(12+Math.round(10*perc)); 
+            var opacity = 0.7+(0.3*perc);
+            var concept = tc[i][2]
+            //console.log(value[i][0])
+            //console.log(fontsize)
+            var term = '<div class="tc-term wordwrap" style="font-size: '+fontsize+'px; opacity: '+opacity+'">';
+            //term = term + '<div class="tc-term-constraint wordwrap">';
+            term  = term + concept+'</div>';
+            cloud.push(term);
         }
-        $('#loading_'+key+'_'+year).hide();
-        //update selected newspapers
-        $('#selected_np_'+key).html(papers[key]);
-    })  
+        $('#'+div_id).html(cloud.join(''));
+    }
+    $('#loading_'+loc_id+'_'+year).hide();
+    //update selected newspapers
+    $('#selected_np_'+loc_id).html(papers);
+}
+
+function prepare_tc_wrap(loc_id){
+    //prepare wrap div
+    var loc = $('#p_'+loc_id).text();
+    var label = ['<div id="tc_loc_'+loc_id+'">',
+                '<span class="section-label">'+ loc +'</span>',
+                '<span id="selected_np_'+loc_id+'" class="info"></span>',
+                '</div>',
+                ];
+    var wrap_div = []
+    wrap_div.push(label.join(''));
+    for (var year = timeline_start; year <= timeline_end; year++){
+        //make the slot for each year
+        var year_div = '<div>'+year+'</div>';
+        var term_div = '<div class="termcloud_terms" id="cloud_terms_'+loc_id+'_'+year+'"></div>';
+        var waiting_div = [
+                '<div class="loading loading_'+loc_id+'" id="loading_'+loc_id+'_'+year+'" style="display:none;">',
+                '<img src="'+spinner_path+'" alt="Loading" />',
+                '</div>'
+                ]
+        var tc_div = ['<div class="termcloud" id="cloud_'+loc_id+'_'+year+'">',
+                year_div,
+                waiting_div.join(''),
+                term_div,
+                '</div>'];
+        wrap_div.push(tc_div.join(''));
+    }
+    return wrap_div.join('');
 }
 
 //Collect current query for constructing term clouds

@@ -239,6 +239,7 @@ def vis_termclouds(request):
         field = request.POST.get('cloud_type', 'text') 
 
         fields = ['text', 'title']
+        changed_loc_id = int(request.POST.get('changed_loc_id'))
         query = {
             'must': request.POST.get('must', ''),
             'mustnot': request.POST.get('mustnot', ''),
@@ -249,27 +250,30 @@ def vis_termclouds(request):
         term_clouds = {}
         papers = {}
         # loop over np types (location)
-        for np in request.session['newspaper_counts']:
-            select = request.POST.getlist('newspapers_%s'%np['id'])
-            if select[0] == '' or select[0] == 'all':
-                query['newspapers'] = [x[0] for x in np['news']]
-                papers[np['id']] = 'All'
-                tc = searcher.term_clouds(index, doc_type, field, query, fields)
+        # for np in request.session['newspaper_counts']:
 
-            elif select[0] == 'none':
-                tc = []
-                papers[np['id']] = 'None'
-            else:
-                query['newspapers'] = [np['news'][int(x.split('_')[-1])][0] 
-                        for x in select[0].split(';')]
-                papers[np['id']] = '; '.join(query['newspapers']) 
-                tc = searcher.term_clouds(index, doc_type, field, query, fields)
+        # get the newspaper selection that have been updated
+        np = request.session['newspaper_counts'][changed_loc_id]
+        select = request.POST.getlist('newspapers_%s'%changed_loc_id)
 
-            term_clouds[np['id']] = tc[0:10]
+        if select[0] == '' or select[0] == 'all':
+            query['newspapers'] = [x[0] for x in np['news']]
+            papers = 'All'
+            tc = searcher.term_clouds(index, doc_type, field, query, fields, 10)
 
-        data['tc'] = term_clouds
+        elif select[0] == 'none':
+            tc = []
+            papers = 'None'
+        else:
+            query['newspapers'] = [np['news'][int(x.split('_')[-1])][0] 
+                    for x in select[0].split(';')]
+            papers = '; '.join(query['newspapers']) 
+            tc = searcher.term_clouds(index, doc_type, field, query, fields, 10)
+
+        data['tc'] = tc
         data['papers'] = papers
         data['year'] = request.POST['year']
+        data['loc_id'] = changed_loc_id
         json_data = js.dumps(data)		
         response = HttpResponse(json_data, content_type="application/json")
     else:
