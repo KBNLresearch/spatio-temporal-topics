@@ -255,21 +255,25 @@ def vis_termclouds(request):
         # get the newspaper selection that have been updated
         np = request.session['newspaper_counts'][changed_loc_id]
         select = request.POST.getlist('newspapers_%s'%changed_loc_id)
-
+        print request.POST 
+        print changed_loc_id
+        print select
         if select[0] == '' or select[0] == 'all':
             query['newspapers'] = [x[0] for x in np['news']]
             papers = 'All'
             tc = searcher.term_clouds(index, doc_type, field, query, fields, 10)
+            print 'all'
 
         elif select[0] == 'none':
-            tc = []
             papers = 'None'
+            tc = []
+            print 'none'
         else:
             query['newspapers'] = [np['news'][int(x.split('_')[-1])][0] 
                     for x in select[0].split(';')]
             papers = '; '.join(query['newspapers']) 
             tc = searcher.term_clouds(index, doc_type, field, query, fields, 10)
-
+            print 'something'
         data['tc'] = tc
         data['papers'] = papers
         data['year'] = request.POST['year']

@@ -21,6 +21,7 @@ var newspaper_selection_status = {};
 var default_dateStart = new Date(1913, 12, 1)
 var default_dateEnd = new Date(1940, 11, 31)
 
+var doc_counts = {};
 
 $(document).ready(function(){
 
@@ -132,7 +133,7 @@ set_newspaper_selections();
 $('select').on('change', function(){
     var typenews = $(this).attr('id').split('_')[1];
     var selection_status = newspaper_selection_status[typenews];
-    var selected = $('option:selected', this);
+    //var selected = $('option :selected', this);
     var selected = $(this).find(':selected');
     //only new selection needs to be handeled 
     //deselection are fine    
@@ -160,7 +161,7 @@ $('select').on('change', function(){
     //set the new selection
     set_newspaper_selections();
     //update termclouds
-    query = get_query()
+    query = get_query();
     update_term_clouds(query, [typenews]);
 });
 
@@ -219,6 +220,7 @@ $('.query_term').keyup(function(){
             var loc_id = $(this).attr('id').split('_')[1];
             changed_loc_ids.push(loc_id);
         });
+        //update term clouds
         update_term_clouds(query, changed_loc_ids);
     }, keyup_delay);
 });
@@ -330,9 +332,13 @@ function set_newspaper_selections(){
     var options =  $(this).find('option');
     var sta = {}
     options.each(function(){
-        sta[$(this).attr('id')] = $(this).is(':selected');
+        var id = $(this).attr('id');
+        if (id != 'data_divider'){
+            sta[id] = $(this).is(':selected');
+        }
     });
     newspaper_selection_status[typenews] = sta;
+    
   });
 }
 
@@ -378,7 +384,6 @@ function update_term_clouds(query, changed_loc_ids){
 
         $('.loading_'+loc_id).show();
     }
-
 
     //update year based termclouds
     for (var i = 0; i<changed_loc_ids.length; i++){
@@ -478,13 +483,12 @@ function get_query(){
             news_select = 'none';
         else {
             selection = $.grep(Object.keys(value), function(k){
-                return value[k] == true
+                return value[k] === true;
             });
             news_select = selection.join(';');
         }
-        query['newspapers_'+key] = news_select
+        query['newspapers_'+key] = news_select;
      });
     return query
 }
-
 

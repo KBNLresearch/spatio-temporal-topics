@@ -189,7 +189,7 @@
                     >
                         <option id="all_{{np_group.id}}" class="option_all" >All</option>
                         <option id="none_{{np_group.id}}" class="option_none" >None</option>
-                        <option data-divider=true></option>
+                        <option data-divider=true id="data_divider"></option>
                         {% for np in np_group.news %}
                         <option data-subtext="({{np.1}})" id="opt_{{np_group.id}}_{{np.2}}" >{{np.0}}</option>
                         {% endfor %}

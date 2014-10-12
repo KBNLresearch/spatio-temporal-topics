@@ -305,9 +305,9 @@ class KBNewsES(object):
         qry = {'query': processed_query}
         res = self.es.search(index=index, doc_type=doc_type, body=qry, size=100)
         terms = self.topConcepts(res, topX)
-        if not terms == []:
-            print qry
-            print terms
+    #    if not terms == []:
+    #        print qry
+    #        print terms
         #terms = [[t['key'], t['score']] for t in res['aggregations']['term_clouds']['buckets']]
         
         return terms            
