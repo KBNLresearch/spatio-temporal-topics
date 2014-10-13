@@ -117,7 +117,7 @@ $('#btn_clearform').click(function(){
     //And clear the newspaper selection
     $('select').selectpicker('deselectAll');
     $('select').selectpicker('val', []);
-    set_newspaper_selections('');
+    set_newspaper_selections();
 });
 
 //Advanced search: set selected newspapers on loading
@@ -127,7 +127,7 @@ $('select').each(function(){
     $(this).selectpicker('deselectAll');
     $(this).selectpicker('val', selected); 
 });    
-set_newspaper_selections('');
+set_newspaper_selections();
 
 //Advanced search: select  newspapers
 $('.news_select').on('change', function(){
@@ -156,7 +156,7 @@ $('.news_select').on('change', function(){
         }
     }
     //cache the selection
-    set_newspaper_selections(new_selection);
+    set_newspaper_selections();
 
     
     //update termclouds
@@ -326,36 +326,15 @@ function padStr(i) {
 
 //=========Newspaper functions ===============
 //new_selection only happen when on the select change event
-function set_newspaper_selections(new_selection){
+function set_newspaper_selections(){
   $('select').each(function(){
     var typenews = $(this).attr('id').split('_')[1];
     var options =  $(this).find('option');
     var sta = {};
-    if (new_selection == 'All'){
-        $(options).each(function(){
-            var id = $(this).attr('id');
-            if (id.split('_')[0] == 'all'){
-                sta[id] = true;
-            }
-            else
-                sta[id] = false;
-        });
-    }
-    else if (new_selection == 'None'){
-         $(options).each(function(){
-            var id = $(this).attr('id');
-            if (id.split('_')[0] == 'none')
-                sta[id] = true;
-            else
-                sta[id] = false;
-        });
-    }
-    else {
-         $(options).each(function(){
-            var id = $(this).attr('id');
-            sta[id] = $(this).is(':selected');
-        });
-    }
+    $(options).each(function(){
+        var id = $(this).attr('id');
+        sta[id] = $(this).is(':selected');
+    });
     newspaper_selection_status[typenews] = sta;
   });
 }
