@@ -117,7 +117,7 @@ $('#btn_clearform').click(function(){
     //And clear the newspaper selection
     $('select').selectpicker('deselectAll');
     $('select').selectpicker('val', []);
-    set_newspaper_selections();
+    set_newspaper_selections('');
 });
 
 //Advanced search: set selected newspapers on loading
@@ -127,14 +127,14 @@ $('select').each(function(){
     $(this).selectpicker('deselectAll');
     $(this).selectpicker('val', selected); 
 });    
-set_newspaper_selections();
+set_newspaper_selections('');
 
 //Advanced search: select  newspapers
-$('select').on('change', function(){
+$('.news_select').on('change', function(){
     var typenews = $(this).attr('id').split('_')[1];
     var selection_status = newspaper_selection_status[typenews];
-    //var selected = $('option :selected', this);
     var selected = $(this).find(':selected');
+
     //only new selection needs to be handeled 
     //deselection are fine    
     var new_selection = ''
@@ -145,21 +145,20 @@ $('select').on('change', function(){
         }    
     });
     if (new_selection == 'All'){
-        $(this).selectpicker('deselectAll');
         $(this).selectpicker('val', 'All');
     }
     else if (new_selection == 'None'){
-        $(this).selectpicker('deselectAll');
         $(this).selectpicker('val', 'None');
     }
     else {
         if (selection_status['all_'+typenews] || selection_status['none_'+typenews]){
-            $(this).selectpicker('deselectAll');
             $(this).selectpicker('val', new_selection); 
         }
     }
-    //set the new selection
-    set_newspaper_selections();
+    //cache the selection
+    set_newspaper_selections(new_selection);
+
+    
     //update termclouds
     query = get_query();
     update_term_clouds(query, [typenews]);
@@ -326,22 +325,49 @@ function padStr(i) {
 
 
 //=========Newspaper functions ===============
-function set_newspaper_selections(){
+//new_selection only happen when on the select change event
+function set_newspaper_selections(new_selection){
   $('select').each(function(){
     var typenews = $(this).attr('id').split('_')[1];
     var options =  $(this).find('option');
-    var sta = {}
-    options.each(function(){
-        var id = $(this).attr('id');
-        if (id != 'data_divider'){
+    var sta = {};
+    if (new_selection == 'All'){
+        $(options).each(function(){
+            var id = $(this).attr('id');
+            if (id.split('_')[0] == 'all'){
+                sta[id] = true;
+            }
+            else
+                sta[id] = false;
+        });
+    }
+    else if (new_selection == 'None'){
+         $(options).each(function(){
+            var id = $(this).attr('id');
+            if (id.split('_')[0] == 'none')
+                sta[id] = true;
+            else
+                sta[id] = false;
+        });
+    }
+    else {
+         $(options).each(function(){
+            var id = $(this).attr('id');
             sta[id] = $(this).is(':selected');
-        }
-    });
+        });
+    }
     newspaper_selection_status[typenews] = sta;
-    
   });
 }
 
+function status_change(status1, status2){
+    change = false;
+    $.each(status1, function(key, value){
+        if (value != status2[key])
+            change = true;   
+    });
+    return change;
+}
 
 //========= Pagination functions ==========
 // Functions related to paginations 
