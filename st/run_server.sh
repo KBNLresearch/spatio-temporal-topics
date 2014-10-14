@@ -1,5 +1,6 @@
 # This script should run every 5 mins
-log=log/django.log
+log=/opt2/jhe010/st/log/django.log
+home=/opt2/jhe010/st/
 
 line=`grep "Exception" $log`
 length=${#line}
@@ -17,7 +18,7 @@ if (( $nline == 1 ))
 then
     echo 'restart'
     # restart the server
-    python manage.py runserver 0.0.0.0:6001 &> $log &
+    $home/python manage.py runserver 0.0.0.0:6001 &> $log &
 fi
 
 
