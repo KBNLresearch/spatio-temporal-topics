@@ -10,13 +10,7 @@ import math
 from elasticsearch import Elasticsearch
 
 
-ES = Elasticsearch(
-    max_retries = 10,
-    keepAlive = True,
-    maxSockets = 100,
-    minSockets = 1,
-)
-searcher = KBNewsES(ES)
+searcher = KBNewsES(settings.ES)
 sort_options = {
     '': 'Relevance',
     'date': 'Date',

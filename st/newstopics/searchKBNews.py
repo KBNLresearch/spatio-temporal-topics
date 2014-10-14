@@ -260,7 +260,7 @@ class KBNewsES(object):
 
             body['query'] = {'filtered': {'filter': filtered}} 
             res = self.es.search(index=index, doc_type=doc_type, 
-                body=body, search_type="count", fields="loc", ignore=400)
+                body=body, search_type="count", fields="loc")
             newspapers = res['aggregations']['papercount']['buckets']
 
             np = sorted([(p['key'] if len(p['key'])<45 else '%s...'%p['key'][:50], p['doc_count']) for p in newspapers], key=operator.itemgetter(0))
