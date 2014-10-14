@@ -64,7 +64,7 @@ class KBNewsES(object):
             qry['sort'] = sorting
 
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
-                size=size, from_=start, fields=settings.RET_FIELDS)
+                size=size, from_=start, fields=settings.RET_FIELDS, timeout=10000, ignore=400)
         #print res['hits']['hits'][0]['highlight']['text']
 
         total_results = res['hits']['total']
@@ -260,7 +260,7 @@ class KBNewsES(object):
 
             body['query'] = {'filtered': {'filter': filtered}} 
             res = self.es.search(index=index, doc_type=doc_type, 
-                body=body, search_type="count", fields="loc")
+                body=body, search_type="count", fields="loc", ignore=400)
             newspapers = res['aggregations']['papercount']['buckets']
 
             np = sorted([(p['key'] if len(p['key'])<45 else '%s...'%p['key'][:50], p['doc_count']) for p in newspapers], key=operator.itemgetter(0))
@@ -303,7 +303,7 @@ class KBNewsES(object):
         """
         # search for results, then make the ner cloud
         qry = {'query': processed_query}
-        res = self.es.search(index=index, doc_type=doc_type, body=qry, size=100)
+        res = self.es.search(index=index, doc_type=doc_type, body=qry, size=100, timeout=10000, ignore=400)
         terms = self.topConcepts(res, topX)
     #    if not terms == []:
     #        print qry

@@ -10,7 +10,7 @@ var delay = (function(){
   };
 })();
 
-var keyup_delay = 800;
+var keyup_delay = 500;
 var timeline_start = 1914;
 var timeline_end = 1940
 
@@ -398,6 +398,8 @@ function update_term_clouds(query, changed_loc_ids){
             query['year'] = year;
             query['changed_']
             //console.log(query)
+
+            delay(function(){
             $.ajax({
        	        type: "POST",
                 url: url_vis_termclouds,
@@ -406,6 +408,7 @@ function update_term_clouds(query, changed_loc_ids){
             }).done(function(response) {
                 show_termcloud(response)    
             });
+            }, 300)
         }
     }
 }
