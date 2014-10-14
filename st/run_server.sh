@@ -12,9 +12,9 @@ then
     done
 fi
 
-line=`ps aux | grep 'python manage.py runserver 0.0.0.0:6001'`
-length=${#line}
-if (( $length == 1 ))
+nline=`ps aux | grep 'python manage.py runserver 0.0.0.0:6001' | wc -l`
+echo $nline
+if (( $nline == 1 ))
 then
     # restart the server
     python manage.py runserver 0.0.0.0:6001 &> $log &
