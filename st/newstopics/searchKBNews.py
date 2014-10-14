@@ -64,7 +64,7 @@ class KBNewsES(object):
             qry['sort'] = sorting
 
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
-                size=size, from_=start, fields=settings.RET_FIELDS, timeout=10000, ignore=400)
+                size=size, from_=start, fields=settings.RET_FIELDS, ignore=[400, 500])
         #print res['hits']['hits'][0]['highlight']['text']
 
         total_results = res['hits']['total']
@@ -303,7 +303,7 @@ class KBNewsES(object):
         """
         # search for results, then make the ner cloud
         qry = {'query': processed_query}
-        res = self.es.search(index=index, doc_type=doc_type, body=qry, size=100, timeout=10000, ignore=400)
+        res = self.es.search(index=index, doc_type=doc_type, body=qry, size=100, ignore=[400, 500])
         terms = self.topConcepts(res, topX)
     #    if not terms == []:
     #        print qry
