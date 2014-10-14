@@ -7,6 +7,7 @@ import itertools
 import datetime
 import math
 # Create your views here.
+from elasticsearch import Elasticsearch
 
 
 ES = Elasticsearch(
