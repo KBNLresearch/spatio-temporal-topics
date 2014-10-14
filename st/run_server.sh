@@ -15,7 +15,7 @@ length=${#line}
 if (( $length == 1 ))
 then
     # restart the server
-    python manage.py runserver 0.0.0.0:6001 &> django.log &
+    python manage.py runserver 0.0.0.0:6001 &> log/django.log &
 fi
 
 
