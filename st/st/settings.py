@@ -113,15 +113,6 @@ TEMPLATE_DIRS = (
 )
 
 # Set up elastic search parameters
-from elasticsearch import Elasticsearch
-
-ES = Elasticsearch(
-    max_retries = 10,
-    keepAlive = True,
-    maxSockets = 100,
-    minSockets = 1,
-)
-
 INDEX = 'kb_krant'
 DOC_TYPE = 'article'
 SEARCH_FIELDS = ['text', 'title']

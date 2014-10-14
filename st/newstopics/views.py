@@ -8,7 +8,14 @@ import datetime
 import math
 # Create your views here.
 
-searcher = KBNewsES(settings.ES)
+
+ES = Elasticsearch(
+    max_retries = 10,
+    keepAlive = True,
+    maxSockets = 100,
+    minSockets = 1,
+)
+searcher = KBNewsES(ES)
 sort_options = {
     '': 'Relevance',
     'date': 'Date',
