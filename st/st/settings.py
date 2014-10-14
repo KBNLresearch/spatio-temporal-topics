@@ -115,7 +115,18 @@ TEMPLATE_DIRS = (
 # Set up elastic search parameters
 from elasticsearch import Elasticsearch
 
-ES = Elasticsearch()
+ES = Elasticsearch(
+    sniff_on_start=True,
+    # refresh nodes after a node fails to respond
+    sniff_on_connection_fail=True,
+    # and also every 60 seconds
+    sniffer_timeout=60,
+    max_retries = 10,
+    keepAlive = True,
+    maxSockets = 100,
+    minSockets = 1,
+)
+
 INDEX = 'kb_krant'
 DOC_TYPE = 'article'
 SEARCH_FIELDS = ['text', 'title']
