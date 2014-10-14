@@ -116,11 +116,6 @@ TEMPLATE_DIRS = (
 from elasticsearch import Elasticsearch
 
 ES = Elasticsearch(
-    sniff_on_start=True,
-    # refresh nodes after a node fails to respond
-    sniff_on_connection_fail=True,
-    # and also every 60 seconds
-    sniffer_timeout=60,
     max_retries = 10,
     keepAlive = True,
     maxSockets = 100,
