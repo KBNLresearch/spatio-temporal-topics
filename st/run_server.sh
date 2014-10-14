@@ -14,6 +14,7 @@ fi
 
 line=`ps aux | grep 'python manage.py runserver 0.0.0.0:6001'`
 length=${#line}
+echo $length
 if (( $length == 1 ))
 then
     # restart the server
