@@ -8,10 +8,6 @@ import datetime
 import math
 # Create your views here.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 3d00271299543b13922eae980e4986587ed3ece4
 searcher = KBNewsES(settings.ES)
 sort_options = {
     '': 'Relevance',
