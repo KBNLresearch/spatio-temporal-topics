@@ -81,7 +81,7 @@ class KBNewsES(object):
             result = {
                     'docid': docs[i]['_id'],
                     'url': 'http://resolver.kb.nl/resolve?urn=%s'%docs[i]['_id'],
-                    'title': '...'.join(highlights['title']),
+                    'title': '...'.join(highlights.get('title', '')),
                     'loc': source['loc'],
                     'date': source['date'],
                      # Get the summary of the results
