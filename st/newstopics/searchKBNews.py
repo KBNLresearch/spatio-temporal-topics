@@ -66,10 +66,6 @@ class KBNewsES(object):
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
                 size=size, from_=start, fields=settings.RET_FIELDS)
         #print res['hits']['hits'][0]['highlight']['text']
-<<<<<<< HEAD
-        print res
-=======
->>>>>>> 3d00271299543b13922eae980e4986587ed3ece4
         total_results = res['hits']['total']
         docs = res['hits']['hits']
 
