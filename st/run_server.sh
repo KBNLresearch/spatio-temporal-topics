@@ -9,8 +9,12 @@ if [[ $length -gt 0 ]]
 then
     ps aux | grep 'python manage.py runserver 0.0.0.0:6001'| while read line 
     do
+        if [[ $line == *grep* ]]
+        then
+            continue
+        fi
         pid=`echo $line | cut -f 2 -d " "`
-        kill $pid &>> $log
+        kill $pid &> $log".cron"
     done
 fi
 

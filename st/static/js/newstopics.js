@@ -399,7 +399,6 @@ function update_term_clouds(query, changed_loc_ids){
             query['changed_']
             //console.log(query)
 
-            delay(function(){
             $.ajax({
        	        type: "POST",
                 url: url_vis_termclouds,
@@ -408,7 +407,6 @@ function update_term_clouds(query, changed_loc_ids){
             }).done(function(response) {
                 show_termcloud(response)    
             });
-            }, 300)
         }
     }
 }
