@@ -50,7 +50,7 @@ def process_docs(startdate, enddate, method):
     print "Annotating: %s - %s/%s"%(start, start+size, total)
     for d in res['hits']['hits']: 
         an.annotate(d['_id'])
-    """
+
     start += size
     while start < total:
         res = es.search(index=p.INDEX, 
@@ -65,7 +65,7 @@ def process_docs(startdate, enddate, method):
         print "Annotating: %s - %s/%s"%(start, start+size, total)
         for d in res['hits']['hits']: 
             an.annotate(d['_id'])
-        start += size     """
+        start += size    
     return records
 
 # Validate the input date

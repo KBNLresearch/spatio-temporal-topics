@@ -18,6 +18,7 @@ sort_options = {
 #    'page': 'Newspaper page',
 }
 
+# Request when the starting page is loaded
 def index(request):
     c = csrf(request)
     template = 'newstopics/index.html'
@@ -35,7 +36,7 @@ def index(request):
     
     return render_to_response(template, c)
 
-# URL version
+# Request from the simple search
 def simple_search(request):
     c = {}
     c.update(csrf(request))
@@ -97,6 +98,8 @@ def simple_search(request):
     template = 'newstopics/index.html'
     return render_to_response(template, c)
 
+
+# Requst from the advanced search interface
 def advanced_search(request):
     #print 'advanced search'
     c = {}
@@ -231,6 +234,8 @@ def make_pagination(count, current_page):
              }
     return pagination
 
+
+# Request from ajax call to generate entity term clouds.
 def vis_termclouds(request):
     if request.is_ajax:
         data = {}
@@ -251,15 +256,13 @@ def vis_termclouds(request):
         }
         term_clouds = {}
         papers = {}
+        query_to_show = '; '.join(['must:"%s"'%query['must'], 'should:%s'%(query['should']), 'mustnot:%s'%(query['mustnot'])])
         # loop over np types (location)
         # for np in request.session['newspaper_counts']:
 
         # get the newspaper selection that have been updated
         np = request.session['newspaper_counts'][changed_loc_id]
         select = request.POST.getlist('newspapers_%s'%changed_loc_id)
-        print request.POST 
-        print changed_loc_id
-        print select
         if select[0] == '' or select[0] == 'all':
             query['newspapers'] = [x[0] for x in np['news']]
             papers = 'All'
@@ -280,6 +283,7 @@ def vis_termclouds(request):
         data['papers'] = papers
         data['year'] = request.POST['year']
         data['loc_id'] = changed_loc_id
+        data['query_to_show'] = query_to_show
         json_data = js.dumps(data)		
         response = HttpResponse(json_data, content_type="application/json")
     else:
@@ -287,7 +291,7 @@ def vis_termclouds(request):
         return render_to_response('errors/403.html')
     return response
 
-
+# Not used
 def count_concepts(concepts):
     # count concepts by location and time
     counts = []

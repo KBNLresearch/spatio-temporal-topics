@@ -10,7 +10,7 @@ var delay = (function(){
   };
 })();
 
-var keyup_delay = 500;
+var keyup_delay = 800;
 var timeline_start = 1914;
 var timeline_end = 1940
 
@@ -441,6 +441,8 @@ function show_termcloud(data){
     $('#loading_'+loc_id+'_'+year).hide();
     //update selected newspapers
     $('#selected_np_'+loc_id).html(papers);
+    //show the query
+    $('#tc_query_'+loc_id).html(data['query_to_show']);
 }
 
 function prepare_tc_wrap(loc_id){
@@ -449,6 +451,7 @@ function prepare_tc_wrap(loc_id){
     var label = ['<div id="tc_loc_'+loc_id+'">',
                 '<span class="section-label">'+ loc +'</span>',
                 '<span id="selected_np_'+loc_id+'" class="info"></span>',
+                '<div id="tc_query_'+loc_id+'" class="info"></div>',
                 '</div>',
                 ];
     var wrap_div = []
