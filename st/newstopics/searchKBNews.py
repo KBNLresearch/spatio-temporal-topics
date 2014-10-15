@@ -64,9 +64,9 @@ class KBNewsES(object):
             qry['sort'] = sorting
 
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
-                size=size, from_=start, fields=settings.RET_FIELDS, ignore=[400, 500])
+                size=size, from_=start, fields=settings.RET_FIELDS)
         #print res['hits']['hits'][0]['highlight']['text']
-
+        print res
         total_results = res['hits']['total']
         docs = res['hits']['hits']
 
