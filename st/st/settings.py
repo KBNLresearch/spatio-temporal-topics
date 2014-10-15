@@ -112,14 +112,13 @@ TEMPLATE_DIRS = (
     '%s/%s'%(BASE_DIR, '/templates/')
 )
 
-
 from elasticsearch import Elasticsearch
 
 ES = Elasticsearch(
-    max_retries = 10,
-    keepAlive = True,
-    maxSockets = 100,
-    minSockets = 1,
+#    max_retries = 10,
+#    keepAlive = True,
+#    maxSockets = 100,
+#    minSockets = 1,
 )
 
 # Set up elastic search parameters

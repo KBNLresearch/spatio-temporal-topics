@@ -66,7 +66,10 @@ class KBNewsES(object):
         res = self.es.search(index=index, doc_type=doc_type, body=qry,
                 size=size, from_=start, fields=settings.RET_FIELDS)
         #print res['hits']['hits'][0]['highlight']['text']
+<<<<<<< HEAD
         print res
+=======
+>>>>>>> 3d00271299543b13922eae980e4986587ed3ece4
         total_results = res['hits']['total']
         docs = res['hits']['hits']
 
@@ -259,8 +262,9 @@ class KBNewsES(object):
             filtered = {'terms': {'loc': ["%s"%loc]}}
 
             body['query'] = {'filtered': {'filter': filtered}} 
+            print body['query']
             res = self.es.search(index=index, doc_type=doc_type, 
-                body=body, search_type="count", fields="loc", ignore=400)
+                body=body, search_type="count", fields="loc")
             newspapers = res['aggregations']['papercount']['buckets']
 
             np = sorted([(p['key'] if len(p['key'])<45 else '%s...'%p['key'][:50], p['doc_count']) for p in newspapers], key=operator.itemgetter(0))

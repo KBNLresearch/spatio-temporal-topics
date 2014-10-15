@@ -191,8 +191,8 @@ bootstrap.mlockall: true
 #
 # You should also make sure that the Elasticsearch process is allowed to lock
 # the memory, eg. by using `ulimit -l unlimited`.
-ES_MIN_MEM: 2g
-ES_MAX_MEM: 2g
+ES_MIN_MEM: 1g
+ES_MAX_MEM: 1g
  
 ############################## Network And HTTP ###############################
 

@@ -9,15 +9,18 @@ if [[ $length -gt 0 ]]
 then
     ps aux | grep 'python manage.py runserver 0.0.0.0:6001'| while read line 
     do
+        if [[ $line == *grep* ]]
+        then
+            continue
+        fi
         pid=`echo $line | cut -f 2 -d " "`
-        kill $pid
+        kill $pid &> $log".cron"
     done
 fi
 
 nline=`ps aux | grep 'python manage.py runserver 0.0.0.0:6001' | wc -l`
 if [[ $nline -eq 1 ]] 
 then
-    echo 'restart'
     # restart the server
     python $home/manage.py runserver 0.0.0.0:6001 &> $log &
 fi
